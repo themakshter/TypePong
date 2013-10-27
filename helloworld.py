@@ -1,19 +1,25 @@
-import webapp2
-from jinja2 import Template
+from webapp2 import RequestHandler, WSGIApplication
 
-class MainPage(webapp2.RequestHandler):
-    def get(self):
-        self.response.headers['Content-Type'] = 'text/plain'
-        self.response.write("Hello, World!\n")
-        self.response.write('\nAli was also here, hah (sorry about the \'breaking the whole thing\' bit tho)')
+class MainPage(RequestHandler):
+	def get(self):
+		self.response.headers['Content-Type'] = 'text/plain'
+		self.response.write("Hello, World!\n")
+		self.response.write('\nAli was also here, hah (sorry about the \'breaking the whole thing\' bit tho)')
 
 class Test(RequestHandler):
 	def get(self):
-		template = Template(filename='test.html')
-        self.response.headers['Content-Type'] = 'text/html'
-        self.response.write(template.render())
+		f = open('test.html', 'r')
+		self.response.headers['Content-Type'] = 'text/html'
+		self.response.write(f.read())
 
-application = webapp2.WSGIApplication([
-    ('/', MainPage),
-    ('/test', Test),
+application = WSGIApplication([
+	('/', MainPage),
+	('/test', Test),
 ], debug=True)
+
+def main():
+	from paste import httpserver
+	httpserver.serve(application, host='127.0.0.1', port='8080')
+
+if __name__ == '__main__':
+	main()
