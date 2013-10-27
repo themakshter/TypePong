@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<head>
+<title>Type Pong</title>
+<link rel="icon" type="image/png" href="icon.png"/>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<link href='http://fonts.googleapis.com/css?family=Share+Tech' rel='stylesheet' type='text/css'>
+</head>
+
+<html>
+<body>
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		console.log("text")
+		js = d.createElement(s); js.id = id;
+		js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1&appId=632811993414643";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+	<div id="header">
+		<div style="width:250px;height:125px;opacity:0.0;float:left">text</div>
+		<div id="title">Type Pong</div>
+	</div>
+	<div id="container">
+		<div id="login">
+			<div style="width:100%;height:200px;opacity:0.0;">text</div>
+			<form>
+				Username: <br/> <input type="text" name="user"><br>
+				Password: <br/> <input type="password" name="password"> <br/>
+				<input class="button" type="submit" value="Login"> <br/> <br/>
+				<input class="button" type="button" value="Register">
+				<div class="fb-login-button" data-width="200"></div>
+			</form>
+		</div>
+		<div class="center">
+			<div style="width:100%;height:130px;opacity:0.0;">text</div>
+			<div class="game">
+				<div id="temp">Le Game</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
