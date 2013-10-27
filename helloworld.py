@@ -1,4 +1,5 @@
 import webapp2
+from jinja2 import Template
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
