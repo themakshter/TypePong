@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<head>
+<title>Type Pong</title>
+<link rel="stylesheet" type="text/css" href="static/styles.css">
+<link href='http://fonts.googleapis.com/css?family=Share+Tech' rel='stylesheet' type='text/css'>
+  <script language="JavaScript" type="text/javascript">
+  function login(showhide){
+    if(showhide == "show"){
+        document.getElementById('popupbox').style.visibility="visible";
+    }else if(showhide == "hide"){
+        document.getElementById('popupbox').style.visibility="hidden"; 
+    }
+  }
+  </script>
+</head>
+
+<html>
+<body>
+	<div id="fb-root"></div>
+	<script>
+		// Additional JS functions here
+		window.fbAsyncInit = function() {
+		FB.init({
+			appId      : '203715726482941', // App ID
+			channelUrl : 'http://mystical-hawk-370.appspot.com/channel.html', // Channel File
+			status     : true, // check login status
+			cookie     : true, // enable cookies to allow the server to access the session
+			xfbml      : true  // parse XFBML
+		});
+
+		// Additional init code here
+
+		};
+
+	function fb_login() {
+		FB.login(function(response) {
+
+			if (response.authResponse) {
+				console.log('Welcome!  Fetching your information.... ');
+				//console.log(response); // dump complete info
+				access_token = response.authResponse.accessToken; //get access token
+				user_id = response.authResponse.userID; //get FB UID
+
+				FB.api('/me', function(response) {
+					user_email = response.email; //get user email
+			  	// you can store this data into your database             
+				});
+
+			} else {
+				//user hit cancel button
+				console.log('User cancelled login or did not fully authorize.');
+
+			}
+		}, {
+			scope: 'publish_stream,email'
+		});
+	}
+
+	  // Load the SDK asynchronously
+	(function(d) {
+		var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+		if (d.getElementById(id)) {return;}
+		js = d.createElement('script'); js.id = id; js.async = true;
+		js.src = "//connect.facebook.net/en_US/all.js";
+		ref.parentNode.insertBefore(js, ref);
+	}(document));
+	</script>
+	<div id="header">
+		<div style="width:800px;margin:0 auto;">
+			<div id="title">Type Pong</div>
+		</div>
+	</div>
+	<div id="container">
+		<div class="center">
+			<div style="width:100%;height:130px;opacity:0.0;">text</div>
+			<div class="game">
+				<div id="temp">Le Game</div>
+				<a href="javascript:login('show');" style="color:white;text-decoration:none;padding-left:15px;">Login</a>
+			</div>
+		</div>
+	</div>
+	<div id="popupbox">
+		<div id="insidepopup">
+			<form style="width:220px;">
+				Username: <br> <input type="text" name="user"><br>
+				Password: <br> <input type="password" name="password"> <br>
+				<div style="width:100%;height:10px;"><input class="button" type="submit" value="Login"></div><br><br>
+				<div style="width:100%;height:10px;"><input class="button" type="button" value="Register"></div><br><br>
+				<div class="fb-login-button" style="float:right;" data-width="100"></div><br><br>
+			</form>
+			<center><a href="javascript:login('hide');">close</a></center>
+		</div>
+	</div>
+</body>
+</html>
