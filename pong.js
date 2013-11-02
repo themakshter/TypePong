@@ -2,16 +2,21 @@ var canvas;
 var ctx;
 var x = 750;
 var y = 500;
-var dx = 2;
-var dy = 4;
-var WIDTH = 750;
-var HEIGHT = 500;
-var player1_x = 50;
-var player1_y = 50;
-var player2_x = 700;
-var player2_y = 365;
-var player_width = 20;
-var player_height = 85;
+var dx = 0.77;
+var dy = 0.99;
+var canvas_width = 750;
+var canvas_height = 500;
+var x_startPos = 750;
+var y_startPos = 0;
+var paddle1 = new Paddle(50,50);
+var paddle2 = new Paddle(700,365);
+
+function Paddle(xPos,yPos){
+    this.xPos = xPos;
+    this.yPos = yPos;
+    this.width = 20;
+    this.height = 85;
+}
 
 
 
@@ -29,8 +34,8 @@ function rect(x, y, w, h) {
     ctx.closePath();
     ctx.fill();
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(player1_x,player1_y,player_width,player_height);
-    ctx.fillRect(player2_x,player2_y,player_width,player_height);
+    ctx.fillRect(paddle1.xPos,paddle1.yPos,paddle1.width,paddle1.height);
+    ctx.fillRect(paddle2.xPos,paddle2.yPos,paddle2.width,paddle2.height);
     for(var i = 5; i < 500; i+= 30){
         ctx.fillRect(small_x,i,small_width,small_width);
     }
@@ -39,32 +44,32 @@ function rect(x, y, w, h) {
 
 
 function clear() {
-    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    ctx.clearRect(0, 0, canvas_width, canvas_height);
 }
 
 function init() {
     canvas = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
-    return setInterval(draw, 10);
+    x = x_startPos;
+    y = y_startPos;
+    return setInterval(draw, 0.5);
 }
 
-function withinPlayer1(x,y){
-    var inside = false;
-    if((x < (player1_x + player_width) && x < player1_x) && (y < (player1_y + player_height) && y > player1_y)){
-        inside = true;
-    }
-     return inside;  
+function hitsPaddle(p,x,y){
+   return ((x <= (p.xPos + p.width) && x >= p.xPos) && (y >= p.yPos && y <= (p.yPos + p.height)));
 }
+
+
 
 function draw() {
     clear();
     ctx.fillStyle = "#000000"; 
-    rect(0, 0, WIDTH, HEIGHT);
+    rect(0, 0, canvas_width, canvas_height);
    ctx.fillStyle = "#FFFFFF";
     circle(x, y, 10);
 
-    if (x + dx > WIDTH || x + dx < 0 || withinPlayer1(x + dx,y + dy)) dx = -dx;
-    if (y + dy > HEIGHT || y + dy < 0) dy = -dy;
+    if (x + dx > canvas_width  || x + dx < 0 || hitsPaddle(paddle1,x+dx,y + dy) || hitsPaddle(paddle2,x+dx,y + dy)) dx = -dx;
+    if (y + dy > canvas_height || y + dy < 0 || hitsPaddle(paddle1,x+dx,y + dy) || hitsPaddle(paddle2,x+dx,y + dy) ) dy = -dy;
 
     x += dx;
     y += dy;
