@@ -2,20 +2,28 @@ var canvas;
 var ctx;
 var x = 750;
 var y = 500;
-var dx = 0.77;
-var dy = 0.99;
+var dx = 2;
+var dy = 2;
 var canvas_width = 750;
 var canvas_height = 500;
-var x_startPos = 750;
+var x_startPos = 200;
 var y_startPos = 0;
-var paddle1 = new Paddle(50,50);
-var paddle2 = new Paddle(700,365);
+var paddle1 = new Paddle(50,200);
+var paddle2 = new Paddle(700,200);
 
 function Paddle(xPos,yPos){
     this.xPos = xPos;
     this.yPos = yPos;
     this.width = 20;
     this.height = 85;
+    this.hitsHorizontalFace = function(x,y){
+        return (((x >= (xPos + this.width) && x <= (xPos + this.width - dx)) || (x <= xPos && x >= xPos - dx)) 
+                && ((y >= yPos && y <= (yPos + this.height))));
+    };
+    this.hitsVerticalFace = function(x,y){
+        return (((y >= (yPos + this.height) && y <= (yPos + this.height - dy)) || (y <= yPos && y >= yPos - dy))
+                && ((x >= xPos && x <= (xPos + this.width))));
+    };
 }
 
 
@@ -55,11 +63,6 @@ function init() {
     return setInterval(draw, 0.5);
 }
 
-function hitsPaddle(p,x,y){
-   return ((x <= (p.xPos + p.width) && x >= p.xPos) && (y >= p.yPos && y <= (p.yPos + p.height)));
-}
-
-
 
 function draw() {
     clear();
@@ -68,8 +71,8 @@ function draw() {
    ctx.fillStyle = "#FFFFFF";
     circle(x, y, 10);
 
-    if (x + dx > canvas_width  || x + dx < 0 || hitsPaddle(paddle1,x+dx,y + dy) || hitsPaddle(paddle2,x+dx,y + dy)) dx = -dx;
-    if (y + dy > canvas_height || y + dy < 0 || hitsPaddle(paddle1,x+dx,y + dy) || hitsPaddle(paddle2,x+dx,y + dy) ) dy = -dy;
+    if (x + dx > canvas_width  || x + dx < 0 || paddle1.hitsHorizontalFace(x+dx,y + dy) || paddle2.hitsHorizontalFace(x+dx,y + dy)) dx = -dx;
+    else if (y + dy > canvas_height || y + dy < 0 || paddle1.hitsVerticalFace(x+dx,y + dy) || paddle2.hitsVerticalFace(x+dx,y + dy)) dy = -dy;
 
     x += dx;
     y += dy;
