@@ -10,7 +10,7 @@ var x_startPos = 350;
 var y_startPos = 350;
 var paddle1 = new Paddle(50,200);
 var paddle2 = new Paddle(700,200);
-var circle_radius = 9;
+var circle_radius = 10;
 
 function Paddle(xPos,yPos){
     this.xPos = xPos;
@@ -82,10 +82,11 @@ function draw() {
     ctx.fillStyle = "#000000"; 
     rect(0, 0, canvas_width, canvas_height);
    ctx.fillStyle = "#FFFFFF";
-    circle(x, y, circle_radius+1);
+    circle(x, y, circle_radius);
 
     if (x + dx + circle_radius> canvas_width  || x + dx - circle_radius < 0 || paddle1.hitsHorizontalFace(x+dx,y + dy) || paddle2.hitsHorizontalFace(x+dx,y + dy)) dx = -dx;
     else if (y + dy + circle_radius > canvas_height || y + dy -circle_radius < 0 || paddle1.hitsVerticalFace(x+dx,y + dy) || paddle2.hitsVerticalFace(x+dx,y + dy)) dy = -dy;
+
     x += dx;
     y += dy;
 }
