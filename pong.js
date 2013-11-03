@@ -6,11 +6,11 @@ var dx = 2;
 var dy = 2;
 var canvas_width = 750;
 var canvas_height = 500;
-var x_startPos = 200;
-var y_startPos = 10;
+var x_startPos = 350;
+var y_startPos = 350;
 var paddle1 = new Paddle(50,200);
 var paddle2 = new Paddle(700,200);
-var circle_radius = 10;
+var circle_radius = 9;
 
 function Paddle(xPos,yPos){
     this.xPos = xPos;
@@ -19,12 +19,12 @@ function Paddle(xPos,yPos){
     this.height = 85;
     this.score = 0;
     this.hitsHorizontalFace = function(x,y){
-        return (((x >= (xPos + this.width) && x <= (xPos + this.width - dx)) || (x <= xPos && x >= xPos - dx)) 
-                && ((y >= yPos && y <= (yPos + this.height))));
+        return (((x >= (xPos + this.width) && x <= (xPos + this.width - dx + circle_radius)) || (x <= xPos && x >= xPos - dx- circle_radius )) 
+                && ((y  >= yPos - circle_radius  && y <= (yPos + this.height + circle_radius))));
     };
     this.hitsVerticalFace = function(x,y){
-        return (((y >= (yPos + this.height) && y <= (yPos + this.height - dy)) || (y <= yPos && y >= yPos - dy))
-                && ((x >= xPos && x <= (xPos + this.width))));
+        return (((y >= (yPos + this.height) && y <= (yPos + this.height - dy + circle_radius)) || (y <= yPos && y >= yPos - dy - circle_radius))
+                && ((x >= xPos- circle_radius && x <= (xPos + this.width + circle_radius))));
     };
     this.drawPaddle = function(){
         ctx.fillStyle = "#FFFFFF";
@@ -82,11 +82,10 @@ function draw() {
     ctx.fillStyle = "#000000"; 
     rect(0, 0, canvas_width, canvas_height);
    ctx.fillStyle = "#FFFFFF";
-    circle(x, y, circle_radius);
+    circle(x, y, circle_radius+1);
 
     if (x + dx + circle_radius> canvas_width  || x + dx - circle_radius < 0 || paddle1.hitsHorizontalFace(x+dx,y + dy) || paddle2.hitsHorizontalFace(x+dx,y + dy)) dx = -dx;
     else if (y + dy + circle_radius > canvas_height || y + dy -circle_radius < 0 || paddle1.hitsVerticalFace(x+dx,y + dy) || paddle2.hitsVerticalFace(x+dx,y + dy)) dy = -dy;
-
     x += dx;
     y += dy;
 }
