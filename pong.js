@@ -7,15 +7,17 @@ var dy = 2;
 var canvas_width = 750;
 var canvas_height = 500;
 var x_startPos = 200;
-var y_startPos = 0;
+var y_startPos = 10;
 var paddle1 = new Paddle(50,200);
 var paddle2 = new Paddle(700,200);
+var circle_radius = 10;
 
 function Paddle(xPos,yPos){
     this.xPos = xPos;
     this.yPos = yPos;
     this.width = 20;
     this.height = 85;
+    this.score = 0;
     this.hitsHorizontalFace = function(x,y){
         return (((x >= (xPos + this.width) && x <= (xPos + this.width - dx)) || (x <= xPos && x >= xPos - dx)) 
                 && ((y >= yPos && y <= (yPos + this.height))));
@@ -23,6 +25,15 @@ function Paddle(xPos,yPos){
     this.hitsVerticalFace = function(x,y){
         return (((y >= (yPos + this.height) && y <= (yPos + this.height - dy)) || (y <= yPos && y >= yPos - dy))
                 && ((x >= xPos && x <= (xPos + this.width))));
+    };
+    this.drawPaddle = function(){
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(xPos,yPos,this.width,this.height);
+    };
+    this.writeScore= function(score_x,score_y){
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font="75px Terminator Two";
+        ctx.fillText(this.score,score_x,score_y,50);
     };
 }
 
@@ -42,8 +53,10 @@ function rect(x, y, w, h) {
     ctx.closePath();
     ctx.fill();
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(paddle1.xPos,paddle1.yPos,paddle1.width,paddle1.height);
-    ctx.fillRect(paddle2.xPos,paddle2.yPos,paddle2.width,paddle2.height);
+    paddle1.drawPaddle();
+    paddle1.writeScore(305,75);
+    paddle2.drawPaddle();
+    paddle2.writeScore(400,75);
     for(var i = 5; i < 500; i+= 30){
         ctx.fillRect(small_x,i,small_width,small_width);
     }
@@ -69,10 +82,10 @@ function draw() {
     ctx.fillStyle = "#000000"; 
     rect(0, 0, canvas_width, canvas_height);
    ctx.fillStyle = "#FFFFFF";
-    circle(x, y, 10);
+    circle(x, y, circle_radius);
 
-    if (x + dx > canvas_width  || x + dx < 0 || paddle1.hitsHorizontalFace(x+dx,y + dy) || paddle2.hitsHorizontalFace(x+dx,y + dy)) dx = -dx;
-    else if (y + dy > canvas_height || y + dy < 0 || paddle1.hitsVerticalFace(x+dx,y + dy) || paddle2.hitsVerticalFace(x+dx,y + dy)) dy = -dy;
+    if (x + dx + circle_radius> canvas_width  || x + dx - circle_radius < 0 || paddle1.hitsHorizontalFace(x+dx,y + dy) || paddle2.hitsHorizontalFace(x+dx,y + dy)) dx = -dx;
+    else if (y + dy + circle_radius > canvas_height || y + dy -circle_radius < 0 || paddle1.hitsVerticalFace(x+dx,y + dy) || paddle2.hitsVerticalFace(x+dx,y + dy)) dy = -dy;
 
     x += dx;
     y += dy;
