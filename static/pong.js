@@ -16,6 +16,7 @@ function Paddle(xPos,yPos){
     this.yPos = yPos;
     this.width = 20;
     this.height = 85;
+    // collision with corners needs to be looked at.
     this.hitsHorizontalFace = function(x,y){
         return (((x >= (xPos + this.width) && x <= (xPos + this.width - dx)) ||
             (x <= xPos && x >= xPos - dx)) && ((y >= yPos && y <= (yPos + this.height))));
@@ -54,8 +55,8 @@ function clear() {
 
 function init() {
     canvas = document.getElementById("canvas");
-    canvas.style.width = canvas_width;
-    canvas.style.height= canvas_height;
+    canvas.width = canvas_width;
+    canvas.height = canvas_height;
     ctx = canvas.getContext("2d");
     x = x_startPos;
     y = y_startPos;
