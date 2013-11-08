@@ -16,9 +16,9 @@ function Paddle(xPos, yPos) {
     this.xPos = xPos;
     this.yPos = yPos;
     this.reqyPos = yPos;
-    this.dy = 2;
+    this.dy = 3;
     this.width = 20;
-    this.height = 85;
+    this.height = 100;
     this.score = 0;
     this.hitsHorizontalFace = function (x, y) {
         return (((x >= (this.xPos + this.width) && x <= (this.xPos + this.width - dx + circle_radius)) || (x <= this.xPos && x >= this.xPos - dx - circle_radius)) && ((y >= this.yPos - circle_radius && y <= (this.yPos + this.height + circle_radius))));
@@ -28,7 +28,8 @@ function Paddle(xPos, yPos) {
     };
     this.drawPaddle = function () {
         ctx.fillStyle = "#FFFFFF";
-        if (this.yPos != this.reqyPos) this.yPos += this.dy;
+        if (this.dy * (this.yPos - this.reqyPos) < 0) 
+            this.yPos += this.dy;
         ctx.fillRect(this.xPos, this.yPos, this.width, this.height);
     };
     this.writeScore = function (score_x, score_y) {
@@ -136,20 +137,20 @@ window.onkeyup = (function () {
     return function () {
         var typed;
         typed = typeElem.val();
-
+        var direction = Math.abs(paddle2.dy);
         if (typed.toLowerCase() === 'first') {
             newyPos = pos[0] - paddle2.height / 2;
-            paddle2.dy = newyPos < paddle2.yPos ? -1 : 1;
+            paddle2.dy = newyPos < paddle2.yPos ? -direction : direction;
             paddle2.reqyPos = Math.round(newyPos);
             typeElem.val('');
         } else if (typed.toLowerCase() === 'second') {
             newyPos = pos[1] - paddle2.height / 2;
-            paddle2.dy = newyPos < paddle2.yPos ? -1 : 1;
+            paddle2.dy = newyPos < paddle2.yPos ? -direction : direction;
             paddle2.reqyPos = Math.round(newyPos);
             typeElem.val('');
         } else if (typed.toLowerCase() === 'third') {
             newyPos = pos[2] - paddle2.height / 2;
-            paddle2.dy = newyPos < paddle2.yPos ? -1 : 1;
+            paddle2.dy = newyPos < paddle2.yPos ? -direction : direction;
             paddle2.reqyPos = Math.round(newyPos);
             typeElem.val('');
         }
