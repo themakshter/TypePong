@@ -8,8 +8,8 @@ var canvas_width = 750;
 var canvas_height = 500;
 var x_startPos = 350;
 var y_startPos = 350;
-var paddle1 = new Paddle(50, 200);
-var paddle2 = new Paddle(700, 200);
+var cpu = new Paddle(50, 200);
+var player = new Paddle(700, 200);
 var circle_radius = 10;
 
 function Paddle(xPos, yPos) {
@@ -55,10 +55,10 @@ function rect(x, y, w, h) {
     ctx.closePath();
     ctx.fill();
     ctx.fillStyle = "#FFFFFF";
-    paddle1.drawPaddle();
-    paddle1.writeScore(305, 75);
-    paddle2.drawPaddle();
-    paddle2.writeScore(400, 75);
+    cpu.drawPaddle();
+    cpu.writeScore(305, 75);
+    player.drawPaddle();
+    player.writeScore(400, 75);
     for (var i = 5; i < 500; i += 30) {
         ctx.fillRect(small_x, i, small_width, small_width);
     }
@@ -87,14 +87,14 @@ function draw() {
     var pos = markPositions(3);
     drawPositions(canvas, ctx, pos);
 
-    if (paddle1.hitsHorizontalFace(x + dx, y + dy) || paddle2.hitsHorizontalFace(x + dx, y + dy)) dx = -dx;
-    else if (y + dy + circle_radius > canvas_height || y + dy - circle_radius < 0 || paddle1.hitsVerticalFace(x + dx, y + dy) || paddle2.hitsVerticalFace(x + dx, y + dy)) dy = -dy;
+    if (cpu.hitsHorizontalFace(x + dx, y + dy) || player.hitsHorizontalFace(x + dx, y + dy)) dx = -dx;
+    else if (y + dy + circle_radius > canvas_height || y + dy - circle_radius < 0 || cpu.hitsVerticalFace(x + dx, y + dy) || player.hitsVerticalFace(x + dx, y + dy)) dy = -dy;
     else if (x + dx + circle_radius > canvas_width) {
-        paddle1.score++;
+        cpu.score++;
         dx = -dx;
         resetBall();
     } else if (x + dx - circle_radius < 0) {
-        paddle2.score++;
+        player.score++;
         dx = -dx;
         resetBall();
     }
@@ -137,21 +137,21 @@ window.onkeyup = (function () {
     return function () {
         var typed;
         typed = typeElem.val();
-        var direction = Math.abs(paddle2.dy);
+        var direction = Math.abs(player.dy);
         if (typed.toLowerCase() === 'first') {
-            newyPos = pos[0] - paddle2.height / 2;
-            paddle2.dy = newyPos < paddle2.yPos ? -direction : direction;
-            paddle2.reqyPos = Math.round(newyPos);
+            newyPos = pos[0] - player.height / 2;
+            player.dy = newyPos < player.yPos ? -direction : direction;
+            player.reqyPos = Math.round(newyPos);
             typeElem.val('');
         } else if (typed.toLowerCase() === 'second') {
-            newyPos = pos[1] - paddle2.height / 2;
-            paddle2.dy = newyPos < paddle2.yPos ? -direction : direction;
-            paddle2.reqyPos = Math.round(newyPos);
+            newyPos = pos[1] - player.height / 2;
+            player.dy = newyPos < player.yPos ? -direction : direction;
+            player.reqyPos = Math.round(newyPos);
             typeElem.val('');
         } else if (typed.toLowerCase() === 'third') {
-            newyPos = pos[2] - paddle2.height / 2;
-            paddle2.dy = newyPos < paddle2.yPos ? -direction : direction;
-            paddle2.reqyPos = Math.round(newyPos);
+            newyPos = pos[2] - player.height / 2;
+            player.dy = newyPos < player.yPos ? -direction : direction;
+            player.reqyPos = Math.round(newyPos);
             typeElem.val('');
         }
     };
