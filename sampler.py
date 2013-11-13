@@ -2,16 +2,15 @@ from utils import chunks
 import random
 
 class Sampler(object):
-    def __init__(self, wordfile='static/data/words.txt', levels=50):
-        with open(wordfile) as fil:
-            self.words = [l.strip().lower() for l in fil.readlines()]
-            self.words = [w for w in self.words if len(w) >= 3]
+    def __init__(self, wordfile, levels=50):
+        self.words = [l.strip().lower() for l in wordfile.readlines()]
+        self.words = [w for w in self.words if len(w) >= 3]
 
         random.shuffle(self.words)
         self.words = sorted(self.words, key=len)
         self.words = list(chunks(self.words, levels))
 
-    def sample(self, level, num=0):
+    def sample(self, level, num=100000000):
         """Return a sample of words from a specified level.
 
         Args:

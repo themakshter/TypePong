@@ -36,21 +36,22 @@ class Test(RequestHandler):
 
 class LoadWords(RequestHandler):
     def get(self):
-        level = self.request.get('level')
+        level = int(self.request.get('level'))
         words = Sample.sample(level)
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(json.dumps(words))
 
-application = WSGIApplication([
-    ('/', MainPage),
-    ('/test', Test),
-    ('/_load_words', LoadWords),
-], debug=True)
-
-Sample = Sampler()
-
 class Player(db.Model):
     """This is kinda like a table, it specifies what data is required etc"""
     name = db.StringProperty(required=True)#name required
     email = db.StringProperty(required=True)#email required etc
+
+with open('words.txt') as f:
+    Sample = Sampler(f)
+
+application = WSGIApplication([
+    ('/', MainPage),
+    ('/test', Test),
+    ('/_load_words', LoadWords),
+    ], debug=True)
