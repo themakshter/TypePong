@@ -40,6 +40,7 @@ class LoadWords(RequestHandler):
         words = Sample.sample(level)
 
         self.response.headers['Content-Type'] = 'application/json'
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.out.write(json.dumps(words))
 
 class Player(db.Model):
