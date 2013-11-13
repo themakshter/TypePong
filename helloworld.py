@@ -1,25 +1,31 @@
+from sampler import Sampler
 from webapp2 import RequestHandler, WSGIApplication
 
+import json
+
 class MainPage(RequestHandler):
-	def get(self):
-		self.response.headers['Content-Type'] = 'text/plain'
-		self.response.write("Hello, World!\n")
-		self.response.write('\nAli was also here, hah (sorry about the \'breaking the whole thing\' bit tho)')
+    def get(self):
+        self.response.headers['Content-Type'] = 'text/plain'
+        self.response.write("Hello, World!\n")
 
 class Test(RequestHandler):
-	def get(self):
-		f = open('test.html', 'r')
-		self.response.headers['Content-Type'] = 'text/html'
-		self.response.write(f.read())
+    def get(self):
+        f = open('test.html', 'r')
+        self.response.headers['Content-Type'] = 'text/html'
+        self.response.write(f.read())
+
+class LoadWords(RequestHandler):
+    def get(self):
+        level = self.request.get('level')
+        words = Sample.sample(level)
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.out.write(json.dumps(words))
 
 application = WSGIApplication([
-	('/', MainPage),
-	('/test', Test),
+    ('/', MainPage),
+    ('/test', Test),
+    ('/_load_words', LoadWords),
 ], debug=True)
 
-def main():
-	from paste import httpserver
-	httpserver.serve(application, host='127.0.0.1', port='8080')
-
-if __name__ == '__main__':
-	main()
+Sample = Sampler()
