@@ -59,8 +59,12 @@ form input {
 }
 
 form .button {
+    background-color: black;
+    color: white;
     float: right;
     width: 100px;
+    font-family: 'Share Tech', serif;
+    letter-spacing: -0.05em;
 }
 
 iframe {
