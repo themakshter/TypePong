@@ -11,6 +11,7 @@ class MainPage(RequestHandler):
 		self.response.write("Hello, World!\n")
 		self.response.write('\nAli was also here, hah (sorry about the \'breaking the whole thing\' bit tho)')
 		self.response.write('\nTristan was here too!')
+		self.response.write('\nso was Alex')
 
 		name = cgi.escape(self.request.get("name"))
 		email = cgi.escape(self.request.get("email"))
