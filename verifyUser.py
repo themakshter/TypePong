@@ -1,12 +1,10 @@
 from sampler import Sampler
 from webapp2 import RequestHandler, WSGIApplication
-from google.appengine.ext import db
 import cgi
 
 import json
 
-def genUserId():#dummy function. will give us unique ids 
-    return 1
+import login
 
 
 class MainPage(RequestHandler):
@@ -26,30 +24,19 @@ class MainPage(RequestHandler):
         login_detail =str(detail)
         secure_password = password
 
-        
-        # self.response.write(qry)
-        users = db.GqlQuery("SELECT * FROM Player WHERE login_detail =  :1", detail)
-        #         # users = Player.all()
-        # # users.filter("login_detail =",login_detail)
+        try:
+            # attempt to login
+            name = login.login(login_detail, secure_password)
 
-        if users.count() == 0:
+        except login.UserDoesNotExist:
             self.response.write("\n no user with those details")
-        if users.count() >1:
-            self.response.write("\nError, many users with this name")
 
-        # self.response.write(users.count())
+        except login.IncorrectPassword:
+            self.response.write("\n Incorrent pass")
 
-        count = 0
-        for u in users:
-            # self.response.write("\nhere")
-            # count = count +1
-            # if(count>1):
-                
-            if(u.secure_password==secure_password):
-                # we have a match for the user
-                self.response.write("\nThis is a registered user, name = " + u.name)
-            else:
-                self.response.write("\n Incorrent pass")
+        else:
+            # we have a match for the user
+            self.response.write("\nThis is a registered user, name = " + name)
 
 
 class Test(RequestHandler):
@@ -67,16 +54,6 @@ class LoadWords(RequestHandler):
         self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.out.write(json.dumps(words))
 
-class Player(db.Model):
-    #This is kinda like a table, it specifies what data is required etc
-
-
-    user_id = db.IntegerProperty(required=True)
-    name = db.StringProperty(required=True)
-    login_detail = db.StringProperty(required=True)
-    secure_password = db.StringProperty(required=True)
-    hi_score =db.IntegerProperty(required=False)
-    
 
 with open('words.txt') as f:
     Sample = Sampler(f)

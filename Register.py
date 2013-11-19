@@ -1,13 +1,10 @@
 from sampler import Sampler
 from webapp2 import RequestHandler, WSGIApplication
-from google.appengine.ext import db
 import cgi
 
 import json
 
-def genUserId():#dummy function. will give us unique ids 
-    return 1
-
+import login
 
 class MainPage(RequestHandler):
     def get(self):
@@ -21,20 +18,18 @@ class MainPage(RequestHandler):
         detail = cgi.escape(self.request.get("detail"))
         password = cgi.escape(self.request.get("pass"))
 
-        
+
         # people = db.GqlQuery("SELECT * FROM Player")
 
-        if (name != "" and detail != "" and password != ""):
-            # print
-            # self.response.write("here")
-            p = Player(user_id=genUserId(), name=name, login_detail=detail, secure_password=password,hi_score=0)#create a player
-            p.put()#put into db
-            self.response.write('\nsuccessfully regisetered\n')
-        else:
+        try:
+            login.register(name, detail, password)
+        except login.LoginException:
             self.response.write("\nFailed to register user\n")
+        else:
+            self.response.write('\nsuccessfully regisetered\n')
 
 
-        people = db.GqlQuery("SELECT * FROM Player")
+        people = login.list_users()
 
         self.response.write('\n [Debug]Displaying registered users: \n')
         for p in people:
@@ -57,16 +52,6 @@ class LoadWords(RequestHandler):
         self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.out.write(json.dumps(words))
 
-class Player(db.Model):
-    #This is kinda like a table, it specifies what data is required etc
-
-
-    user_id = db.IntegerProperty(required=True)
-    name = db.StringProperty(required=True)
-    login_detail = db.StringProperty(required=True)
-    secure_password = db.StringProperty(required=True)
-    hi_score =db.IntegerProperty(required=False)
-    
 
 with open('words.txt') as f:
     Sample = Sampler(f)
