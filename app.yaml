@@ -12,8 +12,19 @@ handlers:
   static_files: favicon.ico
   upload: favicon.ico
 
-- url: /.*
+- url: /verify
+  script: verifyUser.application
+
+- url: /updateScore
+  script: updateScore.application
+
+- url: /Register
+  script: Register.application
+
+- url: /
   script: helloworld.application
+
+
 
 libraries:
 - name: webapp2
