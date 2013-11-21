@@ -2,7 +2,6 @@ from sampler import Sampler
 from webapp2 import RequestHandler, WSGIApplication
 from google.appengine.ext import db
 import cgi
-
 import json
 
 class MainPage(RequestHandler):
@@ -51,9 +50,3 @@ class Player(db.Model):
 
 with open('words.txt') as f:
     Sample = Sampler(f)
-
-application = WSGIApplication([
-    ('/', MainPage),
-    ('/test', Test),
-    ('/_load_words', LoadWords),
-    ], debug=True)
