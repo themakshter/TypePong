@@ -16,10 +16,10 @@ class UpdateScore(RequestHandler):
         # detail = cgi.escape(self.request.get("detail"))
         # password = cgi.escape(self.request.get("pass"))
         name = "Tristan"
-        detail="Alex"
-        password ="Tristan"
+        detail = "Alex"
+        password = "Tristan"
 
-        login_detail =str(detail)
+        login_detail = str(detail)
         secure_password = password
 
         hi_score = 13
