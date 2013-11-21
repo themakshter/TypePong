@@ -1,10 +1,11 @@
 from sampler import Sampler
 from webapp2 import RequestHandler, WSGIApplication
 from google.appengine.ext import db
-import cgi
 import json
+import os
+import jinja2
 
-class MainPage(RequestHandler):
+class AboutHandler(RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/plain'
         self.response.write("Hello, World!\n")
@@ -13,11 +14,17 @@ class MainPage(RequestHandler):
         self.response.write('\nso was Alex')
         self.response.write('\nSafe to assume Henco was probably here too')
 
-class Test(RequestHandler):
-    def get(self):
-        f = open('test.html', 'r')
-        self.response.headers['Content-Type'] = 'text/html'
-        self.response.write(f.read())
+class MainHandler(RequestHandler):
+    def get(self, request=None, response=None):
+        self.response.out.write(get_page('main.html'))
+
+class LoginHandler(RequestHandler):
+    def get(self, request=None, response=None):
+        self.response.out.write(get_page('login.html'))
+
+class GameHandler(RequestHandler):
+    def get(self, request=None, response=None):
+        self.response.out.write(get_page('pong.html'))
 
 class LoadWords(RequestHandler):
     def get(self):
@@ -30,3 +37,13 @@ class LoadWords(RequestHandler):
 
 with open('words.txt') as f:
     Sample = Sampler(f)
+
+def get_page(path):
+    template = get_template();
+    vals = {'content': open('templates/' + path).read()}
+    return template.render(vals)
+
+def get_template():
+    jinja_environment = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')))
+    return jinja_environment.get_template('template.html');
