@@ -250,7 +250,7 @@ var fetchWords = (function () {
 
     return function () {
         $.ajax({
-            url: scriptRoot + 'loadwords',
+            url: scriptRoot + '_loadwords',
             async: false,
             data: {
                 level: currentLevel
