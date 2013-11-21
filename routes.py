@@ -1,7 +1,7 @@
 from webapp2 import WSGIApplication
 from main import MainPage, Test, LoadWords
 from scores import UpdateScore
-from userlogin import Register, Verify
+from userlogin import Register, Verify, Delete
 
 app = WSGIApplication([
     ('/', MainPage),
@@ -10,4 +10,5 @@ app = WSGIApplication([
     ('/_updatescore', UpdateScore),
     ('/_register', Register),
     ('/_verify', Verify),
+    ('/_delete', Delete),
     ], debug=True)

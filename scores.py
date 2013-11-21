@@ -1,7 +1,7 @@
 from sampler import Sampler
 from webapp2 import RequestHandler, WSGIApplication
 from google.appengine.ext import db
-import player
+from player import Player, genUserId
 import cgi
 import json
 

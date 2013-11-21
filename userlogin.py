@@ -1,7 +1,7 @@
 from sampler import Sampler
 from webapp2 import RequestHandler, WSGIApplication
 from google.appengine.ext import db
-import player
+from player import Player, genUserId
 import cgi
 import json
 
@@ -63,3 +63,14 @@ class Register(RequestHandler):
             self.response.write('\nuid: ' + str(p.user_id) + ', Name: ' + p.name + ',  loginDetail : ' + p.login_detail + ' score: ' + str(p.hi_score))
             self.response.write(p.name)
             # db.delete(p) #uncomment to delete entries
+
+class Delete(RequestHandler):
+    def get(self):
+        self.response.headers['Content-Type'] = 'text/plain'
+        self.response.write("Deleting:\n")
+        detail = cgi.escape(self.request.get("detail"))
+        if (detail != ""):
+            people = db.GqlQuery("SELECT * FROM Player WHERE login_detail = :1", detail)
+            for p in people:
+                self.response.write("\nDeleting " + p.name)
+                p.delete()
