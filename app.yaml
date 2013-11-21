@@ -13,7 +13,7 @@ handlers:
   upload: favicon.ico
 
 - url: /.*
-  script: Routes.app
+  script: routes.app
 
 
 libraries:

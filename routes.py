@@ -6,8 +6,8 @@ from userlogin import Register, Verify
 app = WSGIApplication([
     ('/', MainPage),
     ('/test', Test),
-    ('/loadwords', LoadWords),
-    ('/updatescore', UpdateScore),
-    ('/register', Register),
-    ('/verify', Verify),
+    ('/_loadwords', LoadWords),
+    ('/_updatescore', UpdateScore),
+    ('/_register', Register),
+    ('/_verify', Verify),
     ], debug=True)
