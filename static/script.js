@@ -1,10 +1,10 @@
 $(function() {
     /* Login */
     $(".signup-btn").addClass('closed');
-    $('#email_field').hide();
+    $('#name_field').hide();
     $(".signin-btn").on('click', function(){
         var form = $('form');
-        var emailField = $('#email_field');
+        var emailField = $('#name_field');
         var btn = $('#submit_btn');
 
         emailField.hide();
@@ -17,7 +17,7 @@ $(function() {
 
     $(".signup-btn").on('click', function(){
         var form = $('form');
-        var emailField = $('#email_field');
+        var emailField = $('#name_field');
         var btn = $('#submit_btn');
 
         emailField.show();

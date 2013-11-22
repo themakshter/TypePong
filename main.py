@@ -21,7 +21,8 @@ class MainHandler(RequestHandler):
 
 class LoginHandler(RequestHandler):
     def get(self, request=None, response=None):
-        self.response.out.write(get_page('login.html'))
+        vals = {'content': renderTemplate("login.html")}
+        self.response.out.write(renderTemplate('template.html', vals))
 
 class GameHandler(RequestHandler):
     def get(self, request=None, response=None):
@@ -66,6 +67,10 @@ def get_page(path):
     template = get_default_template();
     vals = {'content': open('templates/' + path).read()}
     return template.render(vals)
+
+def renderTemplate(template_path, values={}):
+    template = get_template(template_path);
+    return template.render(values)
 
 def get_default_template():
     return get_template('template.html');
