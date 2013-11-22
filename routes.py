@@ -1,7 +1,7 @@
 from webapp2 import WSGIApplication
 import main
 import scores
-from userlogin import Register, Verify, Delete
+import userlogin
 
 app = WSGIApplication([
     ('/', main.MainHandler),
@@ -12,7 +12,7 @@ app = WSGIApplication([
     # pages the user shouldn't be accessing
     ('/_loadwords', main.LoadWords),
     ('/_updatescore', scores.UpdateScore),
-    ('/_register', Register),
-    ('/_verify', Verify),
-    ('/_delete', Delete),
+    ('/_register', userlogin.Register),
+    ('/_verify', userlogin.Login),
+    ('/_delete', userlogin.Delete),
     ], debug=True)
