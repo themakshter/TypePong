@@ -7,6 +7,3 @@ class Player(db.Model):
     login_detail = db.StringProperty(required=True)
     secure_password = db.StringProperty(required=True)
     hi_score =db.IntegerProperty(required=False)
-
-def genUserId(): # dummy function. will give us unique ids 
-    return 1

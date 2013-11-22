@@ -1,7 +1,6 @@
 from sampler import Sampler
 from webapp2 import RequestHandler, WSGIApplication
 from google.appengine.ext import db
-from player import Player, genUserId
 import cgi
 import json
 import random
@@ -27,7 +26,7 @@ class UpdateScore(RequestHandler):
         people = db.GqlQuery("SELECT * FROM Player ORDER BY hi_score DESC")
         for p in people:
             self.response.write('\nuid: ' + str(p.user_id) + '\t\tName: ' + p.name + '\t\tLoginDetail: ' + p.login_detail + '\t\tscore: ' + str(p.hi_score))
-        
+
         # self.response.write(qry)
         # users = db.GqlQuery("SELECT * FROM Player WHERE login_detail =  :1", detail)
         # #         # users = Player.all()
@@ -45,7 +44,7 @@ class UpdateScore(RequestHandler):
         #     # self.response.write("\nhere")
         #     # count = count +1
         #     # if(count>1):
-                
+
         #     if(u.secure_password==secure_password):
         #         # we have a match for the user
         #         self.response.write("\nThis is a registered user, name = " + u.name)

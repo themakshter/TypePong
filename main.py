@@ -29,7 +29,7 @@ class GameHandler(RequestHandler):
 
 class HiscoresHandler(RequestHandler):
     def get(self, request=None, response=None):
-        page = 0 
+        page = 0
         score_per_page = 5
         start = page * score_per_page
         players_q = getHiscorePlayers(start, score_per_page)
