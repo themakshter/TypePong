@@ -6,7 +6,7 @@ import userlogin
 app = WSGIApplication([
     ('/', main.MainHandler),
     ('/about', main.AboutHandler),
-    ('/login', main.LoginHandler),
+    ('/loginpage', main.LoginHandler),
     ('/pong', main.GameHandler),
     ('/hiscores', main.HiscoresHandler),
     # pages the user shouldn't be accessing
