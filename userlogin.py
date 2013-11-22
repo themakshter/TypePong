@@ -5,7 +5,7 @@ from player import Player, genUserId
 import cgi
 import json
 
-class Verify(RequestHandler):
+class Login(RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/plain'
         self.response.write("Hello, World!\n")
@@ -52,8 +52,8 @@ class Register(RequestHandler):
         if (name != "" and detail != "" and password != ""):
             # print
             # self.response.write("here")
-            p = Player(user_id=genUserId(), name=name, login_detail=detail, secure_password=password,hi_score=0)#create a player
-            p.put()#put into db
+            p = Player(user_id=genUserId(), name=name, login_detail=detail, secure_password=password,hi_score=0) # create a player
+            p.put() # put into db
             self.response.write('\nsuccessfully regisetered\n')
         else:
             self.response.write("\nFailed to register user\n")
