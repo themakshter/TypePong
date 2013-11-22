@@ -4,39 +4,29 @@ from google.appengine.ext import db
 from player import Player, genUserId
 import cgi
 import json
+import random
 
 class UpdateScore(RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/plain'
-        self.response.write("Hello, World!\n")
 
-        # uid=cgi.escape(self.request.get('uid'))
-
-        # name=cgi.escape(self.request.get('name'))
-        # detail = cgi.escape(self.request.get("detail"))
-        # password = cgi.escape(self.request.get("pass"))
-        name = "Tristan"
-        detail = "Alex"
-        password = "Tristan"
-
+        detail = cgi.escape(self.request.get("detail"))
         login_detail = str(detail)
-        secure_password = password
-
         hi_score = 13
 
-        users = db.GqlQuery("SELECT * FROM Player WHERE login_detail = :1", login_detail)
-        self.response.write(users.count())
-        for u in users:
-            u.hi_score = hi_score
-            # u2 = Player(user_id=u.user_id, name=u2.name, login_detail=u2.login_detail, secure_password=u2.secure_password,hi_score=10)
-            # u2 = Player(user_id=1, name=name, login_detail=detail, secure_password=password,hi_score=10)#create a player
-            # self.response.write(u2)
-            u.put()
+        if (not login_detail == ""):
+            users = db.GqlQuery("SELECT * FROM Player WHERE login_detail = :1", login_detail)
+            for u in users:
+                u.hi_score = random.randrange(100)
+                # u2 = Player(user_id=u.user_id, name=u2.name, login_detail=u2.login_detail, secure_password=u2.secure_password,hi_score=10)
+                # u2 = Player(user_id=1, name=name, login_detail=detail, secure_password=password,hi_score=10)#create a player
+                # self.response.write(u2)
+                u.put()
 
 
-        people = db.GqlQuery("SELECT * FROM Player")
+        people = db.GqlQuery("SELECT * FROM Player ORDER BY hi_score DESC")
         for p in people:
-            self.response.write('\nuid: ' + str(p.user_id) + ', Name: ' + p.name + ',  loginDetail : ' + p.login_detail + ' score: ' + str(p.hi_score))
+            self.response.write('\nuid: ' + str(p.user_id) + '\t\tName: ' + p.name + '\t\tLoginDetail: ' + p.login_detail + '\t\tscore: ' + str(p.hi_score))
         
         # self.response.write(qry)
         # users = db.GqlQuery("SELECT * FROM Player WHERE login_detail =  :1", detail)
