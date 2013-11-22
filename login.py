@@ -1,11 +1,8 @@
-import csv
 import string
 import random
 import hashlib
 
 from google.appengine.ext import db
-
-_file = 'users.csv'
 
 _min_length = 8
 
@@ -119,6 +116,23 @@ def login(detail, password):
         raise IncorrectPassword()
 
     return this_name
+
+def delete_user(detail):
+    '''delete user with specified login detrail'''
+    if detail == "":
+        raise InvalidLoginDetail(detail, 'no login detail provided')
+
+    if not user_exists(detail):
+        raise InvalidLoginDetail(detail, 'login detail does not exist')
+
+    deleted = []
+
+    people = db.GqlQuery("SELECT * FROM Player WHERE login_detail = :1", detail)
+    for p in people:
+        deleted += [p.name]
+        p.delete()
+
+    return deleted
 
 def list_users():
     '''returns a list of all user details'''

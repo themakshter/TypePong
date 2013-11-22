@@ -14,6 +14,10 @@ body {
     width: 100%;
 }
 
+a:link, a:visited {
+    color: white;
+}
+
 #header {
     width: 100%;
     height: 130px;
@@ -45,26 +49,59 @@ body {
     margin: 0 auto;
 }
 
+.login {
+    height: 30px;
+    width: 40%;
+}
+
+.login .option-btn {
+    color: #6FD45F;
+    float: left;
+    width: 50%;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.login .closed {
+    color: #46803D;
+}
+
+
 form {
+    font-size: 18px;
+    color: #6FD45F;
+    float: left;
     padding-left: 15px;
     padding-right: 15px;
 }
 
-form input {
-    font-size: 15px;
+form input, button {
+    color: #E3E3E3;
+    font-size: 18px;
+    font-family: 'Share Tech', serif;
+    letter-spacing: 0.05em;
+    background-color: black;
     margin-top: 5px;
     margin-bottom: 15px;
-    padding: 2px;
-    width: 212px;
+    padding: 5px;
+    border: solid #6FD45F 1px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    width: 75%;
+    line-height: normal;
+}
+
+input:focus {
+    outline: none;
 }
 
 form .button {
-    background-color: black;
-    color: white;
-    float: right;
+    margin-top: 10px;
     width: 100px;
-    font-family: 'Share Tech', serif;
-    letter-spacing: -0.05em;
+    cursor: pointer;
 }
 
 iframe {
@@ -77,30 +114,16 @@ iframe {
 
 .game {
     margin: 0 auto;
-    width: 800px;
+    width: 750px;
     height: 500px;
     margin-top: 30px;
     background-color: black;
 }
 
-#popupbox {
-    width: 75%;
-    position: fixed;
-    left: 50%;
-    margin: 50px 0 0 -37.5%;
-    visibility: hidden;
+table {
+    width: 100%;
 }
 
-#insidepopup {
-    color: white;
-    font-size: 18px;
-    margin: 0 auto;
-    padding: 15px;
-    width: 250px;
-    height: 300px;
-    background: black;
-    border: solid #33DE18 2px;
-    border-radius: 15px;
-    -moz-border-radius: 15px;
-    z-index: 9;
+th {
+    padding: 5px;
 }
