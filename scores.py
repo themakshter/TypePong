@@ -25,7 +25,7 @@ class UpdateScore(RequestHandler):
 
         people = db.GqlQuery("SELECT * FROM Player ORDER BY hi_score DESC")
         for p in people:
-            self.response.write('\nuid: ' + str(p.user_id) + '\t\tName: ' + p.name + '\t\tLoginDetail: ' + p.login_detail + '\t\tscore: ' + str(p.hi_score))
+            self.response.write('\nkey: ' + str(p.key()) + '\t\tName: ' + p.name + '\t\tLoginDetail: ' + p.login_detail + '\t\tscore: ' + str(p.hi_score))
 
         # self.response.write(qry)
         # users = db.GqlQuery("SELECT * FROM Player WHERE login_detail =  :1", detail)

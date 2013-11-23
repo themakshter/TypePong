@@ -35,10 +35,6 @@ class IncorrectPassword(LoginException):
     def __init__(self):
         self.msg = 'Incorrect password'
 
-
-def _gen_userid():#dummy function. will give us unique ids
-    return 1
-
 def _read_user(detail):
     '''returns data on a specific login detail. Raises a UserDoesNotExist exception if login detail doesn't exist'''
 
@@ -58,7 +54,7 @@ def _read_user(detail):
 
 def _write_user(name, detail, pass_hash, salt):
     '''writes new user to users database'''
-    Player(user_id=_gen_userid(), name=name, login_detail=detail, secure_password=str(pass_hash) + str(salt), hi_score=0).put()
+    Player(name=name, login_detail=detail, secure_password=str(pass_hash) + str(salt), hi_score=0).put()
 
 def _hash_password(password, salt):
     '''returns a salted and hashed password with the salt'''

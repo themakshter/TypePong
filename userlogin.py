@@ -48,7 +48,7 @@ class Register(RequestHandler):
         people = login.list_users()
         self.response.write('\n [Debug]Displaying registered users: \n')
         for p in people:
-            self.response.write('\nuid: ' + str(p.user_id) + ', Name: ' + p.name + ',  loginDetail : ' + p.login_detail + ' score: ' + str(p.hi_score))
+            self.response.write('\nuid: ' + str(p.key()) + ', Name: ' + p.name + ',  loginDetail : ' + p.login_detail + ' score: ' + str(p.hi_score))
             self.response.write(p.name)
 
 class Delete(RequestHandler):

@@ -37,7 +37,7 @@ class HiscoresHandler(RequestHandler):
         players = []
         for p in players_q:
             player = dict(
-                uid = p.user_id,
+                uid = str(p.key()),
                 name = p.name,
                 score = p.hi_score)
             players.append(player)
