@@ -26,6 +26,7 @@ class Game(db.Model):
 
         # send join message to first player
         message = {
+            'message': 'join',
             'user_id': user_id_2
         }
 
@@ -85,6 +86,25 @@ class JoinGame(RequestHandler):
 
         # send information about game back to client
         self.response.write(game.json_data(user_id))
+
+class LeaveGame(RequestHandler):
+    """Leave a game by providing the game key."""
+
+    def get(self):
+        user_id = int(cgi.escape(self.request.get('user_id')))
+        game_key = cgi.escape(self.request.get('game_key'))
+
+        game = db.get(game_key)
+
+        game.delete()
+
+        # send leave message to other user
+        message = {
+            'message': 'leave',
+            'user_id': user_id
+        }
+
+        send(game.other_user(user_id), json.dumps(message))
 
 class Message(RequestHandler):
     """Send a message to the other player in a game."""

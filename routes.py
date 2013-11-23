@@ -2,7 +2,7 @@ from webapp2 import WSGIApplication
 import main
 import scores
 from userlogin import Register, Verify, Delete
-from game import CreateGame, JoinGame, Message
+from game import CreateGame, JoinGame, LeaveGame, Message
 
 app = WSGIApplication([
     ('/', main.MainHandler),
@@ -18,5 +18,6 @@ app = WSGIApplication([
     ('/_delete', Delete),
     ('/_create', CreateGame),
     ('/_join', JoinGame),
+    ('/_leave', LeaveGame),
     ('/_message', Message)
     ], debug=True)
