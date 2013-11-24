@@ -80,7 +80,12 @@ class JoinGame(RequestHandler):
         user_id = int(cgi.escape(self.request.get('user_id')))
         game_key = cgi.escape(self.request.get('game_key'))
 
-        game = db.get(game_key)
+        # if no key provided, join a randomly selected available game
+        if game_key == "":
+            game = db.GqlQuery("SELECT * FROM Game WHERE available = True").get()
+        else:
+            # else join the specified game
+            game = db.get(game_key)
 
         game.join(user_id)
 
