@@ -36,7 +36,17 @@ class MainHandler(RequestHandler):
 
 class LoginHandler(RequestHandler):
     def get(self, request=None, response=None):
-        self.response.out.write(get_page('login.html'))
+
+        if "user" in self.request.cookies.keys():
+            self.response.write("already logged in as " + self.request.cookies.get("user"));
+            
+        else:
+            self.response.out.write(get_page('login.html'))
+        # userDetail= self.request.cookies.get("user")
+        # name = self.request.cookies.get("name")
+
+
+        
 
 class GameHandler(RequestHandler):
     def get(self, request=None, response=None):

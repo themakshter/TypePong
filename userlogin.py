@@ -66,6 +66,8 @@ class Register(RequestHandler):
                 self.response.write('\nuid: ' + str(p.key()) + ', Name: ' + p.name + ',  loginDetail : ' + p.login_detail + ' score: ' + str(p.hi_score) + ', password: ' + p.secure_password)
                 self.response.write(p.name)
         else:
+            self.response.set_cookie("user", value=detail)
+            self.response.set_cookie("name", value=name)
             self.redirect("/")
 
 class Delete(RequestHandler):
