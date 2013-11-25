@@ -94,6 +94,8 @@ def user_exists(detail):
 
 def register(name, detail, password):
     '''registers a user. May raise InvalidLoginDetail or InvalidPassword'''
+
+
     validate_name(name)
     validate_detail(detail)
     validate_password(password)

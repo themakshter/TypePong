@@ -2,9 +2,17 @@ from sampler import Sampler
 from webapp2 import RequestHandler, WSGIApplication
 from google.appengine.ext import db
 from player import Player
+
+
 import json
 import os
 import jinja2
+
+
+class FBTest(RequestHandler):
+    def get(self):
+        f = open("FBtest.html", "r")
+        self.response.write(f.read())
 
 class AboutHandler(RequestHandler):
     def get(self):
@@ -18,6 +26,13 @@ class AboutHandler(RequestHandler):
 class MainHandler(RequestHandler):
     def get(self, request=None, response=None):
         self.response.out.write(get_page('main.html'))
+
+        # request = Request.blank('/')
+        userDetail= self.request.cookies.get("user")
+        name = self.request.cookies.get("name")
+        self.response.write(userDetail)
+        self.response.write("\n")
+        self.response.write(name)
 
 class LoginHandler(RequestHandler):
     def get(self, request=None, response=None):

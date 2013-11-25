@@ -1,6 +1,9 @@
 from webapp2 import RequestHandler, WSGIApplication
 import cgi
 import json
+# import Cookie
+
+
 
 import login
 
@@ -28,6 +31,12 @@ class Verify(RequestHandler):
         else:
             # we have a match for the user
             self.response.write("\nThis is a registered user, name = " + name)
+            self.response.set_cookie("user", value=detail)
+            self.response.set_cookie("name", value=name)
+            # c = Cookie.simpleCookie()
+            # c["user"] = detail
+            self.redirect("/")
+
 
 class Register(RequestHandler):
     def get(self):
@@ -37,6 +46,11 @@ class Register(RequestHandler):
         name=cgi.escape(self.request.get('name'))
         detail = cgi.escape(self.request.get("detail"))
         password = cgi.escape(self.request.get("pass"))
+        debug= cgi.escape(self.request.get("debug"))
+
+        self.response.write(name)
+        self.response.write(detail)
+        self.response.write(password)
 
         try:
             login.register(name, detail, password)
@@ -45,11 +59,14 @@ class Register(RequestHandler):
         else:
             self.response.write('\nsuccessfully regisetered\n')
 
-        people = login.list_users()
-        self.response.write('\n [Debug]Displaying registered users: \n')
-        for p in people:
-            self.response.write('\nuid: ' + str(p.key()) + ', Name: ' + p.name + ',  loginDetail : ' + p.login_detail + ' score: ' + str(p.hi_score))
-            self.response.write(p.name)
+        if debug != "" :
+            people = login.list_users()
+            self.response.write('\n [Debug]Displaying registered users: \n')
+            for p in people:
+                self.response.write('\nuid: ' + str(p.key()) + ', Name: ' + p.name + ',  loginDetail : ' + p.login_detail + ' score: ' + str(p.hi_score) + ', password: ' + p.secure_password)
+                self.response.write(p.name)
+        else:
+            self.redirect("/")
 
 class Delete(RequestHandler):
     def get(self):

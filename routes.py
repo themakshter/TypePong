@@ -19,5 +19,6 @@ app = WSGIApplication([
     ('/_create', CreateGame),
     ('/_join', JoinGame),
     ('/_leave', LeaveGame),
-    ('/_message', Message)
+    ('/_message', Message),
+    ('/FBtest', main.FBTest)
     ], debug=True)
