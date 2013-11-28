@@ -29,7 +29,6 @@ $(function() {
             setText($("#username_error"), data.username_error);
             setText($("#password_error"), data.password_error);
         };
-console.log(url);
         $.post(url, values, completeFunc).fail(function(xhr, ajaxOptions, thrownError){console.log(thrownError)});
     });
 
