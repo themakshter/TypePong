@@ -132,3 +132,13 @@ th {
     width: 75%;
     padding: 5px;
 }
+
+#main {
+    width: 500px;
+    cursor: pointer;
+}
+
+.header {
+    height: 130px;
+    opacity: 0.0;
+}

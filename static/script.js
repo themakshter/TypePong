@@ -1,10 +1,12 @@
 $(function() {
-    /* Login */
+    // Login form
     var form = $('form');
 
+    /* On submit do ajax request.
+     * Redirect if successful else show errors
+     */ 
     form.submit(function (event) {
         // Stop form from submitting normally
-        // event.defaultPrevented();
         event.preventDefault();
 
         var url = form.attr("action");
@@ -32,6 +34,9 @@ $(function() {
         $.post(url, values, completeFunc).fail(function(xhr, ajaxOptions, thrownError){console.log(thrownError)});
     });
 
+    /* This is for switching css and toggling the name
+     * field when clicking between register and login
+     */
     $(".signup-btn").addClass('closed');
     form.attr('action', '/_login');
     $('#name_field').hide();
@@ -59,5 +64,6 @@ $(function() {
         btn.text('Register');
     });
 
+    $("#main").click(function(){window.location.href = "/";});
     
 });
