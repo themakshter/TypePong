@@ -40,8 +40,11 @@ class Register(RequestHandler):
 
         try:
             login.register(name, detail, password)
-        except login.LoginException:
+        except login.InvalidName:
+            self.request.arguments()['username_error'] = "Invalid Username"
+            self.redirect("/login")
             self.response.write("\nFailed to register user\n")
+        except login.LoginException:
         else:
             self.response.write('\nsuccessfully regisetered\n')
 

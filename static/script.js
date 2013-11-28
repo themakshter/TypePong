@@ -11,7 +11,7 @@ $(function() {
 
         $(this).removeClass('closed');
         $(".signup-btn").addClass('closed');
-        form.attr('action', '/login');
+        form.attr('action', '/_login');
         btn.text('Login');
     });
 
@@ -24,7 +24,7 @@ $(function() {
 
         $(this).removeClass('closed');
         $(".signin-btn").addClass('closed');
-        form.attr('action', '/register');
+        form.attr('action', '/_register');
         btn.text('Register');
     });
 

@@ -21,6 +21,7 @@ class MainHandler(RequestHandler):
 
 class LoginHandler(RequestHandler):
     def get(self, request=None, response=None):
+        login_html = renderTemplate("login.html", self.request.arguments)
         vals = {'content': renderTemplate("login.html")}
         self.response.out.write(renderTemplate('template.html', vals))
 

@@ -2,6 +2,8 @@ import string
 import random
 import hashlib
 
+from player import Player
+
 from google.appengine.ext import db
 
 _min_length = 8
@@ -138,12 +140,3 @@ def list_users():
     '''returns a list of all user details'''
     # get rows from database
     return db.GqlQuery("SELECT * FROM Player")
-
-
-class Player(db.Model):
-    #This is kinda like a table, it specifies what data is required etc
-    user_id = db.IntegerProperty(required=True)
-    name = db.StringProperty(required=True)
-    login_detail = db.StringProperty(required=True)
-    secure_password = db.StringProperty(required=True)
-    hi_score =db.IntegerProperty(required=False)
