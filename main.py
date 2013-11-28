@@ -2,9 +2,17 @@ from sampler import Sampler
 from webapp2 import RequestHandler, WSGIApplication
 from google.appengine.ext import db
 from player import Player
+
+
 import json
 import os
 import jinja2
+
+
+class FBTest(RequestHandler):
+    def get(self):
+        f = open("FBtest.html", "r")
+        self.response.write(f.read())
 
 class AboutHandler(RequestHandler):
     def get(self):
@@ -17,13 +25,32 @@ class AboutHandler(RequestHandler):
 
 class MainHandler(RequestHandler):
     def get(self, request=None, response=None):
-        self.response.out.write(get_page('main.html'))
+        self.response.write(self.get_main_page(self.request.cookies))
+
+        # request = Request.blank('/')
+        # userDetail= self.request.cookies.get("user")
+        # name = self.request.cookies.get("name")
+        # self.response.write(userDetail)
+        # self.response.write("\n")
+        # self.response.write(name)
+
+    def get_main_page(self, cookies):
+        string = "Login/Register" if "user" not in cookies.keys() else "Go Play!"
+        content = {'content': render_template("main.html", {'linktext':string})}
+        return get_default_template().render(content)
+
+
 
 class LoginHandler(RequestHandler):
     def get(self, request=None, response=None):
-        login_html = renderTemplate("login.html", self.request.arguments)
-        vals = {'content': renderTemplate("login.html")}
-        self.response.out.write(renderTemplate('template.html', vals))
+        if "user" in self.request.cookies.keys():
+            self.redirect("/game")
+        else:
+            page = self.get_login_page()
+            self.response.out.write(page)
+
+    def get_login_page(self, args={}):
+        return get_page('login.html')
 
 class GameHandler(RequestHandler):
     def get(self, request=None, response=None):
@@ -31,7 +58,7 @@ class GameHandler(RequestHandler):
 
 class HiscoresHandler(RequestHandler):
     def get(self, request=None, response=None):
-        page = 0 
+        page = 0
         score_per_page = 5
         start = page * score_per_page
         players_q = getHiscorePlayers(start, score_per_page)
@@ -39,7 +66,7 @@ class HiscoresHandler(RequestHandler):
         players = []
         for p in players_q:
             player = dict(
-                uid = p.user_id,
+                uid = p.login_detail,
                 name = p.name,
                 score = p.hi_score)
             players.append(player)
@@ -55,21 +82,21 @@ def getHiscorePlayers(start, count):
 class LoadWords(RequestHandler):
     def get(self):
         level = int(self.request.get('level'))
-        words = Sample.sample(level)
+        with open('words.txt') as f:
+            Sample = Sampler(f)
+            words = Sample.sample(level)
 
-        self.response.headers['Content-Type'] = 'application/json'
-        self.response.headers['Access-Control-Allow-Origin'] = '*'
-        self.response.out.write(json.dumps(words))
-
-with open('words.txt') as f:
-    Sample = Sampler(f)
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.headers['Access-Control-Allow-Origin'] = '*'
+            self.response.out.write(json.dumps(words))
 
 def get_page(path):
     template = get_default_template();
-    vals = {'content': open('templates/' + path).read()}
-    return template.render(vals)
+    with open('templates/' + path) as t:
+        vals = {'content': t.read()}
+        return template.render(vals)
 
-def renderTemplate(template_path, values={}):
+def render_template(template_path, values={}):
     template = get_template(template_path);
     return template.render(values)
 

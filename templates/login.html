@@ -4,12 +4,12 @@
         <div class="option-btn signup-btn">Register</div>
     </div>
     <div style="width:33%;margin:0 auto;">
-        <form style="width:300px;">
+        <form style="width:300px;" action="#">
             <input id="name_field" type="text" name="name" value placeholder="Name">
-            <input type="text" name="user" value placeholder="Username">
-            <span class="login-error">{{ username_error }}</span>
-            <input type="password" name="password" value placeholder="Password">
-            <span class="login-error">{{ password_error }}</span>
+            <input type="text" name="detail" value placeholder="Login detail">
+            <div class="error"><span id="username_error"></span></div>
+            <input type="password" name="pass" value placeholder="Password">
+            <div class="error"><span id="password_error"></span></div>
             <div style="width:100%;">
                 <div class="center" style="width: 53%;">
                     <button id="submit_btn" class="button center" type="submit">Login</button>

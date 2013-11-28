@@ -1,13 +1,46 @@
 $(function() {
     /* Login */
+    var form = $('form');
+
+    form.submit(function (event) {
+        // Stop form from submitting normally
+        // event.defaultPrevented();
+        event.preventDefault();
+
+        var url = form.attr("action");
+        values = {
+            name: form.find("input[name='name']").val(),
+            detail: form.find("input[name='detail']").val(),
+            pass: form.find("input[name='pass']").val(),
+        };
+
+        var completeFunc = function(data) {
+            if (data.success === "true") {
+                window.location.href = "/game";
+            }
+            console.log(data.username_error);
+            console.log(data.password_error);
+            function setText(div, text) {
+                if(typeof text === "undefined")
+                    div.text("");
+                else
+                    div.text(text);
+            }
+            setText($("#username_error"), data.username_error);
+            setText($("#password_error"), data.password_error);
+        };
+console.log(url);
+        $.post(url, values, completeFunc).fail(function(xhr, ajaxOptions, thrownError){console.log(thrownError)});
+    });
+
     $(".signup-btn").addClass('closed');
+    form.attr('action', '/_login');
     $('#name_field').hide();
     $(".signin-btn").on('click', function(){
-        var form = $('form');
-        var emailField = $('#name_field');
+        var nameField = $('#name_field');
         var btn = $('#submit_btn');
 
-        emailField.hide();
+        nameField.hide();
 
         $(this).removeClass('closed');
         $(".signup-btn").addClass('closed');
@@ -16,11 +49,10 @@ $(function() {
     });
 
     $(".signup-btn").on('click', function(){
-        var form = $('form');
-        var emailField = $('#name_field');
+        var nameField = $('#name_field');
         var btn = $('#submit_btn');
 
-        emailField.show();
+        nameField.show();
 
         $(this).removeClass('closed');
         $(".signin-btn").addClass('closed');
@@ -28,4 +60,5 @@ $(function() {
         btn.text('Register');
     });
 
+    
 });
