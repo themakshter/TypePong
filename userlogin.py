@@ -46,8 +46,8 @@ class Register(RequestHandler):
             reply['password_error'] = e.msg
         else:
             reply['success'] = "true"
-            #self.response.set_cookie("user", value=detail)
-            #self.response.set_cookie("name", value=name)
+            self.response.set_cookie("user", value=detail)
+            self.response.set_cookie("name", value=name)
 
         if debug != "" :
             people = login.list_users()
