@@ -54,7 +54,10 @@ class LoginHandler(RequestHandler):
 
 class GameHandler(RequestHandler):
     def get(self, request=None, response=None):
-        self.response.out.write(get_page('pong.html'))
+        if "user" not in self.request.cookies.keys():
+            self.redirect("/login")
+        else:
+            self.response.out.write(get_page('pong.html'))
 
 class HiscoresHandler(RequestHandler):
     def get(self, request=None, response=None):
