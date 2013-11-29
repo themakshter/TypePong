@@ -65,5 +65,7 @@ $(function() {
     });
 
     $("#main").click(function(){window.location.href = "/";});
+
+    $("#name").text("Hi " + $.cookie("name"));
     
 });
