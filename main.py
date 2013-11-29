@@ -1,13 +1,10 @@
 from sampler import Sampler
 from webapp2 import RequestHandler, WSGIApplication
-from google.appengine.ext import db
 from player import Player
-
 
 import json
 import os
 import jinja2
-
 
 class FBTest(RequestHandler):
     def get(self):
@@ -26,13 +23,6 @@ class AboutHandler(RequestHandler):
 class MainHandler(RequestHandler):
     def get(self, request=None, response=None):
         self.response.write(self.get_main_page(self.request.cookies))
-
-        # request = Request.blank('/')
-        # userDetail= self.request.cookies.get("user")
-        # name = self.request.cookies.get("name")
-        # self.response.write(userDetail)
-        # self.response.write("\n")
-        # self.response.write(name)
 
     def get_main_page(self, cookies):
         string = "Login/Register" if "user" not in cookies.keys() else "Go Play!"
@@ -56,8 +46,15 @@ class GameHandler(RequestHandler):
     def get(self, request=None, response=None):
         if "user" not in self.request.cookies.keys():
             self.redirect("/login")
-        else:
-            self.response.out.write(get_page('pong.html'))
+        values = {
+            'left_content': "hello",
+            'left_color': "white",
+            'right_content': "world",
+            'right_color': "green",
+        }
+        section = render_template('pong.html', values)
+        page = get_default_template().render({'content': section})
+        self.response.out.write(page)
 
 class HiscoresHandler(RequestHandler):
     def get(self, request=None, response=None):

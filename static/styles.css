@@ -113,11 +113,11 @@ iframe {
 }
 
 .game {
-    margin: 0 auto;
     width: 750px;
     height: 500px;
-    margin-top: 30px;
+    margin: 30px 10px;
     background-color: black;
+    float: left;
 }
 
 table {
@@ -141,4 +141,10 @@ th {
 .header {
     height: 130px;
     opacity: 0.0;
+}
+
+.section {
+    margin-top: 30px;
+    width: 250px;
+    float: left;
 }
