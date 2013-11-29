@@ -67,5 +67,10 @@ $(function() {
     $("#main").click(function(){window.location.href = "/";});
 
     $("#name").text("Hi " + $.cookie("name"));
+
+    // add tooltips
+    $(document).tooltip({
+        track: true
+    });
     
 });

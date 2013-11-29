@@ -60,9 +60,7 @@ class Register(RequestHandler):
             self.response.write(json.dumps(reply))
 
 class Logout(RequestHandler):
-    def post(self):
-        detail = cgi.escape(self.request.get("detail"))
-        login_detail = str(detail)
+    def get(self):
         self.response.delete_cookie("user")
         self.response.delete_cookie("name")
         self.redirect("/")

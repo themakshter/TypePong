@@ -112,7 +112,7 @@ iframe {
     visibility: hidden;
 }
 
-.game {
+.centre_content {
     width: 750px;
     height: 500px;
     margin: 30px 10px;
@@ -146,5 +146,51 @@ th {
 .section {
     margin-top: 30px;
     width: 250px;
+    height: 500px;
     float: left;
+}
+
+/* Sidebard related */
+.sidebar {
+    background-color: black;
+    color: #6AF255;
+    font-size: 20px;
+    height: 100%;
+}
+
+.space {
+    height: 20px;
+}
+
+.name-div, .link {
+    padding: 6px;
+    padding-left: 10px;
+}
+
+.name-div {
+    padding-top: 20px;
+    font-size: 30px;
+}
+
+.link {
+    cursor: pointer;
+}
+
+.link:hover {
+    color: #4EAD3E;
+}
+
+/* JQuery UI tool tips */
+.ui-tooltip {
+    background-color: black;
+    color: white;
+    font-size: 15px;
+    padding: 3px;
+    position: absolute;
+    left: 20px;
+    z-index: 9999;
+    max-width: 300px;
+    -webkit-box-shadow: 0 0 5px #aaa;
+    box-shadow: 0 0 5px #aaa;
+    border-width: 2px;
 }

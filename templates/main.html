@@ -1,9 +1,12 @@
-<div class="game content" style="padding:15px;color:white;font-size:30px;text-align:center;position:relative;">
+{% extends "default.html" %}
+{% block content %}
+<div style="height:100%;padding:15px;color:white;font-size:30px;text-align:center;position:relative;">
     <div style="font-size:40px;">Welcome to Type Pong!</div><br>
     A fun and exciting way to improve your typing speed and accuracy. The premise is simple, move the paddle to the correct position by typing the corresponding word. See how far you can get up the leaderboards! Play agains friends!
-    <div style="width:100%;font-size:35px;bottom:0;position:absolute;text-align:center;">
-        <div style="margin:0 auto;padding:20px;">
-            <a href="/login">{{ linktext }}</a>
-        </div>
+    <div style="width:720px;font-size:35px;bottom:30px;position:absolute;text-align:center;">
+        <div class="center" style="padding:20px;"><a href="/login">{{ linktext }}</a></div>
     </div>
 </div>
+{% endblock %}
+
+

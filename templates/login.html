@@ -1,20 +1,21 @@
-<div class="game">
-    <div class="login center">
-        <div class="option-btn signin-btn">Login</div>
-        <div class="option-btn signup-btn">Register</div>
-    </div>
-    <div style="width:33%;margin:0 auto;">
-        <form style="width:300px;" action="#">
-            <input id="name_field" type="text" name="name" value placeholder="Name">
-            <input type="text" name="detail" value placeholder="Login detail">
-            <div class="error"><span id="username_error"></span></div>
-            <input type="password" name="pass" value placeholder="Password">
-            <div class="error"><span id="password_error"></span></div>
-            <div style="width:100%;">
-                <div class="center" style="width: 53%;">
-                    <button id="submit_btn" class="button center" type="submit">Login</button>
-                </div>
-            </div>
-        </form>
-    <div>
+{% extends "default.html" %}
+{% block content %}
+<div class="login center">
+    <div class="option-btn signin-btn">Login</div>
+    <div class="option-btn signup-btn">Register</div>
 </div>
+<div style="width:33%;margin:0 auto;">
+    <form style="width:300px;" action="#">
+        <input id="name_field" type="text" name="name" value placeholder="Name">
+        <input type="text" name="detail" value placeholder="Login detail">
+        <div class="error"><span id="username_error"></span></div>
+        <input type="password" name="pass" value placeholder="Password">
+        <div class="error"><span id="password_error"></span></div>
+        <div style="width:100%;">
+            <div class="center" style="width: 53%;">
+                <button id="submit_btn" class="button center" type="submit">Login</button>
+            </div>
+        </div>
+    </form>
+<div>
+{% endblock %}

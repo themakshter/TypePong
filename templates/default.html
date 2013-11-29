@@ -4,6 +4,7 @@
     <link rel="stylesheet" type="text/css" href="static/styles.css">
     <link href='http://fonts.googleapis.com/css?family=Share+Tech' rel='stylesheet' type='text/css'>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="//cdn.jsdelivr.net/jquery.cookie/1.4.0/jquery.cookie.min.js"></script>
     <script type='text/javascript' src="static/script.js"></script>
 </head>
@@ -18,7 +19,19 @@
     <div id="container">
         <div class="center">
             <div class="header" style="width:100%;"><div id="main" class="center header">text</div></div>
-            {{content}}
+            <div class="center" style="width: 1270px;">
+                <div class="section" style="background-color: {{ left_color }};">
+                    {% block left_content %}
+                    {% endblock %}
+                </div>
+                <div class="centre_content">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+                <div class="section" style="background-color: {{ right_color }};">
+                    {% block right_content %}
+                    {% endblock %}
+                </div>
         </div>
     </div>
 </body>

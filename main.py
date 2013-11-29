@@ -26,10 +26,11 @@ class MainHandler(RequestHandler):
 
     def get_main_page(self, cookies):
         string = "Login/Register" if "user" not in cookies.keys() else "Go Play!"
-        content = {'content': render_template("main.html", {'linktext':string})}
-        return get_default_template().render(content)
+        return render_template("main.html", {'linktext':string})
 
-
+class Sidebar(RequestHandler):
+    def get(self, request=None, response=None):
+        self.response.write(render_template("sidebar.html"))
 
 class LoginHandler(RequestHandler):
     def get(self, request=None, response=None):
@@ -40,21 +41,17 @@ class LoginHandler(RequestHandler):
             self.response.out.write(page)
 
     def get_login_page(self, args={}):
-        return get_page('login.html')
+        return render_template('login.html')
 
 class GameHandler(RequestHandler):
     def get(self, request=None, response=None):
         if "user" not in self.request.cookies.keys():
             self.redirect("/login")
-        values = {
-            'left_content': "hello",
-            'left_color': "white",
-            'right_content': "world",
-            'right_color': "green",
-        }
-        section = render_template('pong.html', values)
-        page = get_default_template().render({'content': section})
+        values = {'name': self.request.cookies.get("user")}
+        page = render_template('pong.html', values)
         self.response.out.write(page)
+
+        # def get_page(self, left_color="#FF8723", right_color="#FF8723", )
 
 class HiscoresHandler(RequestHandler):
     def get(self, request=None, response=None):
@@ -71,9 +68,7 @@ class HiscoresHandler(RequestHandler):
                 score = p.hi_score)
             players.append(player)
         content = table_template.render(players = players)
-        template = get_default_template();
-        vals = {'content': content}
-        self.response.out.write(template.render(vals))
+        self.response.out.write(content)
 
 
 def getHiscorePlayers(start, count):
@@ -90,19 +85,9 @@ class LoadWords(RequestHandler):
             self.response.headers['Access-Control-Allow-Origin'] = '*'
             self.response.out.write(json.dumps(words))
 
-def get_page(path):
-    template = get_default_template();
-    with open('templates/' + path) as t:
-        vals = {'content': t.read()}
-        return template.render(vals)
-
 def render_template(template_path, values={}):
     template = get_template(template_path);
     return template.render(values)
-
-def get_default_template():
-    return get_template('template.html');
-
 
 def get_template(name):
     jinja_environment = jinja2.Environment(
