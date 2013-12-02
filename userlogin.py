@@ -4,56 +4,102 @@ import cgi
 import login
 import json
 
+class FacebookLogin(RequestHandler):
+    def post(self):
+        facebookID = cgi.escape(self.request.get("facebookID"))
+
+        facebookID = str(facebookID)
+
+        reply = {}
+
+                  # attempt to login
+        username = login.facebookLogin(facebookID)
+        # except login.UserDoesNotExist as e:
+        if username == "":
+            self.redirect("/_getUsername")
+        else:
+            reply['success'] = "true"
+            self.response.set_cookie("user", value=username)
+            # self.response.set_cookie("name", value=name)
+
+
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(reply))
+
+
+
 
 class Login(RequestHandler):
     def post(self):
-        detail = cgi.escape(self.request.get("detail"))
+        username = cgi.escape(self.request.get("username"))
         password = cgi.escape(self.request.get("pass"))
 
-        login_detail = str(detail)
-        secure_password = password
+        username = str(username)
 
         reply = {}
         try:
             # attempt to login
-            name = login.login(login_detail, secure_password)
+            username = login.login(username, password)
         except login.UserDoesNotExist as e:
             reply['username_error'] = e.msg
         except login.IncorrectPassword as e:
             reply['password_error'] = e.msg
         else:
             reply['success'] = "true"
-            self.response.set_cookie("user", value=detail)
-            self.response.set_cookie("name", value=name)
+            self.response.set_cookie("user", value=username)
+            # self.response.set_cookie("name", value=name)
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(reply))
 
+class addUsername(RequestHandler):
+    def get(self):
+        f = open("addUsername.html", "r")
+        self.response.write(f.read())
+
+
+class facebookRegister(RequestHandler):
+    def post (self):
+        facebookID = cgi.escape(self.request.get("facebookID"))
+        username = cgi.escape(self.request.get("username"))
+        # print("++++++++++++++++++++++++++++++++++++++++++++++++++2")
+        # print (facebookID)
+        # print (username)
+        # print("+++++++++++++++++++++++++++++++++++++++++++++++++++")
+        try :
+            login.facebookRegister(facebookID, username)
+        except login.InvalidLoginDetail as e:
+            self.redirect("/_getUsername")
+        else:
+            self.response.set_cookie("user", value=username)
+            self.redirect("/game")
+
 
 class Register(RequestHandler):
     def post(self):
-        name = cgi.escape(self.request.get('name'))
-        detail = cgi.escape(self.request.get("detail"))
+        # name = cgi.escape(self.request.get('name'))
+        username = cgi.escape(self.request.get("username"))
         password = cgi.escape(self.request.get("pass"))
         debug = cgi.escape(self.request.get("debug"))
 
         reply = {}
         try:
-            login.register(name, detail, password)
+            login.register(username, password)
         except (login.InvalidName, login.InvalidLoginDetail) as e:
             reply['username_error'] = e.msg
         except login.InvalidPassword as e:
             reply['password_error'] = e.msg
         else:
             reply['success'] = "true"
-            self.response.set_cookie("user", value=detail)
-            self.response.set_cookie("name", value=name)
+            self.response.set_cookie("user", value=username)
+            # self.response.set_cookie("name", value=name)
 
         if debug != "" :
             people = login.list_users()
             self.response.write('\n [Debug]Displaying registered users: \n')
             for p in people:
-                self.response.write('\nuid: ' + str(p.key()) + ', Name: ' + p.name + ',  loginDetail : ' + p.login_detail + ' score: ' + str(p.hi_score) + ', password: ' + p.secure_password)
+                self.response.write('\nuid: ' + str(p.key()) +  ',  loginDetail : ' + p.username + ' score: ' + str(p.hiScore) + ', password: ' + p.password)
                 self.response.write(p.name)
         else:
             self.response.headers['Content-Type'] = 'application/json'

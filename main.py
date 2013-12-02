@@ -1,6 +1,8 @@
 from sampler import Sampler
 from webapp2 import RequestHandler, WSGIApplication
 from player import Player
+from player import RegularPlayer
+from google.appengine.ext.db import polymodel
 
 import json
 import os
@@ -43,6 +45,7 @@ class LoginHandler(RequestHandler):
     def get_login_page(self, args={}):
         return render_template('login.html')
 
+
 class GameHandler(RequestHandler):
     def get(self, request=None, response=None):
         if "user" not in self.request.cookies.keys():
@@ -63,16 +66,17 @@ class HiscoresHandler(RequestHandler):
         players = []
         for p in players_q:
             player = dict(
-                uid = p.login_detail,
-                name = p.name,
-                score = p.hi_score)
+                username = p.username,
+                score = p.hiScore)
             players.append(player)
+        # players.append(dict(username="tristan", score=2))
         content = table_template.render(players = players)
         self.response.out.write(content)
 
 
 def getHiscorePlayers(start, count):
-    return Player.all().order("-hi_score").run(offset=start, limit=count)
+    return Player.all().order("-hiScore").run(offset=start, limit=count)
+    # return RegularPlayer.all()
 
 class LoadWords(RequestHandler):
     def get(self):

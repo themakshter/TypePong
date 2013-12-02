@@ -1,6 +1,7 @@
 from sampler import Sampler
 from webapp2 import RequestHandler, WSGIApplication
 from google.appengine.ext import db
+from google.appengine.ext.db import polymodel
 import cgi
 import json
 import random
@@ -9,23 +10,30 @@ class UpdateScore(RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/plain'
 
-        detail = cgi.escape(self.request.get("detail"))
-        login_detail = str(detail)
-        hi_score = 13
+        username = cgi.escape(self.request.get("username"))
+        # userName = str(detail)
+        # self.response.write(username)
+        hiScore = 13
 
-        if (not login_detail == ""):
-            users = db.GqlQuery("SELECT * FROM Player WHERE login_detail = :1", login_detail)
-            for u in users:
-                u.hi_score = random.randrange(100)
+        if (not username == ""):
+            users = db.GqlQuery("SELECT * FROM Player WHERE username = :1", username)
+            # for u in users:
+                # self.response.write(u.username)
+                # u.hiScore = random.randrange(100)
                 # u2 = Player(user_id=u.user_id, name=u2.name, login_detail=u2.login_detail, secure_password=u2.secure_password,hi_score=10)
                 # u2 = Player(user_id=1, name=name, login_detail=detail, secure_password=password,hi_score=10)#create a player
                 # self.response.write(u2)
-                u.put()
+                # u.put()
 
-
-        people = db.GqlQuery("SELECT * FROM Player ORDER BY hi_score DESC")
-        for p in people:
-            self.response.write('\nkey: ' + str(p.key()) + '\t\tName: ' + p.name + '\t\tLoginDetail: ' + p.login_detail + '\t\tscore: ' + str(p.hi_score))
+        # self.response.write("hi")
+        people = db.GqlQuery("SELECT * FROM Player")
+        # db.delete(db.Query())
+        self.response.write(people.count())
+        # self.response.write(people[0].username)
+        # self.response.write(people[1].username)
+        # self.response.write(people[2].username)
+        # for p in people:
+        #     self.response.write('\nkey: ' + str(p.key()) + '\t\tusername: ' + p.username + '\t\tscore: ' + str(p.hiScore))
 
         # self.response.write(qry)
         # users = db.GqlQuery("SELECT * FROM Player WHERE login_detail =  :1", detail)

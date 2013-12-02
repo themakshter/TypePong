@@ -7,12 +7,13 @@ $(function() {
      */ 
     form.submit(function (event) {
         // Stop form from submitting normally
+
         event.preventDefault();
 
         var url = form.attr("action");
         values = {
-            name: form.find("input[name='name']").val(),
-            detail: form.find("input[name='detail']").val(),
+            username: form.find("input[name='username']").val(),
+            // detail: form.find("input[name='detail']").val(),
             pass: form.find("input[name='pass']").val(),
         };
 
@@ -31,13 +32,13 @@ $(function() {
             setText($("#username_error"), data.username_error);
             setText($("#password_error"), data.password_error);
         };
+        
         $.post(url, values, completeFunc).fail(function(xhr, ajaxOptions, thrownError){console.log(thrownError)});
     });
 
     /* This is for switching css and toggling the name
      * field when clicking between register and login
      */
-    $(".signup-btn").addClass('closed');
     form.attr('action', '/_login');
     $('#name_field').hide();
     $(".signin-btn").on('click', function(){
@@ -56,7 +57,7 @@ $(function() {
         var nameField = $('#name_field');
         var btn = $('#submit_btn');
 
-        nameField.show();
+        // nameField.show();
 
         $(this).removeClass('closed');
         $(".signin-btn").addClass('closed');

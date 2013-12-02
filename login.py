@@ -2,11 +2,12 @@ import string
 import random
 import hashlib
 
-from player import Player
-
 from google.appengine.ext import db
+from google.appengine.ext.db import polymodel
 
 from player import Player
+from player import RegularPlayer 
+from player import FacebookPlayer
 
 _min_length = 8
 
@@ -37,26 +38,51 @@ class IncorrectPassword(LoginException):
     def __init__(self):
         self.msg = 'Incorrect password'
 
-def _read_user(detail):
+def _facebook_read_user(facebookID):
     '''returns data on a specific login detail. Raises a UserDoesNotExist exception if login detail doesn't exist'''
 
     # get rows from database
-    users = db.GqlQuery("SELECT * FROM Player WHERE login_detail =  :1", detail)
+    # users = db.GqlQuery("SELECT * FROM FacebookPlayer WHERE facebookID =  :1", facebookID)
+
+    for u in FacebookPlayer.all():
+        if u.facebookID == facebookID:
+            return u.username
+
+    #only if no match does it exception
+    # raise UserDoesNotExist()
+    return ""
+
+    # print()#need to redirect to get them a username
+    # check user exists
+    # if users.count() == 0:
+        # print() #redirect to a page so they set a username
+
+
+    # return users[0].username
+
+        # raise UserDoesNotExist(username)
+
+
+def _read_user(username):
+    '''returns data on a specific login detail. Raises a UserDoesNotExist exception if login detail doesn't exist'''
+
+    # get rows from database
+    users = db.GqlQuery("SELECT * FROM Player WHERE username =  :1", username)
 
     # check user exists
     if users.count() == 0:
-        raise UserDoesNotExist(detail)
+        raise UserDoesNotExist(username)
 
     # first 32 characters is hash
-    pass_hash = users[0].secure_password[:_hash_length]
+    pass_hash = users[0].password[:_hash_length]
     # everything afterwards is the salt
-    salt = users[0].secure_password[_hash_length:]
+    salt = users[0].password[_hash_length:]
 
-    return users[0].name, users[0].login_detail, pass_hash, salt
+    return users[0].username, pass_hash, salt
 
-def _write_user(name, detail, pass_hash, salt):
+def _write_user(username, pass_hash, salt):
     '''writes new user to users database'''
-    Player(name=name, login_detail=detail, secure_password=str(pass_hash) + str(salt), hi_score=0).put()
+    RegularPlayer(username=username, password=str(pass_hash) + str(salt), hiScore=0, campaignLevel=0, pvpRating=0).put()
 
 def _hash_password(password, salt):
     '''returns a salted and hashed password with the salt'''
@@ -69,7 +95,17 @@ def validate_name(name):
     if name == "":
         raise InvalidName(name, 'no name provided')
 
-def validate_detail(detail):
+def facebook_validate_username(username):
+    if username == "":
+        raise InvalidLoginDetail(facebookID, "no facebook ID")
+
+    for u in Player.all():
+        print (u.username + "             " + username)
+        if u.username ==  username:
+            raise InvalidLoginDetail(username, "user exists already")
+
+
+def validate_username(detail):
     '''tests if login detail is valid'''
     if detail == "":
         raise InvalidLoginDetail(detail, 'no login detail provided')
@@ -94,30 +130,49 @@ def user_exists(detail):
     else:
         return True
 
-def register(name, detail, password):
+def facebookRegister(facebookID, username):
+    # self.response.write(facebookID)
+    print("+++++++++++++++++++++++++++++++++++++++++++++++++++")
+    print (username)
+    print("+++++++++++++++++++++++++++++++++++++++++++++++++++")
+
+    facebook_validate_username(username)
+    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
+    FacebookPlayer(facebookID=facebookID, username=username, hiScore=0, campaignLevel=0, pvpRating=0).put()
+
+
+def register(username, password):
     '''registers a user. May raise InvalidLoginDetail or InvalidPassword'''
 
 
-    validate_name(name)
-    validate_detail(detail)
+    # validate_name(name)
+    validate_username(username)
     validate_password(password)
 
     salt = "".join([random.choice(string.hexdigits) for i in xrange(_salt_length)])
     pass_hash = _hash_password(password, salt)
 
-    _write_user(name, detail, pass_hash, salt)
+    _write_user(username, pass_hash, salt)
 
-def login(detail, password):
+def facebookLogin(facebookID):
+    username = _facebook_read_user(facebookID)
+
+    return username
+
+
+
+def login(username, password):
     '''logs the user in, returns username if details are correct, otherwise raises a UserDoesNotExist or IncorrectPassword exception'''
 
-    (this_name, this_detail, this_pass, this_salt) = _read_user(detail)
+    (this_username, this_pass, this_salt) = _read_user(username)
 
     pass_hash = _hash_password(password, this_salt)
 
     if not pass_hash == this_pass:
         raise IncorrectPassword()
 
-    return this_name
+    return this_username
 
 def delete_user(detail):
     '''delete user with specified login detrail'''
