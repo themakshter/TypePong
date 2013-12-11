@@ -78,8 +78,9 @@ form {
     font-size: 18px;
     color: #6FD45F;
     float: left;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 15px;
+    padding-top: 25px;
+    width: 100%;
 }
 
 form input, button {
@@ -96,6 +97,12 @@ form input, button {
     -moz-border-radius: 5px;
     width: 75%;
     line-height: normal;
+}
+form input {
+    width: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 input:focus {
