@@ -1,13 +1,14 @@
 <html>
 
 <div id="fb-root"></div>
+<script src="jquery-1.10.2.js"></script>
 <script type="text/javascript">
 
 window.fbAsyncInit = function() {
 
     FB.init({
 
-        appId      : '279814902122448',
+        appId      : '549578998463425',
 
         status     : true,
 
@@ -15,9 +16,7 @@ window.fbAsyncInit = function() {
 
         xfbml      : true,
 
-        oauth      : true,
-
-        channelUrl: "http://theatre.susu.org/channel.html"
+        oauth      : true
 
     });
 
@@ -32,6 +31,23 @@ window.fbAsyncInit = function() {
         window.location.reload();
 
     });
+
+function handleResponse(response){
+
+    if (response.status ==='connected'){
+        var id =response.authResponse.userID;
+        $('#facebookID').attr("value", id);//set the value of the inupt field FBID to id
+        $('#redirect').click();//click the redirect button
+
+
+        
+        // window.location.href = url;
+
+    }
+}
+
+FB.getLoginStatus(handleResponse);
+    
 };
 
 (function(d){
@@ -46,12 +62,15 @@ window.fbAsyncInit = function() {
 
 }(document));
 
+
+
 </script>
 
-<!-- <div class="fb-login-button">Login</div> -->
-<form action="/_facebookLogin" method="POST">
-<input value="2343425423" >
-<button type="submit">FBloginTEST</button>
+<div class="fb-login-button">Login</div>
+<form action="http://localhost:8080/_facebookLogin" method="GET">
+<!-- TODO fix local host in the above -->
+<input id="facebookID" name="facebookID" =type="text" hidden>
+<button id="redirect" type="submit" hidden>F</button>
 
 
 </form>

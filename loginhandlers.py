@@ -5,18 +5,19 @@ import login
 import json
 
 class FacebookLogin(RequestHandler):
-    def post(self):
+    def get(self):
         facebookID = cgi.escape(self.request.get("facebookID"))
 
         facebookID = str(facebookID)
 
-        reply = {}
+        reply = {}  
+        print ("name:" + facebookID);
 
                   # attempt to login
         username = login.facebookLogin(facebookID)
         # except login.UserDoesNotExist as e:
         if username == "":
-            self.redirect("/_getUsername")
+            self.redirect("/_getUsername?facebookID="+facebookID)
         else:
             reply['success'] = "true"
             self.response.set_cookie("user", value=username)
@@ -56,7 +57,15 @@ class Login(RequestHandler):
 class addUsername(RequestHandler):
     def get(self):
         f = open("addUsername.html", "r")
-        self.response.write(f.read())
+
+        facebookID = cgi.escape(self.request.get("facebookID"))
+
+
+        html = f.read()
+        html = html.replace("__PLACEHOLDER__", facebookID)
+        self.response.write(html);
+
+
 
 
 class facebookRegister(RequestHandler):
