@@ -1,0 +1,15 @@
+{% extends "default.html" %}
+{% block content %}
+<div style="width:33%;margin:0 auto;">
+    <form class="center" action="#">
+        <input type="text" name="username" value placeholder="Username">
+        <div class="error"><span id="username_error"></span></div>
+        <input type="password" name="pass" value placeholder="Password">
+        <div class="error"><span id="password_error"></span></div>
+        <div style="width:100%;">
+                <button style="float: left;" id="login_btn" class="button" type="submit">Login</button>
+                <button style="float: left;" id="register_btn" class="button" type="submit">Register</button>
+        </div>
+    </form>
+<div>
+{% endblock %}

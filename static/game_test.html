@@ -1,0 +1,41 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/jquery.cookie/1.4.0/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="/_ah/channel/jsapi"></script>
+<script type="text/javascript" src="game.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+    function onMessage(message) {
+        alert(message.data);
+    }
+
+    $("#username").on('input', function() {
+        $.cookie("user", $("#username").val());
+    })
+
+    $("#create").click(function() {
+        createGame(onMessage);
+    })
+
+    $("#join").click(function() {
+        joinGame("", onMessage);
+    })
+
+    $("#send").click(function() {
+        sendMessage($("#message").val());
+    })
+})
+
+</script>
+
+<body>
+    <input id="username" type="text" value="username"/>
+    <br>
+    <input id="create" type="button" value="Create Game" />
+    <input id="join" type="button" value="Join Game" />
+    <br>
+    <input id="message" type="text" value = "message" />
+    <input id="send" type="button" value="Send" />
+</body>

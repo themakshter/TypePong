@@ -1,0 +1,61 @@
+<html>
+
+<div id="fb-root"></div>
+<script type="text/javascript">
+
+window.fbAsyncInit = function() {
+
+    FB.init({
+
+        appId      : '279814902122448',
+
+        status     : true,
+
+        cookie     : true,
+
+        xfbml      : true,
+
+        oauth      : true,
+
+        channelUrl: "http://theatre.susu.org/channel.html"
+
+    });
+
+    FB.Event.subscribe('auth.login', function(response) {
+
+        window.location.reload();
+
+    });
+
+    FB.Event.subscribe('auth.logout', function(response) {
+
+        window.location.reload();
+
+    });
+};
+
+(function(d){
+
+    var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+
+    js = d.createElement('script'); js.id = id; js.async = true;
+
+    js.src = "https://connect.facebook.net/en_US/all.js";
+
+    d.getElementsByTagName('head')[0].appendChild(js);
+
+}(document));
+
+</script>
+
+<!-- <div class="fb-login-button">Login</div> -->
+<form action="/_facebookLogin" method="POST">
+<input value="2343425423" >
+<button type="submit">FBloginTEST</button>
+
+
+</form>
+
+
+
+</html>
