@@ -5,6 +5,7 @@ $(function() {
     var registerButton = $('#register_btn');
     addLoginOnClick(loginButton, "/_login");
     addLoginOnClick(registerButton, "/_register");
+    form.submit(function(event){event.preventDefault();});
 
     function addLoginOnClick(button, url) {
         button.click(function() {
