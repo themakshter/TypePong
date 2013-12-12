@@ -17,6 +17,7 @@ var mode;
 var aiLevel;
 var oldTime;
 var newTime;
+var start_ball = true;
 
 /*
  * Updates the word of the given position id.
@@ -101,7 +102,7 @@ var Paddle = function (xPos, yPos) {
     this.xPos = xPos;
     this.yPos = yPos;
     this.reqyPos = yPos;
-    this.dy = 1;
+    this.dy = 2;
     this.width = 20;
     this.height = 85;
     this.score = 0;
@@ -183,15 +184,14 @@ var rect = function (x, y, w, h) {
  */
 var resetBall = function () {
     'use strict';
-
+    start_ball = true;
     var tempX, tempY;
     x = canvas_width / 2;
     y = canvas_height / 2;
     tempX = dx;
     tempY = dy;
-    tryAndMove(x, y, dx, dy);
+    tryAndMove(x, y, dx, dy,paddle1);
     dx = dy = 0;
-
     setTimeout(function () {
         dx = tempX;
         dy = tempY;
@@ -208,28 +208,44 @@ var clear = function () {
 };
 
 /*
- * Perfect AI - 22/11/13
+ * AI - 22/11/13
  */
-var tryAndMove = function (x, y, dx, dy) {
-    if ((x > paddle1.xPos) && (dx < 0)) {
-        var yPos = y + Math.abs(((x - (paddle1.xPos + 20)) / dx)) * dy;
-        while (yPos < 0 || yPos > canvas_height) {
-            if (yPos > canvas_height) {
-                yPos = canvas_height - (yPos - canvas_height);
-            } else if (yPos < 0) {
-                yPos *= -1;
-            }
+var calculateHitYPos = function(ball_x,ball_y,dx,dy,paddle_x){
+    var yPos = y + Math.abs(((x - (paddle_x + 20)) / dx)) * dy;
+    while (yPos< 0 || yPos > canvas_height) {
+        if (yPos > canvas_height) {
+            yPos = canvas_height - (yPos - canvas_height);
+        } else if (yPos < 0) {
+            yPos *= -1;
+        }
+    }
+    return yPos;
+};
+
+
+var tryAndMove = function(x, y, dx, dy,paddle) {
+        if(((x < paddle.xPos) && (dx > 0)) || (x > paddle.xPos) && (dx < 0)){
+            var yPos = calculateHitYPos(x,y,dx,dy,paddle.xPos);
         }
         sample_size = aiLevel * 10;
-        var number = Math.round(Math.random() * sample_size);
-        var speed = paddle1.dy;
-        if (number <= 5) {
-             speed = -speed;
+        var speed = Math.abs(paddle.dy);
+        var number;
+        if (start_ball) {
+            number = 6;
+            start_ball = false;
+            console.log("start ball");
+        } else {
+            number = Math.round(Math.random() * sample_size);
         }
-        paddle1.dy = yPos < paddle1.yPos ? -speed : speed;
-        paddle1.reqyPos = Math.round(yPos - 40);
-    }
-};
+        if (number <= 5) {
+            // speed = -speed;
+            yPos = canvas_height - yPos;
+            console.log("staying put");
+        }
+        paddle.dy = yPos < paddle.yPos ? -speed : speed;
+        paddle.reqyPos = Math.round(yPos - 40);
+
+    };
 
 //[TODO]
 /*
@@ -297,10 +313,10 @@ var draw = function () {
 
     if (paddle1.hitsHorizontalFace(x + dx, y + dy) || paddle2.hitsHorizontalFace(x + dx, y + dy)) {
         dx = -dx;
-        tryAndMove(x, y, dx, dy);
+        tryAndMove(x, y, dx, dy,paddle1);
     } else if (y + dy + circle_radius > canvas_height || y + dy - circle_radius < 0 || paddle1.hitsVerticalFace(x + dx, y + dy) || paddle2.hitsVerticalFace(x + dx, y + dy)) {
         dy = -dy;
-        tryAndMove(x, y, dx, dy);
+       tryAndMove(x, y, dx, dy,paddle1);
     } else if (x + dx + circle_radius > canvas_width) {
         paddle1.score += 1;
         dx = -dx;
