@@ -96,7 +96,7 @@ var drawPositions = function (ctx, pos) {
 /*
  * Paddle object
  */
-var Paddle = function (xPos, yPos) {
+var Paddle = function (xPos, yPos,playerType) {
     'use strict';
 
     this.xPos = xPos;
@@ -106,6 +106,7 @@ var Paddle = function (xPos, yPos) {
     this.width = 20;
     this.height = 85;
     this.score = 0;
+    this.playerType = playerType;
 
     this.hitsHorizontalFace = function (x, y) {
         var startX, endX, startY, endY;
@@ -142,8 +143,8 @@ var Paddle = function (xPos, yPos) {
         ctx.fillText(this.score, score_x, score_y, 50);
     };
 };
-var paddle1 = new Paddle(50, 200);
-var paddle2 = new Paddle(700, 200);
+var paddle1 = new Paddle(50, 200,"ai");
+var paddle2 = new Paddle(700, 200,"player");
 
 /*
  * Draws the ball.
@@ -190,7 +191,7 @@ var resetBall = function () {
     y = canvas_height / 2;
     tempX = dx;
     tempY = dy;
-    tryAndMove(x, y, dx, dy,paddle1);
+    tryAndMove(paddle1);
     dx = dy = 0;
     setTimeout(function () {
         dx = tempX;
@@ -223,7 +224,7 @@ var calculateHitYPos = function(ball_x,ball_y,dx,dy,paddle_x){
 };
 
 
-var tryAndMove = function(x, y, dx, dy,paddle) {
+var tryAndMove = function(paddle) {
         if(((x < paddle.xPos) && (dx > 0)) || (x > paddle.xPos) && (dx < 0)){
             var yPos = calculateHitYPos(x,y,dx,dy,paddle.xPos);
         }
@@ -233,17 +234,15 @@ var tryAndMove = function(x, y, dx, dy,paddle) {
         if (start_ball) {
             number = 6;
             start_ball = false;
-            console.log("start ball");
         } else {
             number = Math.round(Math.random() * sample_size);
         }
-        if (number <= 5) {
+        if (number <= 5 && paddle.playerType === "ai") {
             // speed = -speed;
             yPos = canvas_height - yPos;
-            console.log("staying put");
         }
         paddle.dy = yPos < paddle.yPos ? -speed : speed;
-        paddle.reqyPos = Math.round(yPos - 40);
+        paddle.reqyPos = Math.round(yPos - (paddle.height / 2));
 
     };
 
@@ -313,10 +312,10 @@ var draw = function () {
 
     if (paddle1.hitsHorizontalFace(x + dx, y + dy) || paddle2.hitsHorizontalFace(x + dx, y + dy)) {
         dx = -dx;
-        tryAndMove(x, y, dx, dy,paddle1);
+        tryAndMove(paddle1);
     } else if (y + dy + circle_radius > canvas_height || y + dy - circle_radius < 0 || paddle1.hitsVerticalFace(x + dx, y + dy) || paddle2.hitsVerticalFace(x + dx, y + dy)) {
         dy = -dy;
-       tryAndMove(x, y, dx, dy,paddle1);
+       tryAndMove(paddle1);
     } else if (x + dx + circle_radius > canvas_width) {
         paddle1.score += 1;
         dx = -dx;
@@ -360,7 +359,8 @@ var init = function () {
         case 'challenge':
             //[TODO] Increase difficulty over time.
             oldTime = new Date(); //Used to calculate the score.
-            aiLevel = 0; //Perfect mode.
+            aiLevel = 0; //Perfect mode. levels from 1 to 5 or 
+                         //whatever will increase in terms of ai perfection
             endingScore = Number.MAX_VALUE; //Infinity.
             break;
 
@@ -405,9 +405,19 @@ window.onkeyup = (function () {
             }
 
             if (typedLC === currentWordLC) {
+                var ballYPos = calculateHitYPos(x,y,dx,dy,paddle2.xPos);
+                var screenSegment = canvas_height/3;
+                var speed = Math.abs(paddle2.dy);
                 newyPos = pos[i] - paddle2.height / 2;
-                paddle2.dy = newyPos < paddle2.yPos ? -2 : 2;
-                paddle2.reqyPos = Math.round(newyPos);
+                console.log("newypos : " + newyPos);
+                console.log("ballYPos: " + ballYPos);
+                if(Math.abs(ballYPos - newyPos) < screenSegment){
+                    tryAndMove(paddle2);
+                    console.log("auto reached");
+                }else{
+                    paddle2.dy = newyPos < paddle2.yPos ? -speed : speed;
+                    paddle2.reqyPos = Math.round(newyPos);
+                }
                 typeElem.val('');
                 updateWords(i);
                 resetAllColors();
