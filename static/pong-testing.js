@@ -406,14 +406,12 @@ window.onkeyup = (function () {
 
             if (typedLC === currentWordLC) {
                 var ballYPos = calculateHitYPos(x,y,dx,dy,paddle2.xPos);
-                var screenSegment = canvas_height/3;
                 var speed = Math.abs(paddle2.dy);
-                newyPos = pos[i] - paddle2.height / 2;
-                console.log("newypos : " + newyPos);
-                console.log("ballYPos: " + ballYPos);
-                if(Math.abs(ballYPos - newyPos) < screenSegment){
+                var startSeg = canvas_height * (i/pos.length);
+                var endSeg   = canvas_height * ((i+1)/pos.length);
+                newyPos = pos[i] - paddle2.height / 2;         
+                if(ballYPos > startSeg && ballYPos < endSeg){
                     tryAndMove(paddle2);
-                    console.log("auto reached");
                 }else{
                     paddle2.dy = newyPos < paddle2.yPos ? -speed : speed;
                     paddle2.reqyPos = Math.round(newyPos);
