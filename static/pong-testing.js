@@ -39,15 +39,9 @@ var updateWords = function (id) {
 var colorify = function (s, color) {
     'use strict';
 
-    s = s.replace(/
-<span[^>
-    ]+>([^<>\s]+)
-    <\/span>
-        /, "$1");
-    return '
-        <span style="color: ' + color +
-        '">' + s + '</span>
-        ';
+    s = s.replace(/<span[^>]+>([^<>\s]+)<\/span>/, "$1");
+    return '<span style="color: ' + color +
+        '">' + s + '</span>';
 };
 
 /*
@@ -67,8 +61,7 @@ var resetAllColors = function () {
     'use strict';
 
     var id;
-    for (id = 0; id
-        < currentWords.length; id += 1) {
+    for (id = 0; id < currentWords.length; id += 1) {
         updateColor(id, 'black');
     }
 };
@@ -121,11 +114,7 @@ var Paddle = function (xPos, yPos,playerType) {
         endX = startX - dx + circle_radius;
         startY = this.yPos - circle_radius;
         endY = this.yPos + this.height + circle_radius;
-        return (((x >
-            = startX && x
-            <= endX) || (x <= this.xPos && x >
-                = this.xPos - dx - circle_radius)) && (y >= startY && y
-                <= endY));
+        return (((x >= startX && x <= endX) || (x <= this.xPos && x >= this.xPos - dx - circle_radius)) && (y >= startY && y <= endY));
     };
     this.hitsVerticalFace = function (x, y) {
         var startX, endX, startY, endY;
@@ -133,23 +122,17 @@ var Paddle = function (xPos, yPos,playerType) {
         endY = startY - dy + circle_radius;
         startX = this.xPos - circle_radius;
         endX = this.xPos + this.width + circle_radius;
-        return (((y >
-                    = startY && y
-                    <= endY) || (y <= this.yPos && y >
-                        = this.yPos - dy - circle_radius)) && (x >= startX && x
-                        <= endX));
+        return (((y >= startY && y <= endY) || (y <= this.yPos && y >= this.yPos - dy - circle_radius)) && (x >= startX && x <= endX));
     };
     this.drawPaddle = function () {
         if (this.reqyPos < 0) {
             this.reqyPos = 0;
         }
-        if (this.reqyPos >
-                            (canvas_height - this.height)) {
+        if (this.reqyPos > (canvas_height - this.height)) {
             this.reqyPos = canvas_height - this.height;
         }
         ctx.fillStyle = "#FFFFFF";
-        if ((this.dy * (this.yPos - this.reqyPos)
-                            < 0)) {
+        if ((this.dy * (this.yPos - this.reqyPos) < 0)) {
             this.yPos += this.dy;
         }
         ctx.fillRect(this.xPos, this.yPos, this.width, this.height);
@@ -230,12 +213,10 @@ var clear = function () {
  */
 var calculateHitYPos = function(ball_x,ball_y,dx,dy,paddle_x){
     var yPos = y + Math.abs(((x - (paddle_x + 20)) / dx)) * dy;
-    while (yPos< 0 || yPos >
-                                canvas_height) {
+    while (yPos< 0 || yPos > canvas_height) {
         if (yPos > canvas_height) {
             yPos = canvas_height - (yPos - canvas_height);
-        } else if (yPos
-                                < 0) {
+        } else if (yPos < 0) {
             yPos *= -1;
         }
     }
@@ -244,9 +225,7 @@ var calculateHitYPos = function(ball_x,ball_y,dx,dy,paddle_x){
 
 
 var tryAndMove = function(paddle) {
-        if(((x < paddle.xPos) && (dx >
-                                    0)) || (x > paddle.xPos) && (dx
-                                    < 0)){
+        if(((x < paddle.xPos) && (dx > 0)) || (x > paddle.xPos) && (dx < 0)){
             var yPos = calculateHitYPos(x,y,dx,dy,paddle.xPos);
         }
         sample_size = aiLevel * 10;
@@ -323,8 +302,7 @@ var draw = function () {
     var pos = markPositions(3);
     drawPositions(canvas, ctx, pos);
 
-    if (paddle1.score >
-                                        = endingScore) {
+    if (paddle1.score >= endingScore) {
         loseGame();
         return;
     } else if (paddle2.score >= endingScore) {
@@ -335,17 +313,14 @@ var draw = function () {
     if (paddle1.hitsHorizontalFace(x + dx, y + dy) || paddle2.hitsHorizontalFace(x + dx, y + dy)) {
         dx = -dx;
         tryAndMove(paddle1);
-    } else if (y + dy + circle_radius > canvas_height || y + dy - circle_radius
-                                        < 0 || paddle1.hitsVerticalFace(x + dx, y + dy) || paddle2.hitsVerticalFace(x + dx, y + dy)) {
+    } else if (y + dy + circle_radius > canvas_height || y + dy - circle_radius < 0 || paddle1.hitsVerticalFace(x + dx, y + dy) || paddle2.hitsVerticalFace(x + dx, y + dy)) {
         dy = -dy;
        tryAndMove(paddle1);
-    } else if (x + dx + circle_radius >
-                                            canvas_width) {
+    } else if (x + dx + circle_radius > canvas_width) {
         paddle1.score += 1;
         dx = -dx;
         resetBall();
-    } else if (x + dx - circle_radius
-                                            < 0) {
+    } else if (x + dx - circle_radius < 0) {
         paddle2.score += 1;
         dx = -dx;
         resetBall();
@@ -423,8 +398,7 @@ window.onkeyup = (function () {
             currentWordLC = currentWords[i].toLowerCase();
             if (typedLC === currentWordLC.substring(0, typed.length) && typed) {
                 updateColor(i, 'green');
-            } else if (typed.length >
-                                                1 && typedLC.substring(0, typed.length - 1) === currentWordLC.substring(0, typed.length - 1)) {
+            } else if (typed.length > 1 && typedLC.substring(0, typed.length - 1) === currentWordLC.substring(0, typed.length - 1)) {
                 updateColor(i, 'red');
             } else if (!typed) {
                 resetAllColors();
