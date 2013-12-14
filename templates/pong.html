@@ -1,9 +1,23 @@
 {% extends "default.html" %}
 {% import 'sidebar.html' as sidebar %}
 {% block content %}
-<canvas id="canvas">
-    Your browser does not support HTML5 Canvas, try the latest version of Firefox or Chrome.
-</canvas>
+<div style="position: relative;">
+    <canvas id="layer1" width="750" height="500" style="position: absolute; left: 0; top: 0; z-index: 0;">
+        Your browser does not support HTML5 Canvas, try the latest version of Firefox or Chrome.
+    </canvas>
+    <canvas id="layer2" width="750" height="500" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+</div>
+
+<div style="position: relative; top: 500px">
+    <p id="current_0"></p>
+    <p id="current_1"></p>
+    <p id="current_2"></p>Type here:
+    <input name="typing" id="typing" type="text" autofocus />
+    <p id="stats"></p>
+</div>
+
+<script src="static/paddle.js" type="text/javascript" ></script>
+<script src="static/pong_draw.js" type="text/javascript" ></script>
 <script src="static/pong.js" type="text/javascript" ></script>
 {% endblock %}
 
