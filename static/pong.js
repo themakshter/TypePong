@@ -14,6 +14,7 @@ var aiLevel;
 var oldTime;
 var newTime;
 var start_ball = true;
+var hosting = true;
 
 
 /**
@@ -42,9 +43,11 @@ var init = function () {
                 if (!data.game_found) {
                     // if no game found, create a game instead
                     createGame(function() {}, receiveMessage);
-                    set_paddles("player", "player");
+                    hosting = true;
+                    set_paddles("remote", "player");
                 } else {
-                    set_paddles("player", "player");
+                    hosting = false;
+                    set_paddles("player", "remote");
                 }
             }
 
@@ -81,7 +84,18 @@ var init = function () {
  */
  var receiveMessage = function(message) {
     //[TODO] : Actually deal with messages
-    console.log(message.data);
+    console.log("receive " + message.data);
+
+    var data = JSON.parse(message.data);
+
+    switch(data.type) {
+        case 'paddle_move':
+            if (paddle1.playerType === "remote") {
+                paddle1.moveTo(data.dest_y);
+            } else {
+                paddle2.moveTo(data.dest_y);
+            }
+    }
  }
 
 /**

@@ -54,8 +54,7 @@ var Paddle = function (xPos, yPos,playerType) {
             if (ballYPos > startSeg && ballYPos < endSeg) {
                 this.tryAndMove();
             } else {
-                this.dy = newyPos < this.yPos ? -speed : speed;
-                this.reqyPos = Math.round(newyPos);
+                this.moveTo(Math.round(newyPos));
             }
         }
     };
@@ -63,14 +62,15 @@ var Paddle = function (xPos, yPos,playerType) {
     this.tryAndMove = function() {
         'use strict';
 
-        var number, sample_size, speed;
+        var number, sample_size, dest_y, yPos;
 
         if(((x < this.xPos) && (dx > 0)) || (x > this.xPos) && (dx < 0)){
-            var yPos = calculateHitYPos(x,y,dx,dy,this.xPos);
+            yPos = calculateHitYPos(x,y,dx,dy,this.xPos);
+        } else {
+            return;
         }
 
         sample_size = aiLevel * 10;
-        speed = Math.abs(this.dy);
         if (start_ball || aiLevel === 0) {
             number = 6;
             start_ball = false;
@@ -78,20 +78,40 @@ var Paddle = function (xPos, yPos,playerType) {
             number = Math.round(Math.random() * sample_size);
         }
         if (number <= 5 && this.playerType === "ai") {
-            // speed = -speed;
             yPos = canvas.height - yPos;
         }
-        this.dy = yPos < this.yPos ? -speed : speed;
-        this.reqyPos = Math.round(yPos - (this.height / 2));
+
+        dest_y = Math.round(yPos - (this.height / 2));
+        this.moveTo(dest_y);
     };
 
+    this.moveTo = function(dest_y) {
+        var speed = Math.abs(this.dy);
+        this.dy = dest_y < this.yPos ? -speed : speed;
+
+        if (dest_y < 0) {
+            dest_y = 0;
+        }
+        if (dest_y > (canvas.height - this.height)) {
+            dest_y = canvas.height - this.height;
+        }
+
+        this.reqyPos = dest_y;
+
+        // send that we're moving to other player if in pvp;
+        if (this.playerType === "player" && mode === "pvp") {
+            console.log("sending " + dest_y);
+            if (isNaN(dest_y)) {
+                console.log(new Error().stack);
+            }
+            sendMessage(JSON.stringify({
+                "type": "paddle_move",
+                "dest_y": dest_y
+            }));
+        }
+    }
+
     this.drawPaddle = function () {
-        if (this.reqyPos < 0) {
-            this.reqyPos = 0;
-        }
-        if (this.reqyPos > (canvas.height - this.height)) {
-            this.reqyPos = canvas.height - this.height;
-        }
         if ((this.dy * (this.yPos - this.reqyPos) < 0)) {
             this.yPos += this.dy;
         }
