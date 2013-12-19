@@ -17,18 +17,18 @@ var update = function () {
         dx = -dx;
         paddle1.update();
         paddle2.update();
-    } else if (y + dy + circle_radius > canvas.height ||
-               y + dy - circle_radius < 0 ||
+    } else if (y + dy + circleRadius > canvas.height ||
+               y + dy - circleRadius < 0 ||
                paddle1.hitsVerticalFace(x + dx, y + dy) ||
                paddle2.hitsVerticalFace(x + dx, y + dy)) {
         dy = -dy;
         paddle1.update();
         paddle2.update();
-    } else if (x + dx + circle_radius > canvas.width) {
+    } else if (x + dx + circleRadius > canvas.width) {
         paddle1.score += 1;
         dx = -dx;
         resetBall();
-    } else if (x + dx - circle_radius < 0) {
+    } else if (x + dx - circleRadius < 0) {
         paddle2.score += 1;
         dx = -dx;
         resetBall();
@@ -50,7 +50,7 @@ var draw = function () {
     drawCanvas(0, 0, canvas.width, canvas.height);
     drawPaddles();
     ctx.fillStyle = color;
-    circle(x, y, circle_radius);
+    circle(x, y, circleRadius);
 
     pos = markPositions(3);
     drawPositions(pos);

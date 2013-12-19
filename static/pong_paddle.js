@@ -16,24 +16,24 @@ var Paddle = function (xPos, yPos,playerType) {
     this.hitsHorizontalFace = function (x, y) {
         var startX, endX, startY, endY;
         startX = this.xPos + this.width;
-        endX = startX - dx + circle_radius;
-        startY = this.yPos - circle_radius;
-        endY = this.yPos + this.height + circle_radius;
+        endX = startX - dx + circleRadius;
+        startY = this.yPos - circleRadius;
+        endY = this.yPos + this.height + circleRadius;
 
         return (((x >= startX && x <= endX) ||
-                    (x <= this.xPos && x >= this.xPos - dx - circle_radius)) &&
+                    (x <= this.xPos && x >= this.xPos - dx - circleRadius)) &&
                     (y >= startY && y <= endY));
     };
 
     this.hitsVerticalFace = function (x, y) {
         var startX, endX, startY, endY;
         startY = this.yPos + this.height;
-        endY = startY - dy + circle_radius;
-        startX = this.xPos - circle_radius;
-        endX = this.xPos + this.width + circle_radius;
+        endY = startY - dy + circleRadius;
+        startX = this.xPos - circleRadius;
+        endX = this.xPos + this.width + circleRadius;
 
         return (((y >= startY && y <= endY) ||
-                    (y <= this.yPos && y >= this.yPos - dy - circle_radius)) &&
+                    (y <= this.yPos && y >= this.yPos - dy - circleRadius)) &&
                     (x >= startX && x <= endX));
     };
 
@@ -51,47 +51,77 @@ var Paddle = function (xPos, yPos,playerType) {
             var endSeg   = canvas.height * ((i+1)/pos.length);
 
             var newyPos = pos[i] - this.height / 2;
-            if (ballYPos > startSeg && ballYPos < endSeg) {
+            if (ballYPos > startSeg && ballYPos < endSeg && this.inPortion()) {
                 this.tryAndMove();
             } else {
-                this.dy = newyPos < this.yPos ? -speed : speed;
-                this.reqyPos = Math.round(newyPos);
+                this.moveTo(Math.round(newyPos));
             }
         }
     };
 
+    this.inPortion = function(){
+       return ((x < this.xPos) && (dx > 0)) || ((x > this.xPos) && (dx < 0))
+    }
+
     this.tryAndMove = function() {
         'use strict';
 
-        var number, sample_size, speed;
+        var number, sampleSize, destY, yPos;
 
         if(((x < this.xPos) && (dx > 0)) || (x > this.xPos) && (dx < 0)){
-            var yPos = calculateHitYPos(x,y,dx,dy,this.xPos);
+            yPos = calculateHitYPos(x,y,dx,dy,this.xPos);
+        } else {
+            return;
         }
 
-        sample_size = aiLevel * 10;
-        speed = Math.abs(this.dy);
-        if (start_ball || aiLevel === 0) {
+        sampleSize = aiLevel * 10;
+        if (startBall || aiLevel === 0) {
             number = 6;
-            start_ball = false;
+            startBall = false;
         } else {
-            number = Math.round(Math.random() * sample_size);
+            number = Math.round(Math.random() * sampleSize);
         }
         if (number <= 5 && this.playerType === "ai") {
-            // speed = -speed;
             yPos = canvas.height - yPos;
         }
-        this.dy = yPos < this.yPos ? -speed : speed;
-        this.reqyPos = Math.round(yPos - (this.height / 2));
+
+        destY = Math.round(yPos - (this.height / 2));
+        this.moveTo(destY);
     };
 
+    this.moveTo = function(destY) {
+        var speed = Math.abs(this.dy);
+        this.dy = destY < this.yPos ? -speed : speed;
+
+        if (destY < 0) {
+            destY = 0 + circleRadius;
+        }
+        if (destY > (canvas.height - this.height)) {
+            destY = canvas.height - this.height - circleRadius;
+        }
+
+        this.reqyPos = destY;
+
+        // send that we're moving to other player if in pvp;
+        if (this.playerType === "player" && mode === "pvp") {
+            console.log("sending " + destY);
+            if (isNaN(destY)) {
+                console.log(new Error().stack);
+            }
+            sendMessage(JSON.stringify({
+                "type": "paddle_move",
+                "destY": destY
+            }));
+        }
+    }
+
+    this.changeSpeed = function(newSpeed){
+        if(this.playerType !== "ai"){
+            this.dy = newSpeed;
+        }
+    }
+
     this.drawPaddle = function () {
-        if (this.reqyPos < 0) {
-            this.reqyPos = 0;
-        }
-        if (this.reqyPos > (canvas.height - this.height)) {
-            this.reqyPos = canvas.height - this.height;
-        }
         if ((this.dy * (this.yPos - this.reqyPos) < 0)) {
             this.yPos += this.dy;
         }
