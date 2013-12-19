@@ -51,13 +51,17 @@ var Paddle = function (xPos, yPos,playerType) {
             var endSeg   = canvas.height * ((i+1)/pos.length);
 
             var newyPos = pos[i] - this.height / 2;
-            if (ballYPos > startSeg && ballYPos < endSeg) {
+            if (ballYPos > startSeg && ballYPos < endSeg && this.inPortion()) {
                 this.tryAndMove();
             } else {
                 this.moveTo(Math.round(newyPos));
             }
         }
     };
+
+    this.inPortion = function(){
+       return ((x < this.xPos) && (dx > 0)) || ((x > this.xPos) && (dx < 0))
+    }
 
     this.tryAndMove = function() {
         'use strict';
@@ -90,10 +94,10 @@ var Paddle = function (xPos, yPos,playerType) {
         this.dy = destY < this.yPos ? -speed : speed;
 
         if (destY < 0) {
-            destY = 0;
+            destY = 0 + circle_radius;
         }
         if (destY > (canvas.height - this.height)) {
-            destY = canvas.height - this.height;
+            destY = canvas.height - this.height - circle_radius;
         }
 
         this.reqyPos = destY;

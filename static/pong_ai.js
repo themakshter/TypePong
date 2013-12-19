@@ -1,5 +1,5 @@
 /**
- * AI - 22/11/13
+ * AI 
  */
 var calculateHitYPos = function (ballX, ballY, dx, dy, paddleX) {
     'use strict';
