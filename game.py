@@ -42,6 +42,7 @@ class Game(db.Model):
         token = channel.create_channel(user)
 
         message = {
+            'game_found': True,
             'game_key': str(self.key()),
             'token': token
         }
@@ -89,11 +90,16 @@ class JoinGame(RequestHandler):
             # else join the specified game
             game = db.get(game_key)
 
-        game.join(user)
-
         # send information about game back to client
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(game.json_data(user))
+
+        if game:
+            # a game was found, return game data
+            game.join(user)
+            self.response.write(game.json_data(user))
+        else:
+            # no game was found, return appropriate message
+            self.response.write({ 'game_found': False })
 
 class LeaveGame(RequestHandler):
     """Leave a game by providing the game key."""

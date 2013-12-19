@@ -1,3 +1,4 @@
+// this is called automatically when a game is created or joined
 function setUpGame(data) {
     // set current game to game key
     current_game = data.game_key;
@@ -8,23 +9,25 @@ function setUpGame(data) {
 }
 
 // message function is a callback function when messages are received
-function createGame(messageFunc) {
+// returnFunc is a callback function when createGame returns response
+function createGame(returnFunc, messageFunc) {
     msg = {user: $.cookie("user")}
     $.post('/_create', msg, function(data) {
         setUpGame(data);
         socket.onmessage = messageFunc;
-        alert(data)
+        returnFunc(data);
     });
 }
 
-// message function is a callback function when messages are received
+// messageFunc is a callback function when messages are received
+// returnFunc is a callback function when joinGame returns response
 // if game key is "", joins a random game!
-function joinGame(game_key, messageFunc) {
+function joinGame(game_key, returnFunc, messageFunc) {
     msg = {user: $.cookie("user"), game_key: game_key}
     $.post('/_join', msg, function(data) {
         setUpGame(data);
         socket.onmessage = messageFunc;
-        alert(data)
+        returnFunc(data);
     });
 }
 
