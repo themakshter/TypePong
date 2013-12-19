@@ -36,6 +36,17 @@ var init = function () {
 
         case 'pvp':
             //[TODO]
+
+            var returnFunc = function(data) {
+                if (!data.game_found) {
+                    // if no game found, create a game instead
+                    createGame(function() {}, receiveMessage);
+                }
+            }
+
+            // try and join a random game
+            joinGame("", returnFunc, receiveMessage);
+
             break;
 
         case 'challenge':
@@ -58,6 +69,14 @@ var init = function () {
 
     gameLoop();
 };
+
+/**
+ * Receive a message from another player
+ */
+ var receiveMessage = function(message) {
+    //[TODO] : Actually deal with messages
+    console.log(message.data);
+ }
 
 /**
  * Calculates positions where the paddles can move.

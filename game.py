@@ -91,15 +91,15 @@ class JoinGame(RequestHandler):
             game = db.get(game_key)
 
         # send information about game back to client
-        self.response.headers['Content-Type'] = 'application/json'
+        self.response.out.headers['Content-Type'] = 'application/json'
 
         if game:
             # a game was found, return game data
             game.join(user)
-            self.response.write(game.json_data(user))
+            self.response.out.write(game.json_data(user))
         else:
             # no game was found, return appropriate message
-            self.response.write({ 'game_found': False })
+            self.response.out.write(json.dumps({ 'game_found': False }))
 
 class LeaveGame(RequestHandler):
     """Leave a game by providing the game key."""

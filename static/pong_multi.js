@@ -25,8 +25,10 @@ function createGame(returnFunc, messageFunc) {
 function joinGame(game_key, returnFunc, messageFunc) {
     msg = {user: $.cookie("user"), game_key: game_key}
     $.post('/_join', msg, function(data) {
-        setUpGame(data);
-        socket.onmessage = messageFunc;
+        if (data.game_found) {
+            setUpGame(data);
+            socket.onmessage = messageFunc;
+        }
         returnFunc(data);
     });
 }
