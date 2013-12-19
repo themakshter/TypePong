@@ -13,7 +13,6 @@ function createGame(messageFunc) {
     $.post('/_create', msg, function(data) {
         setUpGame(data);
         socket.onmessage = messageFunc;
-        alert(data)
     });
 }
 
@@ -24,7 +23,6 @@ function joinGame(game_key, messageFunc) {
     $.post('/_join', msg, function(data) {
         setUpGame(data);
         socket.onmessage = messageFunc;
-        alert(data)
     });
 }
 
