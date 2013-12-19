@@ -15,6 +15,8 @@ var oldTime;
 var newTime;
 var start_ball = true;
 
+var color = "#FFFFFF";
+
 
 /**
  * Initializes the game in the appropriate mode.
@@ -152,7 +154,7 @@ var winGame = function () {
     ctx2 = layer2.getContext("2d");
 
     ctx2.font = "50px Share Tech";
-    ctx2.fillStyle = "#FFFFFF";
+    ctx2.fillStyle = color;
     winString = "Good job!";
     winWidth = ctx2.measureText(winString).width;
 
@@ -190,7 +192,7 @@ var loseGame = function () {
     ctx2 = layer2.getContext("2d");
 
     ctx2.font = "50px Share Tech";
-    ctx2.fillStyle = "#FFFFFF";
+    ctx2.fillStyle = color;
     loseString = "Too bad. Better luck next time!";
     loseWidth = ctx2.measureText(loseString).width;
 

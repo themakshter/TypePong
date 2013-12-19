@@ -95,7 +95,7 @@ var Paddle = function (xPos, yPos,playerType) {
         if ((this.dy * (this.yPos - this.reqyPos) < 0)) {
             this.yPos += this.dy;
         }
-        ctx.fillStyle = "#FFFFFF";
+        ctx.fillStyle = color;
         ctx.fillRect(this.xPos, this.yPos, this.width, this.height);
     };
 };

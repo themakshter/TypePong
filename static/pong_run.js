@@ -49,7 +49,7 @@ var draw = function () {
     ctx.fillStyle = "#000000";
     drawCanvas(0, 0, canvas.width, canvas.height);
     drawPaddles();
-    ctx.fillStyle = "#FFFFFF";
+    ctx.fillStyle = color;
     circle(x, y, circle_radius);
 
     pos = markPositions(3);
