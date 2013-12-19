@@ -62,6 +62,14 @@ class ChallengeHandler(RequestHandler):
         page = render_template('pong_challenge.html', values)
         self.response.out.write(page)
 
+class PvpHandler(RequestHandler):
+    def get(self, request=None, response=None):
+        if "user" not in self.request.cookies.keys():
+            self.redirect("/login")
+        values = {'name': self.request.cookies.get("user")}
+        page = render_template('pong_pvp.html', values)
+        self.response.out.write(page)
+
 class HiscoresHandler(RequestHandler):
     def get(self, request=None, response=None):
         page = 0

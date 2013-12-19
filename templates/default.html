@@ -6,6 +6,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="//cdn.jsdelivr.net/jquery.cookie/1.4.0/jquery.cookie.min.js"></script>
+    <script type="text/javascript" src="/_ah/channel/jsapi"></script>
     <script type='text/javascript' src="static/script.js"></script>
 </head>
 
@@ -32,6 +33,11 @@
                     {% block right_content %}
                     {% endblock %}
                 </div>
+            </div>
+            <div class="bottom_content center">
+                {% block bottom_content %}
+                {% endblock %}
+            </div>
         </div>
     </div>
 </body>

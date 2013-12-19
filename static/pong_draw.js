@@ -49,13 +49,30 @@ var clear = function () {
 var drawPositions = function (pos) {
     'use strict';
 
+    if (paddle1.playerType === "player") drawPositionsPaddle(pos, paddle1);
+    if (paddle2.playerType === "player")drawPositionsPaddle(pos, paddle2);
+};
+
+/**
+ * Draws indicating positions where the paddle can move for the specified paddle.
+ */
+var drawPositionsPaddle = function (pos, paddle) {
+    'use strict'
+
+    var offset;
+    if (paddle.xPos > canvas.width / 2) {
+        offset = -50;
+    } else {
+        offset = 50;
+    }
+
     var i;
     for (i = 0; i < pos.length; i += 1) {
         ctx.font = "18px Share Tech";
         ctx.fillStyle = "white";
-        ctx.fillText((i + 1).toString(), 650, pos[i]);
+        ctx.fillText((i + 1).toString(), paddle.xPos + offset, pos[i]);
     }
-};
+}
 
 /**
  * Draw score for left paddle at (x1, y1) and for

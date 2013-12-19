@@ -1,7 +1,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="//cdn.jsdelivr.net/jquery.cookie/1.4.0/jquery.cookie.min.js"></script>
 <script type="text/javascript" src="/_ah/channel/jsapi"></script>
-<script type="text/javascript" src="game.js"></script>
+<script type="text/javascript" src="pong_multi.js"></script>
 
 <script type="text/javascript">
 
@@ -16,11 +16,11 @@ $(document).ready(function() {
     })
 
     $("#create").click(function() {
-        createGame(onMessage);
+        createGame(onMessage, onMessage);
     })
 
     $("#join").click(function() {
-        joinGame("", onMessage);
+        joinGame("", onMessage, onMessage);
     })
 
     $("#send").click(function() {

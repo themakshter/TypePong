@@ -7,19 +7,38 @@
     </canvas>
     <canvas id="layer2" width="750" height="500" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
 </div>
+{% endblock %}
 
-<div style="position: relative; top: 500px">
-    <p id="current_0"></p>
-    <p id="current_1"></p>
-    <p id="current_2"></p>Type here:
-    <input name="typing" id="typing" type="text" autofocus />
+{% block left_content %}
+    {{ sidebar.sidebar(name) }}
+{% endblock %}
+
+{% block right_content %}
+<div class="sidebar">
+    <div class="wordspacer"></div>
+    <div class="word right-word" id="current_0"></div>
+    <div class="wordspacer"></div>
+    <div class="word right-word" id="current_1"></div>
+    <div class="wordspacer"></div>
+    <div class="word right-word" id="current_2"></div>
     <p id="stats"></p>
+</div>
+{% endblock %}
+
+{% block bottom_content %}
+<div style="width: 100%; height: 100%;position: absolute;font-size: 30px;background-color: black;color: #6AF255;">
+    <div class="center" style="width: 500px;height: 100%;">
+        <div class="wrapper" style="width: 500px;height: 50px;">
+            Type here: <input style="margin-left: 20px;height: 40px;back" name="typing" id="typing" type="text" autofocus />
+        </div>
+    </div>
 </div>
 
 {% block game_mode %}
 {% endblock %}
 
 <script src="static/utils.js" type="text/javascript" ></script>
+<script src="static/pong_multi.js" type="text/javascript" ></script>
 <script src="static/pong_paddle.js" type="text/javascript" ></script>
 <script src="static/pong_ai.js" type="text/javascript" ></script>
 <script src="static/pong_clock.js" type="text/javascript" ></script>
@@ -28,8 +47,4 @@
 <script src="static/pong_words.js" type="text/javascript" ></script>
 <script src="static/pong.js" type="text/javascript" ></script>
 <script src="static/pong_listeners.js" type="text/javascript" ></script>
-{% endblock %}
-
-{% block left_content %}
-{{ sidebar.sidebar(name) }}
 {% endblock %}

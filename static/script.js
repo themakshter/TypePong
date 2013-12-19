@@ -1,14 +1,21 @@
 $(function() {
+    'use strict';
     // Login form
     var form = $('form');
     var loginButton = $('#login_btn');
     var registerButton = $('#register_btn');
     addLoginOnClick(loginButton, "/_login");
     addLoginOnClick(registerButton, "/_register");
+    form.submit(
+        function(event) {
+            event.preventDefault();
+            return false;
+        }
+    );
 
     function addLoginOnClick(button, url) {
         button.click(function() {
-            values = {
+            var values = {
                 username: form.find("input[name='username']").val(),
                 pass: form.find("input[name='pass']").val(),
             };

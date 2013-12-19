@@ -10,6 +10,7 @@ app = WSGIApplication([
     ('/login', main.LoginHandler),
     ('/campaign', main.CampaignHandler),
     ('/challenge', main.ChallengeHandler),
+    ('/pvp', main.PvpHandler),
     ('/hiscores', main.HiscoresHandler),
     ('/sidebar', main.Sidebar),
     # pages the user shouldn't be accessing
