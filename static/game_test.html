@@ -16,11 +16,11 @@ $(document).ready(function() {
     })
 
     $("#create").click(function() {
-        createGame(onMessage);
+        createGame(onMessage, onMessage);
     })
 
     $("#join").click(function() {
-        joinGame("", onMessage);
+        joinGame("", onMessage, onMessage);
     })
 
     $("#send").click(function() {
