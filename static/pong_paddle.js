@@ -37,6 +37,54 @@ var Paddle = function (xPos, yPos,playerType) {
                     (x >= startX && x <= endX));
     };
 
+    this.update = function() {
+        if (this.playerType === "ai") {
+            this.tryAndMove();
+        }
+    };
+
+    this.wordTyped = function(pos, i) {
+        if (this.playerType === "player") {
+            var ballYPos = calculateHitYPos(x,y,dx,dy,this.xPos);
+            var speed = Math.abs(this.dy);
+            var startSeg = canvas.height * (i/pos.length);
+            var endSeg   = canvas.height * ((i+1)/pos.length);
+
+            var newyPos = pos[i] - this.height / 2;
+            if (ballYPos > startSeg && ballYPos < endSeg) {
+                this.tryAndMove();
+            } else {
+                this.dy = newyPos < this.yPos ? -speed : speed;
+                this.reqyPos = Math.round(newyPos);
+            }
+        }
+    };
+
+    this.tryAndMove = function() {
+        'use strict';
+
+        var number, sample_size, speed;
+
+        if(((x < this.xPos) && (dx > 0)) || (x > this.xPos) && (dx < 0)){
+            var yPos = calculateHitYPos(x,y,dx,dy,this.xPos);
+        }
+
+        sample_size = aiLevel * 10;
+        speed = Math.abs(this.dy);
+        if (start_ball || aiLevel === 0) {
+            number = 6;
+            start_ball = false;
+        } else {
+            number = Math.round(Math.random() * sample_size);
+        }
+        if (number <= 5 && this.playerType === "ai") {
+            // speed = -speed;
+            yPos = canvas.height - yPos;
+        }
+        this.dy = yPos < this.yPos ? -speed : speed;
+        this.reqyPos = Math.round(yPos - (this.height / 2));
+    };
+
     this.drawPaddle = function () {
         if (this.reqyPos < 0) {
             this.reqyPos = 0;

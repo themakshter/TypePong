@@ -32,19 +32,36 @@ var init = function () {
         case 'campaign':
             //[TODO] : 1. Set length of words in sampler.py according to level.
             //[TODO] : 2. Set AI difficulty level accordingly. Make AI correspond to levels.
+            set_paddles("ai", "player");
             break;
 
         case 'pvp':
             //[TODO]
+
+            var returnFunc = function(data) {
+                if (!data.game_found) {
+                    // if no game found, create a game instead
+                    createGame(function() {}, receiveMessage);
+                    set_paddles("player", "player");
+                } else {
+                    set_paddles("player", "player");
+                }
+            }
+
+            // try and join a random game
+            joinGame("", returnFunc, receiveMessage);
+
             break;
 
         case 'challenge':
             initClockDraw();
-            aiLevel = 0; //Perfect mode. levels from 1 to 5 or
+            aiLevel = 0; //Perfect mode. levels from 1 to 5
+            set_paddles("ai", "player");
             break;
 
         case 'custom':
             //[TODO] Optional Mode
+            set_paddles("ai", "player");
             break;
 
         default:
@@ -59,6 +76,14 @@ var init = function () {
 
     gameLoop();
 };
+
+/**
+ * Receive a message from another player
+ */
+ var receiveMessage = function(message) {
+    //[TODO] : Actually deal with messages
+    console.log(message.data);
+ }
 
 /**
  * Calculates positions where the paddles can move.
@@ -77,6 +102,14 @@ var paddle1 = new Paddle(50, 200,"ai");
 var paddle2 = new Paddle(700, 200,"player");
 
 /**
+ * Set the paddle behaviour: parameters can be "ai", "player" or "remote"
+ */
+var set_paddles = function (type1, type2) {
+    paddle1.playerType = type1;
+    paddle2.playerType = type2;
+}
+
+/**
  * Resets the ball to the central position. Adds a 1-second pause.
  */
 var resetBall = function () {
@@ -89,7 +122,8 @@ var resetBall = function () {
     y = canvas.height / 2;
     tempX = dx;
     tempY = dy;
-    tryAndMove(paddle1);
+    paddle1.update();
+    paddle2.update();
     dx = dy = 0;
     setTimeout(function () {
         dx = tempX;

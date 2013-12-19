@@ -15,13 +15,15 @@ var update = function () {
     if (paddle1.hitsHorizontalFace(x + dx, y + dy) ||
             paddle2.hitsHorizontalFace(x + dx, y + dy)) {
         dx = -dx;
-        tryAndMove(paddle1);
+        paddle1.update();
+        paddle2.update();
     } else if (y + dy + circle_radius > canvas.height ||
                y + dy - circle_radius < 0 ||
                paddle1.hitsVerticalFace(x + dx, y + dy) ||
                paddle2.hitsVerticalFace(x + dx, y + dy)) {
         dy = -dy;
-        tryAndMove(paddle1);
+        paddle1.update();
+        paddle2.update();
     } else if (x + dx + circle_radius > canvas.width) {
         paddle1.score += 1;
         dx = -dx;
