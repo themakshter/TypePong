@@ -7,11 +7,16 @@
     </canvas>
     <canvas id="layer2" width="750" height="500" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
 </div>
+{% endblock %}
 
-<div style="position: relative; top: 500px">
-    <p id="current_0"></p>
-    <p id="current_1"></p>
-    <p id="current_2"></p>Type here:
+{% block left_content %}
+{{ sidebar.sidebar(name) }}
+{% endblock %}
+{% block right_content %}
+<div class="sidebar">
+	<div class="word right-word" id="current_0"></div>
+	<div class="word right-word" id="current_1"></div>
+	<div class="word right-word" id="current_2"></div>
     <input name="typing" id="typing" type="text" autofocus />
     <p id="stats"></p>
 </div>
@@ -19,8 +24,4 @@
 <script src="static/paddle.js" type="text/javascript" ></script>
 <script src="static/pong_draw.js" type="text/javascript" ></script>
 <script src="static/pong.js" type="text/javascript" ></script>
-{% endblock %}
-
-{% block left_content %}
-{{ sidebar.sidebar(name) }}
 {% endblock %}

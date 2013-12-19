@@ -162,6 +162,7 @@ th {
 
 /* Sidebard related */
 .sidebar {
+    overflow: auto;
     background-color: black;
     color: #6AF255;
     font-size: 20px;
@@ -203,4 +204,26 @@ th {
     -webkit-box-shadow: 0 0 5px #aaa;
     box-shadow: 0 0 5px #aaa;
     border-width: 2px;
+}
+
+.word {
+    margin: 100px 10px;
+}
+
+.left-word {
+    text-align: right;
+}
+
+.right-word {
+    text-align: left;
+}
+
+#typing {
+    z-index: -100;
+}
+
+.pongblur{
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
+    opacity: .5;
 }

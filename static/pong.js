@@ -62,7 +62,7 @@ var resetAllColors = function () {
 
     var id;
     for (id = 0; id < currentWords.length; id += 1) {
-        updateColor(id, 'black');
+        updateColor(id, '');
     }
 };
 
@@ -196,6 +196,12 @@ var tryAndMove = function(paddle) {
 
 };
 
+var blurCanvas = function() {
+    'use strict';
+
+    $(canvas).addClass("pongblur");
+}
+
 //[TODO]
 /*
  * Handles game victory. Depending on the mode, functionality and scoring vary.
@@ -205,7 +211,7 @@ var winGame = function() {
 
     gameActive = false;
 
-    canvas.style.webkitFilter = "blur(3px) brightness(0.2)";
+    blurCanvas();
     layer2 = document.getElementById("layer2");
     ctx2 = layer2.getContext("2d");
 
@@ -243,7 +249,7 @@ var loseGame = function () {
 
     gameActive = false;
 
-    canvas.style.webkitFilter = "blur(3px) brightness(0.2)";
+    blurCanvas();
     layer2 = document.getElementById("layer2");
     ctx2 = layer2.getContext("2d");
 
