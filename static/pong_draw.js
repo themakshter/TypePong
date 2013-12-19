@@ -1,67 +1,69 @@
-window.requestAnimFrame = (function(){
-    return window.requestAnimationFrame    ||
-    window.webkitRequestAnimationFrame ||
-    window.mozRequestAnimationFrame  ||
-    window.oRequestAnimationFrame   ||
-    window.msRequestAnimationFrame   ||
-    function(/* function */ callback, /* DOMElement */ element){
-        window.setTimeout(callback, 1000 / 60);
-    };
-})();
+/*
+ * Draws the ball.
+ */
+var circle = function (x, y, r) {
+    'use strict';
 
-var gameActive = true;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2, true);
+    ctx.fill();
+};
 
-var update = function () {
-    if (paddle1.hitsHorizontalFace(x + dx, y + dy) || paddle2.hitsHorizontalFace(x + dx, y + dy)) {
-        dx = -dx;
-        tryAndMove(paddle1);
-    } else if (y + dy + circle_radius > canvas_height || y + dy - circle_radius < 0 || paddle1.hitsVerticalFace(x + dx, y + dy) || paddle2.hitsVerticalFace(x + dx, y + dy)) {
-        dy = -dy;
-        tryAndMove(paddle1);
-    } else if (x + dx + circle_radius > canvas_width) {
-        paddle1.score += 1;
-        dx = -dx;
-        resetBall();
-    } else if (x + dx - circle_radius < 0) {
-        paddle2.score += 1;
-        dx = -dx;
-        resetBall();
+var drawCanvas = function (x, y, w, h) {
+    'use strict';
+
+    var i, small_x, small_width;
+
+    small_x = 370;
+    small_width = 10;
+    ctx.beginPath();
+    ctx.rect(x, y, w, h);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.fillStyle = "#FFFFFF";
+    for (i = 5; i < 500; i += 30) {
+        ctx.fillRect(small_x, i, small_width, small_width);
     }
-    x += dx;
-    y += dy;
 };
 
 /*
- * Draws all graphical elements.
+ * Draws the canvas and the paddles.
  */
-var draw = function () {
+var drawPaddles = function (x, y, w, h) {
     'use strict';
 
-    clear();
-    ctx.fillStyle = "#000000";
-    rect(0, 0, canvas_width, canvas_height);
+    paddle1.drawPaddle();
+    paddle2.drawPaddle();
+};
+
+var clear = function () {
+    'use strict';
+
+    ctx.clearRect(0, 0, canvas_width, canvas_height);
+};
+
+/**
+ * Draws indicating positions where the paddles can move.
+ */
+var drawPositions = function (pos) {
+    'use strict';
+
+    var i;
+    for (i = 0; i < pos.length; i += 1) {
+        ctx.font = "18px Share Tech";
+        ctx.fillStyle = "white";
+        ctx.fillText((i + 1).toString(), 650, pos[i]);
+    }
+};
+
+/** Draw score for left paddle at (x1, y1) and for
+ *  right paddle at (x2, y2)
+ */
+var drawScore = function (x1, y1, x2, y2) {
     ctx.fillStyle = "#FFFFFF";
-    circle(x, y, circle_radius);
-
-    var pos = markPositions(3);
-    drawPositions(canvas, ctx, pos);
-
-    if (paddle1.score >= endingScore) {
-        loseGame();
-        return;
-    } else if (paddle2.score >= endingScore) {
-        winGame();
-        return;
-    }
+    ctx.font = "75px Share Tech";
+    ctx.fillText(paddle1.score, x1, y1, 50);
+    ctx.fillText(paddle2.score, x2, y2, 50);
 };
 
-var gameLoop = function() {
-    'use strict';
-
-    draw();
-    update();
-
-    if (gameActive) {
-        requestAnimFrame(gameLoop);
-    }
-};
