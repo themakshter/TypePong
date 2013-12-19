@@ -7,7 +7,7 @@ html {
 }
 
 body {
-    background-color: #FF8723;
+    background-color: #FF8723; /* bright orage */
     margin: 0px;
     padding: 0px;
     height: 100%;
@@ -130,6 +130,13 @@ iframe {
     float: left;
 }
 
+.bottom_content {
+    position: relative;
+    top: 550px;
+    height: 50px;
+    width: 750px;
+}
+
 table {
     width: 100%;
 }
@@ -206,8 +213,24 @@ th {
     border-width: 2px;
 }
 
+/* Classes for colouring the words when user types */
 .word {
-    margin: 100px 10px;
+    margin: 0px 10px;
+    font-size: 25px;
+    color: #4EAD3E;
+}
+
+.wrong-word {
+    color: #FF8723;
+}
+
+.correct-word {
+    color: #6AF255;
+}
+
+.wordspacer {
+    height: 100px;
+    width: 100%;
 }
 
 .left-word {
@@ -219,11 +242,23 @@ th {
 }
 
 #typing {
-    z-index: -100;
+    margin-left: 20px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.0);
+    border: 0px;
+    font-size: inherit;
+    font-family: inherit;
+    color: #4EAD3E;
 }
 
 .pongblur{
     filter: blur(3px);
     -webkit-filter: blur(3px);
     opacity: .5;
+}
+
+.wrapper {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
 }
