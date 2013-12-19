@@ -217,15 +217,15 @@ th {
 .word {
     margin: 0px 10px;
     font-size: 25px;
-    color: #4EAD3E;
+    color: white;
 }
 
 .wrong-word {
-    color: #FF8723;
+    color: #DD0000;
 }
 
 .correct-word {
-    color: #6AF255;
+    color: #009C0D;
 }
 
 .wordspacer {

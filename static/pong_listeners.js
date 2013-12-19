@@ -17,9 +17,9 @@ window.onkeyup = (function () {
         for (i = 0; i < currentWords.length; i += 1) {
             currentWordLC = currentWords[i].toLowerCase();
             if (typedLC === currentWordLC.substring(0, typed.length) && typed) {
-                updateColor(i, 'green');
+                updateColor(i, 'correct-word');
             } else if (typed.length > 1 && typedLC.substring(0, typed.length - 1) === currentWordLC.substring(0, typed.length - 1)) {
-                updateColor(i, 'red');
+                updateColor(i, 'wrong-word');
             } else if (!typed) {
                 resetAllColors();
             }

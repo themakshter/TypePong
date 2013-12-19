@@ -15,24 +15,24 @@ var updateWords = function (id) {
 };
 
 /**
- * Returns the coloured version of the given string in HTML form.
+ * Returns the coloured version of the given string in HTML form
+ * by setting the class
  */
-var colorify = function (s, color) {
+var colorify = function (s, colorClass) {
     'use strict';
 
     s = s.replace(/<span[^>]+>([^<>\s]+)<\/span>/, "$1");
-    return '<span style="color: ' + color +
-        '">' + s + '</span>';
+    return '<span class="' + colorClass + '">' + s + '</span>';
 };
 
 /**
  * Updates the colour of a specific word or substring.
  */
-var updateColor = function (id, color) {
+var updateColor = function (id, colorClass) {
     'use strict';
 
     var p_id = '#current_' + id;
-    $(p_id).html((id + 1) + ": " + colorify(currentWords[id], color));
+    $(p_id).html((id + 1) + ": " + colorify(currentWords[id], colorClass));
 };
 
 /**
