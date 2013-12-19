@@ -46,12 +46,14 @@ var Paddle = function (xPos, yPos,playerType) {
     this.wordTyped = function(pos, i) {
         if (this.playerType === "player") {
             var ballYPos = calculateHitYPos(x,y,dx,dy,this.xPos);
+            console.log(yPos);
             var speed = Math.abs(this.dy);
             var startSeg = canvas.height * (i/pos.length);
             var endSeg   = canvas.height * ((i+1)/pos.length);
 
             var newyPos = pos[i] - this.height / 2;
             if (ballYPos > startSeg && ballYPos < endSeg && this.inPortion()) {
+                console.log("in segment")
                 this.tryAndMove();
             } else {
                 this.moveTo(Math.round(newyPos));
@@ -94,10 +96,10 @@ var Paddle = function (xPos, yPos,playerType) {
         this.dy = destY < this.yPos ? -speed : speed;
 
         if (destY < 0) {
-            destY = 0 + circle_radius;
+            destY = 0 + circleRadius;
         }
         if (destY > (canvas.height - this.height)) {
-            destY = canvas.height - this.height - circle_radius;
+            destY = canvas.height - this.height - circleRadius;
         }
 
         this.reqyPos = destY;
@@ -112,6 +114,12 @@ var Paddle = function (xPos, yPos,playerType) {
                 "type": "paddle_move",
                 "destY": destY
             }));
+        }
+    }
+
+    this.changeSpeed = function(newSpeed){
+        if(this.playerType !== "ai"){
+            this.dy = newSpeed;
         }
     }
 
