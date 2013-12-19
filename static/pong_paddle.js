@@ -16,24 +16,24 @@ var Paddle = function (xPos, yPos,playerType) {
     this.hitsHorizontalFace = function (x, y) {
         var startX, endX, startY, endY;
         startX = this.xPos + this.width;
-        endX = startX - dx + circle_radius;
-        startY = this.yPos - circle_radius;
-        endY = this.yPos + this.height + circle_radius;
+        endX = startX - dx + circleRadius;
+        startY = this.yPos - circleRadius;
+        endY = this.yPos + this.height + circleRadius;
 
         return (((x >= startX && x <= endX) ||
-                    (x <= this.xPos && x >= this.xPos - dx - circle_radius)) &&
+                    (x <= this.xPos && x >= this.xPos - dx - circleRadius)) &&
                     (y >= startY && y <= endY));
     };
 
     this.hitsVerticalFace = function (x, y) {
         var startX, endX, startY, endY;
         startY = this.yPos + this.height;
-        endY = startY - dy + circle_radius;
-        startX = this.xPos - circle_radius;
-        endX = this.xPos + this.width + circle_radius;
+        endY = startY - dy + circleRadius;
+        startX = this.xPos - circleRadius;
+        endX = this.xPos + this.width + circleRadius;
 
         return (((y >= startY && y <= endY) ||
-                    (y <= this.yPos && y >= this.yPos - dy - circle_radius)) &&
+                    (y <= this.yPos && y >= this.yPos - dy - circleRadius)) &&
                     (x >= startX && x <= endX));
     };
 
@@ -62,7 +62,7 @@ var Paddle = function (xPos, yPos,playerType) {
     this.tryAndMove = function() {
         'use strict';
 
-        var number, sample_size, dest_y, yPos;
+        var number, sampleSize, destY, yPos;
 
         if(((x < this.xPos) && (dx > 0)) || (x > this.xPos) && (dx < 0)){
             yPos = calculateHitYPos(x,y,dx,dy,this.xPos);
@@ -70,43 +70,43 @@ var Paddle = function (xPos, yPos,playerType) {
             return;
         }
 
-        sample_size = aiLevel * 10;
-        if (start_ball || aiLevel === 0) {
+        sampleSize = aiLevel * 10;
+        if (startBall || aiLevel === 0) {
             number = 6;
-            start_ball = false;
+            startBall = false;
         } else {
-            number = Math.round(Math.random() * sample_size);
+            number = Math.round(Math.random() * sampleSize);
         }
         if (number <= 5 && this.playerType === "ai") {
             yPos = canvas.height - yPos;
         }
 
-        dest_y = Math.round(yPos - (this.height / 2));
-        this.moveTo(dest_y);
+        destY = Math.round(yPos - (this.height / 2));
+        this.moveTo(destY);
     };
 
-    this.moveTo = function(dest_y) {
+    this.moveTo = function(destY) {
         var speed = Math.abs(this.dy);
-        this.dy = dest_y < this.yPos ? -speed : speed;
+        this.dy = destY < this.yPos ? -speed : speed;
 
-        if (dest_y < 0) {
-            dest_y = 0;
+        if (destY < 0) {
+            destY = 0;
         }
-        if (dest_y > (canvas.height - this.height)) {
-            dest_y = canvas.height - this.height;
+        if (destY > (canvas.height - this.height)) {
+            destY = canvas.height - this.height;
         }
 
-        this.reqyPos = dest_y;
+        this.reqyPos = destY;
 
         // send that we're moving to other player if in pvp;
         if (this.playerType === "player" && mode === "pvp") {
-            console.log("sending " + dest_y);
-            if (isNaN(dest_y)) {
+            console.log("sending " + destY);
+            if (isNaN(destY)) {
                 console.log(new Error().stack);
             }
             sendMessage(JSON.stringify({
                 "type": "paddle_move",
-                "dest_y": dest_y
+                "destY": destY
             }));
         }
     }

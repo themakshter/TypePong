@@ -1,17 +1,20 @@
+var wordList = [];
+var currentWords = [];
+
 /**
  * Updates the word of the given position id.
  */
 var updateWords = function (id) {
     'use strict';
 
-    var p_id;
+    var pID;
 
     if (wordList.length === 0) {
         fetchWords();
     }
     currentWords[id] = wordList.pop();
-    p_id = '#current_' + id;
-    $(p_id).html((id + 1) + ": " + currentWords[id]);
+    pID = '#current_' + id;
+    $(pID).html((id + 1) + ": " + currentWords[id]);
 };
 
 /**
@@ -31,8 +34,8 @@ var colorify = function (s, color) {
 var updateColor = function (id, color) {
     'use strict';
 
-    var p_id = '#current_' + id;
-    $(p_id).html((id + 1) + ": " + colorify(currentWords[id], color));
+    var pID = '#current_' + id;
+    $(pID).html((id + 1) + ": " + colorify(currentWords[id], color));
 };
 
 /**

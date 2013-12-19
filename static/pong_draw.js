@@ -1,3 +1,5 @@
+var circleRadius = 10;
+
 /**
  * Draws the ball.
  */
@@ -12,18 +14,18 @@ var circle = function (x, y, r) {
 var drawCanvas = function (x, y, w, h) {
     'use strict';
 
-    var i, small_x, small_width;
+    var i, smallX, smallWidth;
 
-    small_x = 370;
-    small_width = 10;
+    smallX = 370;
+    smallWidth = 10;
     ctx.beginPath();
     ctx.rect(x, y, w, h);
     ctx.closePath();
     ctx.fill();
 
     ctx.fillStyle = "#FFFFFF";
-    for (i = 5; i < 500; i += 30) {
-        ctx.fillRect(small_x, i, small_width, small_width);
+    for (i = 5; i < canvas.width; i += 30) {
+        ctx.fillRect(smallX, i, smallWidth, smallWidth);
     }
 };
 
@@ -49,8 +51,10 @@ var clear = function () {
 var drawPositions = function (pos) {
     'use strict';
 
-    if (paddle1.playerType === "player") drawPositionsPaddle(pos, paddle1);
-    if (paddle2.playerType === "player")drawPositionsPaddle(pos, paddle2);
+    if (paddle1.playerType === "player")
+        drawPositionsPaddle(pos, paddle1);
+    if (paddle2.playerType === "player")
+        drawPositionsPaddle(pos, paddle2);
 };
 
 /**
