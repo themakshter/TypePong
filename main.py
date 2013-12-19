@@ -37,7 +37,7 @@ class Sidebar(RequestHandler):
 class LoginHandler(RequestHandler):
     def get(self, request=None, response=None):
         if "user" in self.request.cookies.keys():
-            self.redirect("/game")
+            self.redirect("/campaign")
         else:
             page = self.get_login_page()
             self.response.out.write(page)
@@ -46,15 +46,21 @@ class LoginHandler(RequestHandler):
         return render_template('login.html')
 
 
-class GameHandler(RequestHandler):
+class CampaignHandler(RequestHandler):
     def get(self, request=None, response=None):
         if "user" not in self.request.cookies.keys():
             self.redirect("/login")
         values = {'name': self.request.cookies.get("user")}
-        page = render_template('pong.html', values)
+        page = render_template('pong_campaign.html', values)
         self.response.out.write(page)
 
-        # def get_page(self, left_color="#FF8723", right_color="#FF8723", )
+class ChallengeHandler(RequestHandler):
+    def get(self, request=None, response=None):
+        if "user" not in self.request.cookies.keys():
+            self.redirect("/login")
+        values = {'name': self.request.cookies.get("user")}
+        page = render_template('pong_challenge.html', values)
+        self.response.out.write(page)
 
 class HiscoresHandler(RequestHandler):
     def get(self, request=None, response=None):

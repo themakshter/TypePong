@@ -15,7 +15,7 @@ $(function() {
 
             var completeFunc = function(data) {
                 if (data.success === "true") {
-                    window.location.href = "/game";
+                    window.location.href = "/campaign";
                 }
                 function setText(div, text) {
                     if(typeof text === "undefined")
@@ -26,7 +26,7 @@ $(function() {
                 setText($("#username_error"), data.username_error);
                 setText($("#password_error"), data.password_error);
             };
-            
+
             $.post(url, values, completeFunc).fail(function(xhr, ajaxOptions, thrownError){console.log(thrownError)});
         });
     }
@@ -37,5 +37,5 @@ $(function() {
     $(document).tooltip({
         track: true
     });
-    
+
 });

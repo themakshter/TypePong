@@ -16,9 +16,18 @@
     <p id="stats"></p>
 </div>
 
-<script src="static/paddle.js" type="text/javascript" ></script>
+{% block game_mode %}
+{% endblock %}
+
+<script src="static/utils.js" type="text/javascript" ></script>
+<script src="static/pong_paddle.js" type="text/javascript" ></script>
+<script src="static/pong_ai.js" type="text/javascript" ></script>
+<script src="static/pong_clock.js" type="text/javascript" ></script>
 <script src="static/pong_draw.js" type="text/javascript" ></script>
+<script src="static/pong_run.js" type="text/javascript" ></script>
+<script src="static/pong_words.js" type="text/javascript" ></script>
 <script src="static/pong.js" type="text/javascript" ></script>
+<script src="static/pong_listeners.js" type="text/javascript" ></script>
 {% endblock %}
 
 {% block left_content %}
