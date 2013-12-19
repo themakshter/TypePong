@@ -11,8 +11,6 @@ var wordList = [];
 var currentWords = [];
 var intervalID;
 var aiLevel;
-var oldTime;
-var newTime;
 var start_ball = true;
 var hosting = true;
 
@@ -83,7 +81,7 @@ var init = function () {
 /**
  * Receive a message from another player
  */
- var receiveMessage = function(message) {
+var receiveMessage = function (message) {
     //[TODO] : Actually deal with messages
     console.log("receive " + message.data);
 
@@ -97,7 +95,7 @@ var init = function () {
                 paddle2.moveTo(data.dest_y);
             }
     }
- }
+}
 
 /**
  * Calculates positions where the paddles can move.
@@ -223,15 +221,6 @@ var loseGame = function () {
             //TODO: as with winGame()
     }
 };
-
-// [TODO]
-/**
- * Fetches the game mode from the server (campaign, pvp, custom etc.)
- */
-var fetchMode = (function () {
-    'use strict';
-    return 'campaign';
-});
 
 //[TODO]
 /**
