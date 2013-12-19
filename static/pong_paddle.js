@@ -77,7 +77,7 @@ var Paddle = function (xPos, yPos,playerType) {
         } else {
             number = Math.round(Math.random() * sample_size);
         }
-        if (number <= 5) {
+        if (number <= 5 and this.playerType === "ai") {
             // speed = -speed;
             yPos = canvas.height - yPos;
         }
