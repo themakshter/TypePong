@@ -1,4 +1,4 @@
-/*
+/**
  * Draws the ball.
  */
 var circle = function (x, y, r) {
@@ -27,7 +27,7 @@ var drawCanvas = function (x, y, w, h) {
     }
 };
 
-/*
+/**
  * Draws the canvas and the paddles.
  */
 var drawPaddles = function (x, y, w, h) {
@@ -40,7 +40,7 @@ var drawPaddles = function (x, y, w, h) {
 var clear = function () {
     'use strict';
 
-    ctx.clearRect(0, 0, canvas_width, canvas_height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 };
 
 /**
@@ -57,10 +57,13 @@ var drawPositions = function (pos) {
     }
 };
 
-/** Draw score for left paddle at (x1, y1) and for
- *  right paddle at (x2, y2)
+/**
+ * Draw score for left paddle at (x1, y1) and for
+ * right paddle at (x2, y2)
  */
 var drawScore = function (x1, y1, x2, y2) {
+    'use strict';
+
     ctx.fillStyle = "#FFFFFF";
     ctx.font = "75px Share Tech";
     ctx.fillText(paddle1.score, x1, y1, 50);

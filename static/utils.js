@@ -1,4 +1,6 @@
 var padNumber = function (number, pad, len) {
+    'use strict';
+
     var retval, n, padded;
 
     retval = number.toString();

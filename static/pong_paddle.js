@@ -1,4 +1,4 @@
-/*
+/**
  * Paddle object
  */
 var Paddle = function (xPos, yPos,playerType) {
@@ -41,8 +41,8 @@ var Paddle = function (xPos, yPos,playerType) {
         if (this.reqyPos < 0) {
             this.reqyPos = 0;
         }
-        if (this.reqyPos > (canvas_height - this.height)) {
-            this.reqyPos = canvas_height - this.height;
+        if (this.reqyPos > (canvas.height - this.height)) {
+            this.reqyPos = canvas.height - this.height;
         }
         if ((this.dy * (this.yPos - this.reqyPos) < 0)) {
             this.yPos += this.dy;

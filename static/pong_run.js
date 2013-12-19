@@ -16,13 +16,13 @@ var update = function () {
             paddle2.hitsHorizontalFace(x + dx, y + dy)) {
         dx = -dx;
         tryAndMove(paddle1);
-    } else if (y + dy + circle_radius > canvas_height ||
+    } else if (y + dy + circle_radius > canvas.height ||
                y + dy - circle_radius < 0 ||
                paddle1.hitsVerticalFace(x + dx, y + dy) ||
                paddle2.hitsVerticalFace(x + dx, y + dy)) {
         dy = -dy;
         tryAndMove(paddle1);
-    } else if (x + dx + circle_radius > canvas_width) {
+    } else if (x + dx + circle_radius > canvas.width) {
         paddle1.score += 1;
         dx = -dx;
         resetBall();
@@ -35,7 +35,7 @@ var update = function () {
     y += dy;
 };
 
-/*
+/**
  * Draws all graphical elements.
  */
 var draw = function () {
@@ -45,15 +45,22 @@ var draw = function () {
 
     clear();
     ctx.fillStyle = "#000000";
-    drawCanvas(0, 0, canvas_width, canvas_height);
+    drawCanvas(0, 0, canvas.width, canvas.height);
     drawPaddles();
     ctx.fillStyle = "#FFFFFF";
     circle(x, y, circle_radius);
 
     pos = markPositions(3);
     drawPositions(pos);
-    clockDraw(seconds, minutes);
-    drawScore(305, 75, 400, 75);
+
+    switch (mode) {
+        case 'campaign':
+            drawScore(305, 75, 400, 75);
+            break;
+        case 'challenge':
+            clockDraw(seconds, minutes);
+            break;
+    }
 
     if (paddle1.score >= endingScore) {
         loseGame();
