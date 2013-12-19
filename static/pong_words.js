@@ -43,7 +43,7 @@ var resetAllColors = function () {
 
     var id;
     for (id = 0; id < currentWords.length; id += 1) {
-        updateColor(id, 'black');
+        updateColor(id, '');
     }
 };
 
