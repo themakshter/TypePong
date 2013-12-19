@@ -90,10 +90,10 @@ var Paddle = function (xPos, yPos,playerType) {
         this.dy = dest_y < this.yPos ? -speed : speed;
 
         if (dest_y < 0) {
-            dest_y = 0;
+            dest_y = 0 + circle_radius;
         }
         if (dest_y > (canvas.height - this.height)) {
-            dest_y = canvas.height - this.height;
+            dest_y = canvas.height - this.height - circle_radius;
         }
 
         this.reqyPos = dest_y;
