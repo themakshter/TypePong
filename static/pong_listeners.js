@@ -4,7 +4,7 @@
 window.onkeyup = (function () {
     'use strict';
 
-    var i, typeElem, pos, newyPos;
+    var i, typeElem, pos;
 
     typeElem = $('#typing');
     pos = markPositions(3);
@@ -25,18 +25,8 @@ window.onkeyup = (function () {
             }
 
             if (typedLC === currentWordLC) {
-                var ballYPos = calculateHitYPos(x,y,dx,dy,paddle2.xPos);
-                var speed = Math.abs(paddle2.dy);
-                var startSeg = canvas.height * (i/pos.length);
-                var endSeg   = canvas.height * ((i+1)/pos.length);
-
-                newyPos = pos[i] - paddle2.height / 2;
-                if (ballYPos > startSeg && ballYPos < endSeg) {
-                    tryAndMove(paddle2);
-                } else {
-                    paddle2.dy = newyPos < paddle2.yPos ? -speed : speed;
-                    paddle2.reqyPos = Math.round(newyPos);
-                }
+                paddle1.wordTyped(pos, i);
+                paddle2.wordTyped(pos, i);
                 typeElem.val('');
                 updateWords(i);
                 resetAllColors();

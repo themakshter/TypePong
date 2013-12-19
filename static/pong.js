@@ -42,9 +42,9 @@ var init = function () {
                 if (!data.game_found) {
                     // if no game found, create a game instead
                     createGame(function() {}, receiveMessage);
-                    set_paddles("ai", "player");
+                    set_paddles("player", "player");
                 } else {
-                    set_paddles("player", "ai");
+                    set_paddles("player", "player");
                 }
             }
 
@@ -121,7 +121,8 @@ var resetBall = function () {
     y = canvas.height / 2;
     tempX = dx;
     tempY = dy;
-    tryAndMove(paddle1);
+    paddle1.update();
+    paddle2.update();
     dx = dy = 0;
     setTimeout(function () {
         dx = tempX;
