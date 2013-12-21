@@ -4,17 +4,13 @@ var x = 750;
 var y = 500;
 var dx = 2;
 var dy = 2;
-var x_startPos = 350;
-var y_startPos = 350;
-var circle_radius = 10;
-var wordList = [];
-var currentWords = [];
-var intervalID;
+var xStartPos = 350;
+var yStartPos = 350;
 var aiLevel;
-var oldTime;
-var newTime;
-var start_ball = true;
+var startBall = true;
 var hosting = true;
+
+var color = "#FFFFFF";
 
 
 /**
@@ -26,14 +22,14 @@ var init = function () {
     var i;
     canvas = document.getElementById("layer1");
     ctx = canvas.getContext("2d");
-    x = x_startPos;
-    y = y_startPos;
+    x = xStartPos;
+    y = yStartPos;
 
     switch (mode) {
         case 'campaign':
             //[TODO] : 1. Set length of words in sampler.py according to level.
             //[TODO] : 2. Set AI difficulty level accordingly. Make AI correspond to levels.
-            set_paddles("ai", "player");
+            setPaddles("ai", "player");
             break;
 
         case 'pvp':
@@ -44,10 +40,10 @@ var init = function () {
                     // if no game found, create a game instead
                     createGame(function() {}, receiveMessage);
                     hosting = true;
-                    set_paddles("remote", "player");
+                    setPaddles("remote", "player");
                 } else {
                     hosting = false;
-                    set_paddles("player", "remote");
+                    setPaddles("player", "remote");
                 }
             }
 
@@ -59,12 +55,12 @@ var init = function () {
         case 'challenge':
             initClockDraw();
             aiLevel = 0; //Perfect mode. levels from 1 to 5
-            set_paddles("ai", "player");
+            setPaddles("ai", "player");
             break;
 
         case 'custom':
             //[TODO] Optional Mode
-            set_paddles("ai", "player");
+            setPaddles("ai", "player");
             break;
 
         default:
@@ -83,7 +79,7 @@ var init = function () {
 /**
  * Receive a message from another player
  */
- var receiveMessage = function(message) {
+var receiveMessage = function (message) {
     //[TODO] : Actually deal with messages
     console.log("receive " + message.data);
 
@@ -97,7 +93,7 @@ var init = function () {
                 paddle2.moveTo(data.dest_y);
             }
     }
- }
+}
 
 /**
  * Calculates positions where the paddles can move.
@@ -112,13 +108,13 @@ var markPositions = function (n) {
     return pos;
 };
 
-var paddle1 = new Paddle(50, 200,"ai");
-var paddle2 = new Paddle(700, 200,"player");
+var paddle1 = new Paddle(50, 200, "ai");
+var paddle2 = new Paddle(700, 200, "player");
 
 /**
  * Set the paddle behaviour: parameters can be "ai", "player" or "remote"
  */
-var set_paddles = function (type1, type2) {
+var setPaddles = function (type1, type2) {
     paddle1.playerType = type1;
     paddle2.playerType = type2;
 }
@@ -131,7 +127,7 @@ var resetBall = function () {
 
     var tempX, tempY;
 
-    start_ball = true;
+    startBall = true;
     x = canvas.width / 2;
     y = canvas.height / 2;
     tempX = dx;
@@ -159,8 +155,6 @@ var displayMessage = function (message) {
     ctx2 = layer2.getContext("2d");
 
     ctx2.font = "50px Share Tech";
-    ctx2.fillStyle = "#FFFFFF";
-    msgWidth = ctx2.measureText(message).width;
 
     ctx2.fillText(message, (canvas.width / 2) - (msgWidth / 2),
             canvas.height / 2);
@@ -203,7 +197,6 @@ var winGame = function () {
 var loseGame = function () {
     'use strict';
     displayMessage("Too bad. Better luck next time!");
-    var loseString, loseWidth, layer2, ctx2;
 
     switch (mode) {
         case 'challenge':
@@ -217,15 +210,6 @@ var loseGame = function () {
             //TODO: as with winGame()
     }
 };
-
-// [TODO]
-/**
- * Fetches the game mode from the server (campaign, pvp, custom etc.)
- */
-var fetchMode = (function () {
-    'use strict';
-    return 'campaign';
-});
 
 //[TODO]
 /**

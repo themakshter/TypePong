@@ -7,7 +7,7 @@ html {
 }
 
 body {
-    background-color: #FF8723; /* bright orage */
+    background-color: #919191;
     margin: 0px;
     padding: 0px;
     height: 100%;
@@ -25,16 +25,17 @@ a:link, a:visited {
 #header {
     width: 100%;
     height: 130px;
-    background-color: black;
+    background-image: url('headerbg.png');
     text-align: center;
 }
 
 #title {
     display: inline-block;
-    font-size: 100px;
-    color: #33DE18;
-    padding-top: 5px;
-    height: 125px;
+    color: black;
+    margin-top: 20px;
+    font-size: 85px;
+    letter-spacing: 0.05em;
+    font-weight:900;
 }
 
 #container {
@@ -125,9 +126,10 @@ iframe {
 .centre_content {
     width: 750px;
     height: 500px;
-    margin: 30px 10px;
+    margin: 30px 9px;
     background-color: black;
     float: left;
+    border: 1px solid white;
 }
 
 .bottom_content {
@@ -170,10 +172,17 @@ th {
 /* Sidebard related */
 .sidebar {
     overflow: auto;
-    background-color: black;
-    color: #6AF255;
-    font-size: 20px;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
     height: 100%;
+    text-align: center;
+}
+
+.box {
+    color: #009C0D;
+    background-color: #5F5F5F;
+    border: 1px solid white;
 }
 
 .space {
@@ -195,7 +204,7 @@ th {
 }
 
 .link:hover {
-    color: #4EAD3E;
+    color: #B86827;
 }
 
 /* JQuery UI tool tips */
@@ -217,15 +226,15 @@ th {
 .word {
     margin: 0px 10px;
     font-size: 25px;
-    color: #4EAD3E;
+    color: white;
 }
 
 .wrong-word {
-    color: #FF8723;
+    color: #DD0000;
 }
 
 .correct-word {
-    color: #6AF255;
+    color: #009C0D;
 }
 
 .wordspacer {
@@ -233,12 +242,11 @@ th {
     width: 100%;
 }
 
-.left-word {
-    text-align: right;
-}
-
-.right-word {
-    text-align: left;
+#typing-bar {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    font-size: 30px;
 }
 
 #typing {
@@ -251,7 +259,7 @@ th {
     color: #4EAD3E;
 }
 
-.pongblur{
+.pongblur {
     filter: blur(3px);
     -webkit-filter: blur(3px);
     opacity: .5;
