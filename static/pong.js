@@ -155,6 +155,8 @@ var displayMessage = function (message) {
     ctx2 = layer2.getContext("2d");
 
     ctx2.font = "50px Share Tech";
+    ctx2.fillStyle = color;
+    msgWidth = ctx2.measureText(message).width;
 
     ctx2.fillText(message, (canvas.width / 2) - (msgWidth / 2),
             canvas.height / 2);
