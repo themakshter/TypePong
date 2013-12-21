@@ -41,12 +41,12 @@ var init = function () {
                     // if no game found, create a game instead
                     createGame(function() {}, receiveMessage);
                     hosting = true;
-                    setPaddles("player", "ai");
+                    setPaddles("remote", "player");
                     displayMessage("Waiting for player");
                     gamePaused = true;
                 } else {
                     hosting = false;
-                    setPaddles("ai", "player");
+                    setPaddles("player", "remote");
                     ticks = 0;
                     gamePaused = false;
                 }
