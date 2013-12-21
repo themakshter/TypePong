@@ -4,8 +4,6 @@ var x = 750;
 var y = 500;
 var dx = 2;
 var dy = 2;
-var xStartPos = 350;
-var yStartPos = 350;
 var aiLevel;
 var startBall = true;
 var hosting = true;
@@ -23,8 +21,8 @@ var init = function () {
     var i;
     canvas = document.getElementById("layer1");
     ctx = canvas.getContext("2d");
-    x = xStartPos;
-    y = yStartPos;
+    x = canvas.width / 2;
+    y = canvas.height / 2;
 
     switch (mode) {
         case 'campaign':
