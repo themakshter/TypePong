@@ -145,6 +145,27 @@ var resetBall = function () {
     }, 1000);
 };
 
+/**
+ * Pauses the game and displays a message.
+ */
+var displayMessage = function (message) {
+    'use strict';
+    var msgWidth, layer2, ctx2;
+
+    gameActive = false;
+
+    blurCanvas();
+    layer2 = document.getElementById("layer2");
+    ctx2 = layer2.getContext("2d");
+
+    ctx2.font = "50px Share Tech";
+    ctx2.fillStyle = "#FFFFFF";
+    msgWidth = ctx2.measureText(message).width;
+
+    ctx2.fillText(message, (canvas.width / 2) - (msgWidth / 2),
+            canvas.height / 2);
+}
+
 var blurCanvas = function() {
     'use strict';
 
@@ -157,21 +178,7 @@ var blurCanvas = function() {
  */
 var winGame = function () {
     'use strict';
-    var winString, winWidth, layer2, ctx2;
-
-    gameActive = false;
-
-    blurCanvas();
-    layer2 = document.getElementById("layer2");
-    ctx2 = layer2.getContext("2d");
-
-    ctx2.font = "50px Share Tech";
-    ctx2.fillStyle = "#FFFFFF";
-    winString = "Good job!";
-    winWidth = ctx2.measureText(winString).width;
-
-    ctx2.fillText(winString, (canvas.width / 2) - (winWidth / 2),
-            canvas.height / 2);
+    displayMessage("Good job!");
 
     //Each mode has a different victory result / score.
     switch (mode) {
@@ -195,21 +202,8 @@ var winGame = function () {
  */
 var loseGame = function () {
     'use strict';
+    displayMessage("Too bad. Better luck next time!");
     var loseString, loseWidth, layer2, ctx2;
-
-    gameActive = false;
-
-    blurCanvas();
-    layer2 = document.getElementById("layer2");
-    ctx2 = layer2.getContext("2d");
-
-    ctx2.font = "50px Share Tech";
-    ctx2.fillStyle = "#FFFFFF";
-    loseString = "Too bad. Better luck next time!";
-    loseWidth = ctx2.measureText(loseString).width;
-
-    ctx2.fillText(loseString, (canvas.width / 2) - (loseWidth / 2),
-            canvas.height / 2);
 
     switch (mode) {
         case 'challenge':
