@@ -104,7 +104,6 @@ var Paddle = function (xPos, yPos,playerType) {
 
         // send that we're moving to other player if in pvp;
         if (this.playerType === "player" && mode === "pvp") {
-            console.log("sending " + destY);
             if (isNaN(destY)) {
                 console.log(new Error().stack);
             }
