@@ -103,10 +103,7 @@ var Paddle = function (xPos, yPos,playerType) {
         this.reqyPos = destY;
 
         // send that we're moving to other player if in pvp;
-        if (this.playerType === "player" && mode === "pvp") {
-            if (isNaN(destY)) {
-                console.log(new Error().stack);
-            }
+        if (this.playerType !== "remote" && mode === "pvp") {
             sendMessage(JSON.stringify({
                 "type": "paddle_move",
                 "destY": destY

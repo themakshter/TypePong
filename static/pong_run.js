@@ -10,35 +10,66 @@ window.requestAnimFrame = (function (){
 })();
 
 var gameActive = true;
-var gamePaused = false;
+var gamePaused = true;
 
 var update = function () {
     ticks++;
 
-    if (paddle1.hitsHorizontalFace(x + dx, y + dy) ||
-            paddle2.hitsHorizontalFace(x + dx, y + dy)) {
-        dx = -dx;
-        paddle1.update();
-        paddle2.update();
-    } else if (y + dy + circleRadius > canvas.height ||
-               y + dy - circleRadius < 0 ||
-               paddle1.hitsVerticalFace(x + dx, y + dy) ||
-               paddle2.hitsVerticalFace(x + dx, y + dy)) {
-        dy = -dy;
-        paddle1.update();
-        paddle2.update();
+    var paddle1_bounce = false, paddle2_bounce = false;
+
+    if (paddle1.hitsHorizontalFace(x + dx, y + dy) && dx < 0) {
+        bounce(true);
+        paddle1_bounce = true;
+    } else if (paddle2.hitsHorizontalFace(x + dx, y + dy) && dx > 0) {
+        bounce(true);
+        paddle2_bounce = true;
+    } else if  (paddle1.hitsVerticalFace(x + dx, y + dy)) {
+        bounce(false);
+        paddle1_bounce = true;
+    } else if (paddle2.hitsVerticalFace(x + dx, y + dy)) {
+        bounce(false);
+        paddle2_bounce = true;
+    } else if (y + dy - circleRadius < 0 && dy < 0) {
+        bounce(false);
+    } else if (y + dy + circleRadius > canvas.height && dy > 0) {
+        bounce(false);
     } else if (x + dx + circleRadius > canvas.width) {
         paddle1.score += 1;
         dx = -dx;
         resetBall();
+        console.log(ticks);
     } else if (x + dx - circleRadius < 0) {
         paddle2.score += 1;
         dx = -dx;
         resetBall();
+        console.log(ticks);
     }
     x += dx;
     y += dy;
+
+    if ((paddle1_bounce && paddle2.playerType === "remote") ||
+        (paddle2_bounce && paddle1.playerType === "remote")) {
+        // send message about ball bouncing
+        sendMessage(JSON.stringify({
+            "type": "ball_update",
+            "x": x,
+            "y": y,
+            "dx": dx,
+            "dy": dy,
+            "ticks": ticks
+        }));
+    }
 };
+
+var bounce = function(onX) {
+    if (onX) {
+        dx = -dx;
+    } else {
+        dy = -dy;
+    }
+    paddle1.update();
+    paddle2.update();
+}
 
 /**
  * Draws all graphical elements.

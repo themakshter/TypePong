@@ -47,5 +47,6 @@ var leaveGame = function () {
 
 var sendMessage = function (message) {
     msg = {user: $.cookie("user"), game_key: current_game, message: message}
+    console.log("send " + message);
     $.post('/_message', msg);
 };

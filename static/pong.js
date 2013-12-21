@@ -4,6 +4,7 @@ var x = 750;
 var y = 500;
 var dx = 2;
 var dy = 2;
+var tempDx, tempDy;
 var aiLevel;
 var startBall = true;
 var hosting = true;
@@ -29,6 +30,7 @@ var init = function () {
             //[TODO] : 1. Set length of words in sampler.py according to level.
             //[TODO] : 2. Set AI difficulty level accordingly. Make AI correspond to levels.
             setPaddles("ai", "player");
+            gamePaused = false;
             break;
 
         case 'pvp':
@@ -39,11 +41,14 @@ var init = function () {
                     // if no game found, create a game instead
                     createGame(function() {}, receiveMessage);
                     hosting = true;
-                    setPaddles("remote", "player");
+                    setPaddles("player", "ai");
                     displayMessage("Waiting for player");
+                    gamePaused = true;
                 } else {
                     hosting = false;
-                    setPaddles("player", "remote");
+                    setPaddles("ai", "player");
+                    ticks = 0;
+                    gamePaused = false;
                 }
             }
 
@@ -56,11 +61,13 @@ var init = function () {
             initClockDraw();
             aiLevel = 0; //Perfect mode. levels from 1 to 5
             setPaddles("ai", "player");
+            gamePaused = false;
             break;
 
         case 'custom':
             //[TODO] Optional Mode
             setPaddles("ai", "player");
+            gamePaused = false;
             break;
 
         default:
@@ -89,14 +96,25 @@ var receiveMessage = function (message) {
         case 'join':
             // hide waiting message and resume game
             hideMessage();
+
+            ticks = 0;
+            gamePaused = false;
             break;
         case 'paddle_move':
             if (paddle1.playerType === "remote") {
-                paddle1.moveTo(data.dest_y);
+                paddle1.moveTo(data.destY);
             } else {
-                paddle2.moveTo(data.dest_y);
+                paddle2.moveTo(data.destY);
             }
             break;
+        case 'ball_update':
+            dx = data.dx;
+            dy = data.dy;
+            x = data.x + dx * (ticks - data.ticks);
+            y = data.y + dy * (ticks - data.ticks);
+        case 'ball_reset':
+            tempDx = data.dx;
+            tempDy = data.dy;
     }
 }
 
@@ -130,19 +148,44 @@ var setPaddles = function (type1, type2) {
 var resetBall = function () {
     'use strict';
 
-    var tempX, tempY;
-
     startBall = true;
     x = canvas.width / 2;
     y = canvas.height / 2;
-    tempX = dx;
-    tempY = dy;
     paddle1.update();
     paddle2.update();
+
+    // only choose velocity if singleplayer or hosting
+    if (hosting || mode !== "pvp") {
+        // choose velocity here
+        tempDx = dx;
+        tempDy = dy;
+
+        if (mode === "pvp") {
+            sendMessage(JSON.stringify({
+                "type": "ball_reset",
+                "dx": tempDx,
+                "dy": tempDy
+            }));
+        }
+    }
+
     dx = dy = 0;
+
     setTimeout(function () {
-        dx = tempX;
-        dy = tempY;
+        dx = tempDx;
+        dy = tempDy;
+
+        // send message if player 1
+        if (hosting && mode === "pvp") {
+            sendMessage(JSON.stringify({
+                "type": "ball_update",
+                "x": x,
+                "y": y,
+                "dx": dx,
+                "dy": dy,
+                "ticks": ticks
+            }));
+        }
     }, 1000);
 };
 
@@ -152,8 +195,6 @@ var resetBall = function () {
 var displayMessage = function (message) {
     'use strict';
     var msgWidth, layer2, ctx2;
-
-    gamePaused = true;
 
     $(canvas).addClass("pongblur");
     layer2 = document.getElementById("layer2");
@@ -173,9 +214,6 @@ var displayMessage = function (message) {
 var hideMessage = function() {
     'use strict';
     var layer2, ctx2;
-
-    ticks = 0;
-    gamePaused = false;
 
     $(canvas).removeClass("pongblur");
     layer2 = document.getElementById("layer2");
