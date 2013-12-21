@@ -26,7 +26,7 @@ class Game(db.Model):
 
         # send join message to first player
         message = {
-            'message': 'join',
+            'type': 'join',
             'user': user_2
         }
 
@@ -114,7 +114,7 @@ class LeaveGame(RequestHandler):
 
         # send leave message to other user
         message = {
-            'message': 'leave',
+            'type': 'leave',
             'user': user
         }
 

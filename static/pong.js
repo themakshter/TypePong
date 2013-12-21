@@ -41,6 +41,7 @@ var init = function () {
                     createGame(function() {}, receiveMessage);
                     hosting = true;
                     setPaddles("remote", "player");
+                    displayMessage("Waiting for player");
                 } else {
                     hosting = false;
                     setPaddles("player", "remote");
@@ -86,12 +87,17 @@ var receiveMessage = function (message) {
     var data = JSON.parse(message.data);
 
     switch(data.type) {
+        case 'join':
+            console.log("A join message!");
+            hideMessage();
+            break;
         case 'paddle_move':
             if (paddle1.playerType === "remote") {
                 paddle1.moveTo(data.dest_y);
             } else {
                 paddle2.moveTo(data.dest_y);
             }
+            break;
     }
 }
 
@@ -150,7 +156,7 @@ var displayMessage = function (message) {
 
     gameActive = false;
 
-    blurCanvas();
+    $(canvas).addClass("pongblur");
     layer2 = document.getElementById("layer2");
     ctx2 = layer2.getContext("2d");
 
@@ -162,10 +168,20 @@ var displayMessage = function (message) {
             canvas.height / 2);
 }
 
-var blurCanvas = function() {
+/**
+ * Hide displayed message and resume game.
+ */
+var hideMessage = function() {
     'use strict';
+    var layer2, ctx2;
 
-    $(canvas).addClass("pongblur");
+    gameActive = true;
+
+    $(canvas).removeClass("pongblur");
+    layer2 = document.getElementById("layer2");
+    ctx2 = layer2.getContext("2d");
+
+    ctx2.clearRect(0, 0, layer2.width, layer2.height);
 }
 
 //[TODO]
