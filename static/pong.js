@@ -9,6 +9,7 @@ var yStartPos = 350;
 var aiLevel;
 var startBall = true;
 var hosting = true;
+var ticks = 0;
 
 var color = "#FFFFFF";
 
@@ -88,7 +89,7 @@ var receiveMessage = function (message) {
 
     switch(data.type) {
         case 'join':
-            console.log("A join message!");
+            // hide waiting message and resume game
             hideMessage();
             break;
         case 'paddle_move':
@@ -154,7 +155,7 @@ var displayMessage = function (message) {
     'use strict';
     var msgWidth, layer2, ctx2;
 
-    gameActive = false;
+    gamePaused = true;
 
     $(canvas).addClass("pongblur");
     layer2 = document.getElementById("layer2");
@@ -175,7 +176,8 @@ var hideMessage = function() {
     'use strict';
     var layer2, ctx2;
 
-    gameActive = true;
+    ticks = 0;
+    gamePaused = false;
 
     $(canvas).removeClass("pongblur");
     layer2 = document.getElementById("layer2");
@@ -190,6 +192,7 @@ var hideMessage = function() {
  */
 var winGame = function () {
     'use strict';
+    gameActive = false;
     displayMessage("Good job!");
 
     //Each mode has a different victory result / score.
@@ -214,6 +217,7 @@ var winGame = function () {
  */
 var loseGame = function () {
     'use strict';
+    gameActive = false;
     displayMessage("Too bad. Better luck next time!");
 
     switch (mode) {

@@ -10,8 +10,11 @@ window.requestAnimFrame = (function (){
 })();
 
 var gameActive = true;
+var gamePaused = false;
 
 var update = function () {
+    ticks++;
+
     if (paddle1.hitsHorizontalFace(x + dx, y + dy) ||
             paddle2.hitsHorizontalFace(x + dx, y + dy)) {
         dx = -dx;
@@ -77,7 +80,11 @@ var gameLoop = function () {
     'use strict';
 
     draw();
-    update();
+
+    if (!gamePaused) {
+        update();
+    }
+
     if (gameActive) {
         requestAnimFrame(gameLoop);
     }
