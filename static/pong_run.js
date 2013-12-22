@@ -36,6 +36,9 @@ var update = function () {
     } else if (x + dx > canvas.width + circleRadius) {
         if (mode !== "pvp" || paddle2.playerType === "player") {
             paddle1.score += 1;
+        }
+
+        if (mode === "pvp") {
             sendMessage(JSON.stringify({
                 "type": "score_change",
                 "score1": paddle1.score,
@@ -46,6 +49,9 @@ var update = function () {
     } else if (x + dx < -circleRadius) {
         if (mode !== "pvp" || paddle1.playerType === "player") {
             paddle2.score += 1;
+        }
+
+        if (mode === "pvp") {
             sendMessage(JSON.stringify({
                 "type": "score_change",
                 "score1": paddle1.score,
