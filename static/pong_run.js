@@ -33,16 +33,26 @@ var update = function () {
         bounce(false);
     } else if (y + dy + circleRadius > canvas.height && dy > 0) {
         bounce(false);
-    } else if (x + dx + circleRadius > canvas.width) {
-        paddle1.score += 1;
-        dx = -dx;
+    } else if (x + dx > canvas.width + circleRadius) {
+        if (mode !== "pvp" || paddle2.playerType === "player") {
+            paddle1.score += 1;
+            sendMessage(JSON.stringify({
+                "type": "score_change",
+                "score1": paddle1.score,
+                "score2": paddle2.score
+            }));
+        }
         resetBall();
-        console.log(ticks);
-    } else if (x + dx - circleRadius < 0) {
-        paddle2.score += 1;
-        dx = -dx;
+    } else if (x + dx < -circleRadius) {
+        if (mode !== "pvp" || paddle1.playerType === "player") {
+            paddle2.score += 1;
+            sendMessage(JSON.stringify({
+                "type": "score_change",
+                "score1": paddle1.score,
+                "score2": paddle2.score
+            }));
+        }
         resetBall();
-        console.log(ticks);
     }
     x += dx;
     y += dy;
@@ -96,14 +106,27 @@ var draw = function () {
         case 'challenge':
             clockDraw(seconds, minutes);
             break;
+        case 'pvp':
+            drawScore(305, 75, 400, 75);
+            break;
     }
 
     if (paddle1.score >= endingScore) {
-        loseGame();
-        return;
+        if (paddle1.playerType === "player") {
+            winGame();
+            return;
+        } else {
+            loseGame();
+            return;
+        }
     } else if (paddle2.score >= endingScore) {
-        winGame();
-        return;
+        if (paddle2.playerType === "player") {
+            winGame();
+            return;
+        } else {
+            loseGame();
+            return;
+        }
     }
 };
 

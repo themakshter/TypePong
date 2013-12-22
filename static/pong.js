@@ -34,8 +34,6 @@ var init = function () {
             break;
 
         case 'pvp':
-            //[TODO]
-
             var returnFunc = function(data) {
                 if (!data.game_found) {
                     // if no game found, create a game instead
@@ -87,7 +85,6 @@ var init = function () {
  * Receive a message from another player
  */
 var receiveMessage = function (message) {
-    //[TODO] : Actually deal with messages
     console.log("receive " + message.data);
 
     var data = JSON.parse(message.data);
@@ -112,9 +109,15 @@ var receiveMessage = function (message) {
             dy = data.dy;
             x = data.x + dx * (ticks - data.ticks);
             y = data.y + dy * (ticks - data.ticks);
+            break
         case 'ball_reset':
             tempDx = data.dx;
             tempDy = data.dy;
+            break;
+        case 'score_change':
+            paddle1.score = data.score1;
+            paddle2.score = data.score2;
+            break
     }
 }
 
@@ -143,7 +146,7 @@ var setPaddles = function (type1, type2) {
 }
 
 /**
- * Resets the ball to the central position. Adds a 1-second pause.
+ * Resets the ball to the central position. Adds a pause length timeout.
  */
 var resetBall = function () {
     'use strict';
@@ -157,8 +160,8 @@ var resetBall = function () {
     // only choose velocity if singleplayer or hosting
     if (hosting || mode !== "pvp") {
         // choose velocity here
-        tempDx = dx;
-        tempDy = dy;
+        tempDx = -dx;
+        tempDy = -dy;
 
         if (mode === "pvp") {
             sendMessage(JSON.stringify({
