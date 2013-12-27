@@ -47,6 +47,7 @@ var init = function () {
                     setPaddles("player", "remote");
                     ticks = 0;
                     gamePaused = false;
+                    resetBall();
                 }
             }
 
@@ -78,6 +79,10 @@ var init = function () {
         updateWords(i);
     }
 
+    if (mode !== 'pvp') {
+        resetBall()
+    }
+
     gameLoop();
 };
 
@@ -96,6 +101,7 @@ var receiveMessage = function (message) {
 
             ticks = 0;
             gamePaused = false;
+            resetBall();
             break;
         case 'paddle_move':
             if (paddle1.playerType === "remote") {
@@ -146,7 +152,7 @@ var setPaddles = function (type1, type2) {
 }
 
 /**
- * Resets the ball to the central position. Adds a pause length timeout.
+ * Resets the ball to the central position. Adds a one second timeout.
  */
 var resetBall = function () {
     'use strict';
@@ -177,6 +183,8 @@ var resetBall = function () {
     setTimeout(function () {
         dx = tempDx;
         dy = tempDy;
+        paddle1.update();
+        paddle2.update();
 
         // send message if player 1
         if (hosting && mode === "pvp") {
