@@ -82,7 +82,7 @@ def _read_user(username):
 
 def _write_user(username, pass_hash, salt):
     '''writes new user to users database'''
-    RegularPlayer(username=username, password=str(pass_hash) + str(salt), hiScore=0, campaignLevel=0, pvpRating=0).put()
+    RegularPlayer(username=username, password=str(pass_hash) + str(salt), hiScore=0, campaignLevel=0, pvpRating=1500).put()
 
 def _hash_password(password, salt):
     '''returns a salted and hashed password with the salt'''

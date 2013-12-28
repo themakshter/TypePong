@@ -15,7 +15,7 @@ var setUpGame = function (data) {
  * returnFunc is a callback function when createGame returns response
  */
 var createGame = function (returnFunc, messageFunc) {
-    msg = {user: $.cookie("user")}
+    msg = {user: $.cookie("user"), ELO: $.cookie("ELO")}// TODO fix hardcoded elo
     $.post('/_create', msg, function(data) {
         setUpGame(data);
         socket.onmessage = messageFunc;
@@ -29,7 +29,7 @@ var createGame = function (returnFunc, messageFunc) {
  * if game key is "", joins a random game!
  */
 var joinGame = function (game_key, returnFunc, messageFunc) {
-    msg = {user: $.cookie("user"), game_key: game_key}
+    msg = {user: $.cookie("user"),ELO: $.cookie("ELO"), game_key: game_key} //TODO fix hardocded elo
     $.post('/_join', msg, function(data) {
         if (data.game_found) {
             setUpGame(data);

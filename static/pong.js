@@ -40,9 +40,11 @@ var init = function () {
                     createGame(function() {}, receiveMessage);
                     hosting = true;
                     setPaddles("remote", "player");
-                    displayMessage("Waiting for player");
+                    hideMessage();
+                    displayMessage("Waiting.. No players online");
                     gamePaused = true;
                 } else {
+                    hideMessage();
                     hosting = false;
                     setPaddles("player", "remote");
                     ticks = 0;
@@ -52,7 +54,10 @@ var init = function () {
             }
 
             // try and join a random game
+            displayMessage("Searching for a match");
+            gamePaused = true;
             joinGame("", returnFunc, receiveMessage);
+    
 
             break;
 
@@ -98,7 +103,6 @@ var receiveMessage = function (message) {
         case 'join':
             // hide waiting message and resume game
             hideMessage();
-
             ticks = 0;
             gamePaused = false;
             resetBall();
@@ -253,7 +257,8 @@ var winGame = function () {
             break;
 
         case 'custom':
-            //[TODO] Optional Mode - who cares.
+            //[TODO] Optional Mode - who cares. 
+
             break;
     }
 };

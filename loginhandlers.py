@@ -1,5 +1,14 @@
 from webapp2 import RequestHandler, WSGIApplication
+
+from google.appengine.ext import db
+from google.appengine.ext.db import polymodel
+
+from player import Player
+from player import RegularPlayer 
+from player import FacebookPlayer
+
 import cgi
+
 # import Cookie
 import login
 import json
@@ -21,6 +30,10 @@ class FacebookLogin(RequestHandler):
         else:
             reply['success'] = "true"
             self.response.set_cookie("user", value=username)
+            player = db.GqlQuery("SELECT * FROM Player WHERE username =  :1", username)
+            ELO = player.get().pvpRating
+            self.response.set_cookie("ELO", value=ELO)
+            # self.response.set_cookie("ELO", value=ELO)
             # self.response.set_cookie("name", value=name)
 
 
@@ -49,7 +62,9 @@ class Login(RequestHandler):
         else:
             reply['success'] = "true"
             self.response.set_cookie("user", value=username)
-            # self.response.set_cookie("name", value=name)
+            player = db.GqlQuery("SELECT * FROM Player WHERE username =  :1", username)
+            ELO = player.get().pvpRating
+            self.response.set_cookie("ELO", value=ELO)
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(reply))

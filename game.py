@@ -7,12 +7,15 @@ from webapp2 import RequestHandler
 
 import cgi
 import json
+import time
 
 class Game(db.Model):
     """Stores current games available to join."""
     available = db.BooleanProperty(required=True, default=True)
     user_1 = db.StringProperty(required=True)
+    ELO = db.IntegerProperty(required=True)
     user_2 = db.StringProperty(required=False)
+
 
     @db.transactional
     def join(self, user_2):
@@ -68,8 +71,16 @@ class CreateGame(RequestHandler):
 
     def post(self):
         user = cgi.escape(self.request.get('user'))
+        ELO =  cgi.escape(self.request.get('ELO'))
+        if ELO == "":
+            ELO = 0
+        ranking = int(ELO)
+        print "__________________"
+        print ranking   #works to here.
+        print "__________________"
 
-        game = Game(key_name=user, user_1=user)
+
+        game = Game(key_name=user, user_1=user, ELO=ranking)
         game.put()
 
         # send information about game back to client
@@ -78,28 +89,78 @@ class CreateGame(RequestHandler):
 
 class JoinGame(RequestHandler):
     """Join a game by providing the game key."""
+    
 
     def post(self):
         user = cgi.escape(self.request.get('user'))
+        ELO = cgi.escape(self.request.get('ELO'))
         game_key = cgi.escape(self.request.get('game_key'))
 
-        # if no key provided, join a randomly selected available game
-        if game_key == "":
-            game = db.GqlQuery("SELECT * FROM Game WHERE available = True").get()
+        MAX_WAIT_TIME = 20
+        acceptableDifference =10
+
+        self.response.out.headers['Content-Type'] = 'application/json'
+        # self.response.out.write(json.dumps({ 'game_found': False }))
+
+        if ELO == "":
+            ELO = 0
+        ELO = int(ELO)
+
+        if game_key == "":            
+            game = 0
+            startTime = time.time()
+            timeSinceLastStep = startTime
+            print "IN Join Game"
+            while (1):
+                games = db.GqlQuery("SELECT * FROM Game WHERE available = True")
+                if games.count() == 0:
+                    break# if there's no games break, start your own one
+
+                game = self.tryToMatch(games, acceptableDifference, ELO)#try to find a match
+                if game != 0: # Game found
+                    print "game found"
+                    break
+
+                if time.time() - timeSinceLastStep > (MAX_WAIT_TIME / 10):#over time increase acceptable difference
+                    acceptableDifference = acceptableDifference +20
+                    timeSinceLastStep = time.time();
+                if time.time() - timeSinceLastStep > (MAX_WAIT_TIME * 0.9):
+                    acceptableDifference = 2000#match with anyone if we're near the end
+                
+                if time.time() - startTime > MAX_WAIT_TIME:
+                    print "TOO LONG"
+                    # self.response.out.write(json.dumps({ 'game_found': False })) 
+                    break
         else:
             # else join the specified game
             game = db.get(game_key)
 
         # send information about game back to client
-        self.response.out.headers['Content-Type'] = 'application/json'
-
+        
+        
         if game:
             # a game was found, return game data
+            print "Game Joined"
             game.join(user)
             self.response.out.write(game.json_data(user))
         else:
             # no game was found, return appropriate message
+            print "no game found"
             self.response.out.write(json.dumps({ 'game_found': False }))
+
+    def tryToMatch(self, games, acceptableDifference, playerELO):
+        for g in games:
+            # print "IN tryToMatch"
+
+            # print "Acceptable difference: " + str(acceptableDifference)
+            # print "MY ELO:" + str(playerELO)
+            # print "GAME ELO" + str(g.ELO)
+            if abs(playerELO - g.ELO) <= acceptableDifference:
+                print "acceptable match found"
+                game = g
+                return game
+        return 0
+        
 
 class LeaveGame(RequestHandler):
     """Leave a game by providing the game key."""
