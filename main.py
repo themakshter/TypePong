@@ -92,16 +92,20 @@ def getHiscorePlayers(start, count):
     return Player.all().order("-hiScore").run(offset=start, limit=count)
     # return RegularPlayer.all()
 
+Sample = None
 class LoadWords(RequestHandler):
     def get(self):
         level = int(self.request.get('level'))
-        with open('words.txt') as f:
-            Sample = Sampler(f)
-            words = Sample.sample(level)
 
-            self.response.headers['Content-Type'] = 'application/json'
-            self.response.headers['Access-Control-Allow-Origin'] = '*'
-            self.response.out.write(json.dumps(words))
+        if not Sample:
+            with open('words.txt') as f:
+                Sample = Sampler(f)
+
+        words = Sample.sample(level)
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
+        self.response.out.write(json.dumps(words))
 
 def render_template(template_path, values={}):
     template = get_template(template_path);

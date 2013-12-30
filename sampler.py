@@ -10,7 +10,7 @@ class Sampler(object):
         self.words = sorted(self.words, key=len)
         self.words = list(chunks(self.words, levels))
 
-    def sample(self, level, num=100000000):
+    def sample(self, level, num=10):
         """Return a sample of words from a specified level.
 
         Args:

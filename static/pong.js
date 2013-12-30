@@ -12,7 +12,6 @@ var ticks = 0;
 
 var color = "#FFFFFF";
 
-
 /**
  * Initializes the game in the appropriate mode.
  */
@@ -57,7 +56,6 @@ var init = function () {
             displayMessage("Searching for a match");
             gamePaused = true;
             joinGame("", returnFunc, receiveMessage);
-    
 
             break;
 
@@ -66,12 +64,14 @@ var init = function () {
             aiLevel = 0; //Perfect mode. levels from 1 to 5
             setPaddles("ai", "player");
             gamePaused = false;
+
             break;
 
         case 'custom':
             //[TODO] Optional Mode
             setPaddles("ai", "player");
             gamePaused = false;
+
             break;
 
         default:
@@ -204,6 +204,10 @@ var resetBall = function () {
     }, 1000);
 };
 
+var changeBallSpeed = function (ndx, ndy) {
+    dx = ndx; dy = ndy;
+};
+
 /**
  * Pauses the game and displays a message.
  */
@@ -257,7 +261,7 @@ var winGame = function () {
             break;
 
         case 'custom':
-            //[TODO] Optional Mode - who cares. 
+            //[TODO] Optional Mode - who cares.
 
             break;
     }
@@ -285,14 +289,5 @@ var loseGame = function () {
     }
 };
 
-//[TODO]
-/**
- * Fetches level for campaign mode. Used only in campaign mode.
- */
-var fetchLevel = (function () {
-    'use strict';
-    return 1;
-});
-
-fetchWords();
+fetchWordsSync(0);
 init();

@@ -1,5 +1,8 @@
 var wordList = [];
 var currentWords = [];
+var currLevel = 0;
+
+var scriptRoot = 'http://mystical-hawk-370.appspot.com/_loadwords';
 
 /**
  * Updates the word of the given position id.
@@ -9,8 +12,9 @@ var updateWords = function (id) {
 
     var pID;
 
-    if (wordList.length === 0) {
-        fetchWords();
+    if (wordList.length <= 5) {
+        currLevel += 1;
+        fetchWordsAsync(currLevel);
     }
     currentWords[id] = wordList.pop();
     pID = '#current_' + id;
@@ -53,26 +57,34 @@ var resetAllColors = function () {
 /**
  * Fetches the list of words.
  */
-var fetchWords = (function () {
+var fetchWordsSync = function (currLevel) {
     'use strict';
-    var currentLevel, scriptRoot;
-    currentLevel = 0;
-    scriptRoot = 'http://mystical-hawk-370.appspot.com/';
 
-    return function () {
-        $.ajax({
-            url: scriptRoot + '_loadwords',
-            async: false,
-            data: {
-                level: currentLevel
-            },
-            dataType: 'json',
-            success: function (data) {
-                currentLevel += 1;
-                $.each(data, function (key, val) {
-                    wordList.push(val);
-                });
-            }
+    $.ajax({
+        url: scriptRoot,
+        async: false,
+        data: {
+            level: currLevel
+        },
+        dataType: 'json',
+        success: function (data) {
+            $.each(data, function (key, val) {
+                wordList.push(val);
+            });
+        }
+    });
+};
+
+
+var fetchWordsAsync = function (currLevel) {
+    'use strict';
+
+    $.getJSON(scriptRoot, {
+        level: currLevel
+    }, function (data) {
+        wordList.length = 0;
+        $.each(data, function (i, item) {
+            wordList.push(item);
         });
-    };
-}());
+    });
+};
