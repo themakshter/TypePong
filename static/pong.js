@@ -1,16 +1,17 @@
 var canvas;
 var ctx;
+
+var paddle1, paddle2;
 var x = 750;
 var y = 500;
 var dx = 2;
 var dy = 2;
 var tempDx, tempDy;
+
 var aiLevel;
 var startBall = true;
 var hosting = true;
 var ticks = 0;
-
-var color = "#FFFFFF";
 
 /**
  * Initializes the game in the appropriate mode.
@@ -26,10 +27,13 @@ var init = function () {
 
     switch (mode) {
         case 'campaign':
+            campaignLevel = fetchCampaignLevel();
             //[TODO] : 1. Set length of words in sampler.py according to level.
             //[TODO] : 2. Set AI difficulty level accordingly. Make AI correspond to levels.
+            aiLevel = 1;
             setPaddles("ai", "player");
             gamePaused = false;
+
             break;
 
         case 'pvp':
@@ -144,8 +148,8 @@ var markPositions = function (n) {
     return pos;
 };
 
-var paddle1 = new Paddle(50, 200, "ai");
-var paddle2 = new Paddle(700, 200, "player");
+paddle1 = new Paddle(50, 200, "ai");
+paddle2 = new Paddle(700, 200, "player");
 
 /**
  * Set the paddle behaviour: parameters can be "ai", "player" or "remote"
@@ -208,61 +212,23 @@ var changeBallSpeed = function (ndx, ndy) {
     dx = ndx; dy = ndy;
 };
 
-/**
- * Pauses the game and displays a message.
- */
-var displayMessage = function (message) {
-    'use strict';
-    var msgWidth, layer2, ctx2;
-
-    $(canvas).addClass("pongblur");
-    layer2 = document.getElementById("layer2");
-    ctx2 = layer2.getContext("2d");
-
-    ctx2.font = "50px Share Tech";
-    ctx2.fillStyle = color;
-    msgWidth = ctx2.measureText(message).width;
-
-    ctx2.fillText(message, (canvas.width / 2) - (msgWidth / 2),
-            canvas.height / 2);
-}
-
-/**
- * Hide displayed message and resume game.
- */
-var hideMessage = function() {
-    'use strict';
-    var layer2, ctx2;
-
-    $(canvas).removeClass("pongblur");
-    layer2 = document.getElementById("layer2");
-    ctx2 = layer2.getContext("2d");
-
-    ctx2.clearRect(0, 0, layer2.width, layer2.height);
-}
-
 //[TODO]
 /**
  * Handles game victory. Depending on the mode, functionality and scoring vary.
  */
 var winGame = function () {
     'use strict';
-    gameActive = false;
-    displayMessage("Good job!");
 
-    //Each mode has a different victory result / score.
+    gameActive = false;
     switch (mode) {
         case 'campaign':
-            //Update Level / maybe time
+            displayMessage("Good job!\nYou've made it to the next level.");
+            updateCampaignLevel(campaignLevel + 1);
+
             break;
 
         case 'pvp':
             //Update Win / Loss ratio
-            break;
-
-        case 'custom':
-            //[TODO] Optional Mode - who cares.
-
             break;
     }
 };
@@ -273,15 +239,17 @@ var winGame = function () {
  */
 var loseGame = function () {
     'use strict';
-    gameActive = false;
-    displayMessage("Too bad. Better luck next time!");
 
+    gameActive = false;
     switch (mode) {
         case 'challenge':
             //TODO: replace this with an on-screen message
-            alert('Survived ' + minutes + 'm and ' + seconds + 's');
+            displayMessage('Survived ' + minutes + 'm and ' + seconds + 's');
+            updateChallengeScore(totalSeconds);
+
             break;
         case 'campaign':
+            displayMessage("Too bad. Better luck next time!");
             //TODO: maybe write some useful stats (like how many words typed)
             break;
         case 'pvp':
