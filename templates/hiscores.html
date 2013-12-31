@@ -4,10 +4,9 @@
 
 <div class="hiscore">
 
-    <div class="box">
-        <div class="link" href="/hiscores" style="display:inline-block;">Campaign</div>
-        <div class="link" href="/hiscores" style="display:inline-block;">Challenge</div>
-    </div>
+    {% block up_box %}
+    {% endblock %}
+
     <table class="hiscores">
         <tr>
             <th>Username</th>
@@ -31,3 +30,4 @@
     $('#hiscores_link').addClass("youarehere");
 </script>
 {% endblock %}
+

@@ -70,26 +70,49 @@ class PvpHandler(RequestHandler):
         page = render_template('pong_pvp.html', values)
         self.response.out.write(page)
 
-class HiscoresHandler(RequestHandler):
+class HiscoresCampaignHandler(RequestHandler):
     def get(self, request=None, response=None):
+        if "user" not in self.request.cookies.keys():
+            self.redirect("/login")
+        values = {'name': self.request.cookies.get('user')}
+
+        table_template = get_template("hiscores_campaign.html");
+
+        page = 0
+        score_per_page = 5
+
+        start = page * score_per_page
+        players_q = getHiscorePlayers(start, score_per_page, "-hiScore")
+
+        players_hi = [{'username': p.username, 'score': p.hiScore} for p in
+                players_q]
+        values['players'] = players_hi
+
+        content = table_template.render(values)
+        self.response.out.write(content)
+
+class HiscoresChallengeHandler(RequestHandler):
+    def get(self, request=None, response=None):
+        if "user" not in self.request.cookies.keys():
+            self.redirect("/login")
+        values = {'name': self.request.cookies.get('user')}
+
+        table_template = get_template("hiscores_challenge.html");
+
         page = 0
         score_per_page = 5
         start = page * score_per_page
-        players_q = getHiscorePlayers(start, score_per_page)
-        table_template = get_template("hiscores.html");
-        players = []
-        for p in players_q:
-            player = dict(
-                username = p.username,
-                score = p.hiScore)
-            players.append(player)
-        # players.append(dict(username="tristan", score=2))
-        content = table_template.render(players = players)
+        players_c = getHiscorePlayers(start, score_per_page, "-challengeScore")
+
+        players_challenge = [{'username': p.username, 'score': p.challengeScore}
+                for p in players_c]
+        values['players'] = players_challenge
+
+        content = table_template.render(values)
         self.response.out.write(content)
 
-
-def getHiscorePlayers(start, count):
-    return Player.all().order("-hiScore").run(offset=start, limit=count)
+def getHiscorePlayers(start, count, scoreType):
+    return Player.all().order(scoreType).run(offset=start, limit=count)
     # return RegularPlayer.all()
 
 class LoadWords(RequestHandler):

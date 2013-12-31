@@ -11,7 +11,8 @@ app = WSGIApplication([
     ('/campaign', main.CampaignHandler),
     ('/challenge', main.ChallengeHandler),
     ('/pvp', main.PvpHandler),
-    ('/hiscores', main.HiscoresHandler),
+    ('/hiscores_campaign', main.HiscoresCampaignHandler),
+    ('/hiscores_challenge', main.HiscoresChallengeHandler),
     ('/sidebar', main.Sidebar),
     # pages the user shouldn't be accessing
     ('/_loadwords', main.LoadWords),
