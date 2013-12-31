@@ -1,6 +1,13 @@
 {% extends "default.html" %}
+{% import 'sidebar.html' as sidebar %}
 {% block content %}
-<div class="game content" style="padding:15px;color:white;font-size:30px;text-align:center;position:relative;">
+
+<div class="hiscore">
+
+    <div class="box">
+        <div class="link" href="/hiscores" style="display:inline-block;">Campaign</div>
+        <div class="link" href="/hiscores" style="display:inline-block;">Challenge</div>
+    </div>
     <table class="hiscores">
         <tr>
             <th>Username</th>
@@ -9,11 +16,18 @@
         </tr>
         {% for player in players %}
         <tr>
-           <td> {{ player.username }} </td>
-           <!-- <td> {{ player.name }} </td> -->
-           <td> {{ player.score }} </td>
+            <td> {{ player.username }} </td>
+            <!-- <td> {{ player.name }} </td> -->
+            <td> {{ player.score }} </td>
         </tr>
         {% endfor %}
     </table>
 </div>
+{% endblock %}
+
+{% block left_content %}
+{{ sidebar.sidebar(name) }}
+<script type="text/javascript">
+    $('#hiscores_link').addClass("youarehere");
+</script>
 {% endblock %}

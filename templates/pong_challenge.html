@@ -5,3 +5,10 @@
   var endingScore = 1;
 </script>
 {% endblock %}
+
+{% block left_content %}
+    {{ sidebar.sidebar(name) }}
+    <script type="text/javascript">
+        $('#challenge_link').addClass("youarehere");
+    </script>
+{% endblock %}

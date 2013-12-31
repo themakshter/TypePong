@@ -17,6 +17,7 @@ body {
 a:link, a:visited {
     color: white;
 }
+
 /* General class to centre divs */
 .center {
     margin: 0 auto;
@@ -167,6 +168,20 @@ th {
     width: 250px;
     height: 500px;
     float: left;
+}
+
+/* Current link */
+.youarehere {
+    color: #FFFFFF;
+}
+
+/* High score nav */
+.hiscore {
+    padding: 15px;
+    color: white;
+    font-size: 30px;
+    text-align: center;
+    position: relative;
 }
 
 /* Sidebard related */

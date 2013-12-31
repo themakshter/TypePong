@@ -1,14 +1,14 @@
 {% extends "default.html" %}
 {% macro sidebar(name) -%}
-    <div class="sidebar box">
+    <div id="menu" class="sidebar box">
     	<div class="name-div">Hi {{ name }}!</div>
     	<div class="space"></div>
-        <div class="link" href="/campaign" title="Play through all the levels!">Campaign</div>
-    	<div class="link" href="/challenge" title="There's no end in sight, how far can you get!?">Challenge Mode</div>
-    	<div class="link" href="/pvp" title="Play a friend!">PvP</div>
-    	<div class="link" href="/custom" title="Choose custom speed and word length">Custom Mode</div>
+        <div id="campaign_link" class="link" href="/campaign" title="Play through all the levels!">Campaign</div>
+    	<div id="challenge_link" class="link" href="/challenge" title="There's no end in sight, how far can you get!?">Challenge Mode</div>
+    	<div id="pvp_link" class="link" href="/pvp" title="Play a friend!">PvP</div>
+    	<div id="custom_link" class="link" href="/custom" title="Choose custom speed and word length">Custom Mode</div>
     	<div class="space"></div>
-    	<div class="link" href="/hiscores">Hiscores</div>
+    	<div id="hiscores_link" class="link" href="/hiscores">Hiscores</div>
     	<div class="space"></div>
     	<div class="link" href="/_logout">Logout</div>
     </div>

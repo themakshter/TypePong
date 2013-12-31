@@ -5,3 +5,10 @@
   var endingScore = 11;
 </script>
 {% endblock %}
+
+{% block left_content %}
+    {{ sidebar.sidebar(name) }}
+    <script type="text/javascript">
+        $('#campaign_link').addClass("youarehere");
+    </script>
+{% endblock %}
