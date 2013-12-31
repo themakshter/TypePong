@@ -1,3 +1,4 @@
+var colour = "#FFFFFF";
 var circleRadius = 10;
 
 /**
@@ -23,7 +24,7 @@ var drawCanvas = function (x, y, w, h) {
     ctx.closePath();
     ctx.fill();
 
-    ctx.fillStyle = color;
+    ctx.fillStyle = colour;
     for (i = 5; i < canvas.width; i += 30) {
         ctx.fillRect(smallX, i, smallWidth, smallWidth);
     }
@@ -73,7 +74,7 @@ var drawPositionsPaddle = function (pos, paddle) {
     var i;
     for (i = 0; i < pos.length; i += 1) {
         ctx.font = "18px Share Tech";
-        ctx.fillStyle = color;
+        ctx.fillStyle = colour;
         ctx.fillText((i + 1).toString(), paddle.xPos + offset, pos[i]);
     }
 }
@@ -85,7 +86,7 @@ var drawPositionsPaddle = function (pos, paddle) {
 var drawScore = function (x1, y1, x2, y2) {
     'use strict';
 
-    ctx.fillStyle = color;
+    ctx.fillStyle = colour;
     ctx.font = "75px Share Tech";
     ctx.fillText(paddle1.score, x1, y1, 50);
     ctx.fillText(paddle2.score, x2, y2, 50);
