@@ -9,10 +9,10 @@ class Player(polymodel.PolyModel):
 
     username = db.StringProperty(required=True)
 
-    hiScore = db.IntegerProperty(required=True)
     campaignLevel = db.IntegerProperty(required=True)
     pvpRating = db.IntegerProperty(required=True)
     challengeScore = db.StringProperty()
+    hiScore = db.IntegerProperty()
 
 class RegularPlayer(Player):
     password = db.StringProperty(required=True)
