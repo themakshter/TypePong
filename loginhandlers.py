@@ -4,7 +4,7 @@ from google.appengine.ext import db
 from google.appengine.ext.db import polymodel
 
 from player import Player
-from player import RegularPlayer 
+from player import RegularPlayer
 from player import FacebookPlayer
 
 import cgi
@@ -19,7 +19,7 @@ class FacebookLogin(RequestHandler):
 
         facebookID = str(facebookID)
 
-        reply = {}  
+        reply = {}
         print ("name:" + facebookID);
 
                   # attempt to login
@@ -36,12 +36,8 @@ class FacebookLogin(RequestHandler):
             # self.response.set_cookie("ELO", value=ELO)
             # self.response.set_cookie("name", value=name)
 
-
-
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(reply))
-
-
 
 
 class Login(RequestHandler):
@@ -75,13 +71,9 @@ class addUsername(RequestHandler):
 
         facebookID = cgi.escape(self.request.get("facebookID"))
 
-
         html = f.read()
         html = html.replace("__PLACEHOLDER__", facebookID)
         self.response.write(html);
-
-
-
 
 class facebookRegister(RequestHandler):
     def post (self):
@@ -98,7 +90,6 @@ class facebookRegister(RequestHandler):
         else:
             self.response.set_cookie("user", value=username)
             self.redirect("/game")
-
 
 class Register(RequestHandler):
     def post(self):

@@ -16,8 +16,9 @@ app = WSGIApplication([
     # pages the user shouldn't be accessing
     ('/_loadwords', main.LoadWords),
     ('/_updatescore', scores.UpdateScore),
-	('/_updatepvprating', scores.UpdatePVPRating),
-	('/_updatecampaignlevel', scores.UpdateCampaignLevel),
+        ('/_updatepvprating', scores.UpdatePVPRating),
+        ('/_updatecampaignlevel', scores.UpdateCampaignLevel),
+        ('/_updatechallengescore', scores.UpdateChallengeScore),
     ('/_register', loginhandlers.Register),
     ('/_login', loginhandlers.Login),
     ('/_facebookLogin', loginhandlers.FacebookLogin),
