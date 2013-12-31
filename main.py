@@ -92,16 +92,13 @@ def getHiscorePlayers(start, count):
     return Player.all().order("-hiScore").run(offset=start, limit=count)
     # return RegularPlayer.all()
 
-Sample = None
 class LoadWords(RequestHandler):
+    WordSampler = Sampler(open('words.txt'))
+
     def get(self):
         level = int(self.request.get('level'))
 
-        if not Sample:
-            with open('words.txt') as f:
-                Sample = Sampler(f)
-
-        words = Sample.sample(level)
+        words = self.WordSampler.sample(level)
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.headers['Access-Control-Allow-Origin'] = '*'
