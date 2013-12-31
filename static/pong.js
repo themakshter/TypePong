@@ -8,6 +8,7 @@ var dx = 2;
 var dy = 2;
 var tempDx, tempDy;
 
+var campaignLevel = 0;
 var aiLevel;
 var startBall = true;
 var hosting = true;

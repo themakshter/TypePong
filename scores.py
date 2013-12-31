@@ -22,9 +22,7 @@ def newRankings(myScore, theirScore, points):#points will be 1 or 0
 
 
 class UpdateScore(RequestHandler):
-    def get(self):
-        self.response.headers['Content-Type'] = 'text/plain'
-
+    def post(self):
         username = cgi.escape(self.request.get("username"))
         score = cgi.escape(self.request.get("hiScore"))
         username = str(username)
@@ -37,13 +35,14 @@ class UpdateScore(RequestHandler):
                 u.put()
 
 class UpdateChallengeScore(RequestHandler):
-    def get(self):
-        self.response.headers['Content-Type'] = 'text/plain'
-
+    def post(self):
         username = cgi.escape(self.request.get("username"))
         score = cgi.escape(self.request.get("timeSurvived"))
+
         username = str(username)
-        time_survived = parseTime(score)
+        time_survived = self.parseTime(int(score))
+        print int(score)
+        print time_survived
 
         if username:
             users = db.GqlQuery("SELECT * FROM Player WHERE username = :1",
@@ -52,15 +51,13 @@ class UpdateChallengeScore(RequestHandler):
                 u.challengeScore = time_survived
                 u.put()
 
-    def parseTime(time_survived):
+    def parseTime(self, time):
         minute, second = str(time / 60), str(time % 60)
 
-        return minute.zfill(2) + ':' + minute.zfill(2)
+        return minute.zfill(2) + ':' + second.zfill(2)
 
 class UpdatePVPRating(RequestHandler):
-    def get(self):
-        self.response.headers['Content-Type'] = 'text/plain'
-
+    def post(self):
         username = cgi.escape(self.request.get("username"))
         score = cgi.escape(self.request.get("pvpRating"))
         opponent= cgi.escape(self.request.get("oppositionUsername"))
@@ -98,9 +95,7 @@ class UpdatePVPRating(RequestHandler):
                 u.put()
 
 class UpdateCampaignLevel(RequestHandler):
-    def get(self):
-        self.response.headers['Content-Type'] = 'text/plain'
-
+    def post(self):
         username = cgi.escape(self.request.get("username"))
         campaignLevel = cgi.escape(self.request.get("campaignLevel"))
 

@@ -44,7 +44,7 @@ var setTime = function () {
 $(window).focus(function () {
     'use strict';
 
-    if (!intervalId)
+    if (mode === 'challenge' && !intervalId)
         intervalId = setInterval(setTime, 1000);
 });
 
