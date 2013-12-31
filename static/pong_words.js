@@ -2,8 +2,6 @@ var wordList = [];
 var currentWords = [];
 var currLevel = 0;
 
-var scriptRoot = 'http://mystical-hawk-370.appspot.com/_loadwords';
-
 /**
  * Updates the word of the given position id.
  */
@@ -61,10 +59,10 @@ var fetchWordsSync = function (currLevel) {
     'use strict';
 
     $.ajax({
-        url: scriptRoot,
+        url: '/_loadwords',
         async: false,
         data: {
-            level: currLevel
+            'level': currLevel
         },
         dataType: 'json',
         success: function (data) {
@@ -79,8 +77,8 @@ var fetchWordsSync = function (currLevel) {
 var fetchWordsAsync = function (currLevel) {
     'use strict';
 
-    $.getJSON(scriptRoot, {
-        level: currLevel
+    $.getJSON('/_loadwords', {
+        'level': currLevel
     }, function (data) {
         wordList.length = 0;
         $.each(data, function (i, item) {
