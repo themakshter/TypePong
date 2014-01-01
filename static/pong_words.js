@@ -8,12 +8,20 @@ var currLevel = 0;
 var updateWords = function (id) {
     'use strict';
 
-    var pID;
+    var i, pID, newWord;
     if (wordList.length <= 5) {
-        currLevel += 1;
         fetchWordsAsync(currLevel);
     }
-    currentWords[id] = wordList.pop();
+
+    newWord = wordList.pop();
+    for (i = 0; i < currentWords.length; i += 1) {
+        if (newWord.charAt(0) === currentWords[i].charAt(0)) {
+            updateWords(id);
+            return;
+        }
+    }
+    currentWords[id] = newWord;
+
     pID = '#current_' + id;
     $(pID).html((id + 1) + ": " + currentWords[id]);
 };
