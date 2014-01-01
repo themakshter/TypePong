@@ -75,6 +75,8 @@ var update = function () {
             "ticks": ticks
         }));
     }
+    paddle1.updatePosition();
+    paddle2.updatePosition();
 };
 
 var bounce = function(onX) {

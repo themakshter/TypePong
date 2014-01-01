@@ -12,6 +12,7 @@ var Paddle = function (xPos, yPos,playerType) {
     this.height = 85;
     this.score = 0;
     this.playerType = playerType;
+    this.messageQueue = []
 
     this.hitsHorizontalFace = function (x, y) {
         var startX, endX, startY, endY;
@@ -37,13 +38,19 @@ var Paddle = function (xPos, yPos,playerType) {
                     (x >= startX && x <= endX));
     };
 
-    this.update = function() {
+    this.update = function () {
         if (this.playerType === "ai") {
             this.tryAndMove();
         }
     };
 
-    this.wordTyped = function(pos, i) {
+    this.updatePosition = function () {
+        if ((this.dy * (this.yPos - this.reqyPos) < 0)) {
+            this.yPos += this.dy;
+        }
+    }
+
+    this.wordTyped = function (pos, i) {
         if (this.playerType === "player") {
             var ballYPos = calculateHitYPos(x,y,dx,dy,this.xPos);
             var speed = Math.abs(this.dy);
@@ -59,11 +66,11 @@ var Paddle = function (xPos, yPos,playerType) {
         }
     };
 
-    this.inPortion = function(){
+    this.inPortion = function (){
        return ((x < this.xPos) && (dx > 0)) || ((x > this.xPos) && (dx < 0))
     }
 
-    this.tryAndMove = function() {
+    this.tryAndMove = function () {
         'use strict';
 
         var number, sampleSize, destY, yPos;
@@ -89,7 +96,7 @@ var Paddle = function (xPos, yPos,playerType) {
         this.moveTo(destY);
     };
 
-    this.moveTo = function(destY) {
+    this.moveTo = function (destY) {
         var speed = Math.abs(this.dy);
         this.dy = destY < this.yPos ? -speed : speed;
 
@@ -111,16 +118,13 @@ var Paddle = function (xPos, yPos,playerType) {
         }
     }
 
-    this.changeSpeed = function(newSpeed){
+    this.changeSpeed = function (newSpeed){
         if(this.playerType !== "ai"){
             this.dy = newSpeed;
         }
     }
 
     this.drawPaddle = function () {
-        if ((this.dy * (this.yPos - this.reqyPos) < 0)) {
-            this.yPos += this.dy;
-        }
         ctx.fillStyle = colour;
         ctx.fillRect(this.xPos, this.yPos, this.width, this.height);
     };
