@@ -113,7 +113,6 @@ class HiscoresChallengeHandler(RequestHandler):
 
 def getHiscorePlayers(start, count, scoreType):
     return Player.all().order(scoreType).run(offset=start, limit=count)
-    # return RegularPlayer.all()
 
 class LoadWords(RequestHandler):
     WordSampler = Sampler(open('words.txt'))

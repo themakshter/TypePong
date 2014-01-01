@@ -28,10 +28,13 @@ var init = function () {
 
     switch (mode) {
         case 'campaign':
-            campaignLevel = fetchCampaignLevel();
             //[TODO] : 1. Set length of words in sampler.py according to level.
             //[TODO] : 2. Set AI difficulty level accordingly. Make AI correspond to levels.
+            endingScore = 3;
+            fetchCampaignLevel();
+            fetchWordsAsync(campaignLevel);
             aiLevel = 1;
+
             setPaddles("ai", "player");
             gamePaused = false;
 
@@ -223,7 +226,7 @@ var winGame = function () {
     gameActive = false;
     switch (mode) {
         case 'campaign':
-            displayMessage("Good job!\nYou've made it to the next level.");
+            displayMessage("Good job! You've made it to the next level.");
             updateCampaignLevel(campaignLevel + 1);
 
             break;
@@ -244,7 +247,6 @@ var loseGame = function () {
     gameActive = false;
     switch (mode) {
         case 'challenge':
-            //TODO: replace this with an on-screen message
             displayMessage('Survived ' + minutes + 'm and ' + seconds + 's');
             updateChallengeScore(totalSeconds);
 

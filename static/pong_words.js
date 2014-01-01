@@ -9,7 +9,6 @@ var updateWords = function (id) {
     'use strict';
 
     var pID;
-
     if (wordList.length <= 5) {
         currLevel += 1;
         fetchWordsAsync(currLevel);
@@ -72,7 +71,6 @@ var fetchWordsSync = function (currLevel) {
         }
     });
 };
-
 
 var fetchWordsAsync = function (currLevel) {
     'use strict';

@@ -16,6 +16,7 @@ app = WSGIApplication([
     ('/sidebar', main.Sidebar),
     # pages the user shouldn't be accessing
     ('/_loadwords', main.LoadWords),
+    ('/_loadcampaignlevel', scores.LoadCampaignLevel),
     ('/_updatescore', scores.UpdateScore),
         ('/_updatepvprating', scores.UpdatePVPRating),
         ('/_updatecampaignlevel', scores.UpdateCampaignLevel),

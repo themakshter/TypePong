@@ -3,6 +3,7 @@ from google.appengine.ext import db
 from google.appengine.ext.db import polymodel
 
 import cgi
+import json
 
 
 def newRankings(myScore, theirScore, points):#points will be 1 or 0
@@ -107,3 +108,17 @@ class UpdateCampaignLevel(RequestHandler):
             for u in users:
                 u.campaignLevel = campaignLevel
                 u.put()
+
+class LoadCampaignLevel(RequestHandler):
+    def get(self):
+        username = str(cgi.escape(self.request.get("username")))
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
+
+        if username:
+            users = db.GqlQuery("SELECT * FROM Player WHERE username = :1",
+                    username)
+            level = users[0].campaignLevel
+
+        self.response.out.write(json.dumps({'level': level}))
