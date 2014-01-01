@@ -14,11 +14,11 @@ window.onkeyup = (function () {
 
         if (e.keyCode == 27) {
             if (gamePaused) {
-                gamePaused = false;
+                resumeGame();
                 hideMessage();
                 typeElem.prop('readonly', false);
             } else {
-                gamePaused = true;
+                pauseGame();
                 displayMessage('Game Paused');
                 typeElem.prop('readonly', true);
             }

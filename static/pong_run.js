@@ -12,6 +12,23 @@ window.requestAnimFrame = (function (){
 var gameActive = true;
 var gamePaused = true;
 
+var pauseGame = function () {
+    gamePaused = true;
+
+    if (mode === 'challenge') {
+        clearInterval(intervalId);
+        intervalId = 0;
+    }
+};
+
+var resumeGame = function () {
+    gamePaused = false;
+
+    if (mode === 'challenge') {
+        intervalId = setInterval(setTime, 1000);
+    }
+};
+
 var update = function () {
     ticks++;
 
