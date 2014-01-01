@@ -45,7 +45,6 @@ class LoginHandler(RequestHandler):
     def get_login_page(self, args={}):
         return render_template('login.html')
 
-
 class CampaignHandler(RequestHandler):
     def get(self, request=None, response=None):
         if "user" not in self.request.cookies.keys():
@@ -85,7 +84,7 @@ class HiscoresCampaignHandler(RequestHandler):
         players_q = getHiscorePlayers(start, score_per_page, "-hiScore")
 
         players_hi = [{'username': p.username, 'score': p.hiScore} for p in
-                players_q]
+                players_q if p.hiScore is not None]
         values['players'] = players_hi
 
         content = table_template.render(values)
@@ -105,7 +104,7 @@ class HiscoresChallengeHandler(RequestHandler):
         players_c = getHiscorePlayers(start, score_per_page, "-challengeScore")
 
         players_challenge = [{'username': p.username, 'score': p.challengeScore}
-                for p in players_c]
+                for p in players_c if p.challengeScore is not None]
         values['players'] = players_challenge
 
         content = table_template.render(values)
