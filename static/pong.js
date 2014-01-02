@@ -14,17 +14,22 @@ var startBall = true;
 var hosting = true;
 var ticks = 0;
 
+var ballUpdateID = 0;
+
 /**
  * Initializes the game in the appropriate mode.
  */
 var init = function () {
     'use strict';
 
-    var i;
+    var i, len;
     canvas = document.getElementById("layer1");
     ctx = canvas.getContext("2d");
     x = canvas.width / 2;
     y = canvas.height / 2;
+
+    paddle1 = new Paddle(50, 200, "ai");
+    paddle2 = new Paddle(700, 200, "player");
 
     switch (mode) {
         case 'campaign':
@@ -87,9 +92,12 @@ var init = function () {
     }
 
 
-    for (i = 0; i < 3; i += 1) {
-        currentWords.push('placeholder');
-        updateWords(i);
+    if (currentWords.length < 3) {
+        len = currentWords.length;
+        for (i = 0; i < 3 - len; i += 1) {
+            currentWords.push('placeholder');
+            updateWords(i);
+        }
     }
 
     if (mode !== 'pvp') {
@@ -97,6 +105,20 @@ var init = function () {
     }
 
     gameLoop();
+};
+
+var reset = function () {
+    paddle1 = new Paddle(50, 200, "ai");
+    paddle2 = new Paddle(700, 200, "player");
+
+    currentWords.length = 0;
+    dx = 2, dy = 2;
+    changeBallSpeed(dx, dy);
+    totalSeconds = 0;
+    seconds = "00";
+    minutes = "00";
+
+    $('#typing').val('');
 };
 
 /**
@@ -129,13 +151,13 @@ var receiveMessage = function (message) {
             y = data.y + dy * (ticks - data.ticks);
             break
         case 'ball_reset':
-            tempDx = data.dx;
-            tempDy = data.dy;
-            break;
+                tempDx = data.dx;
+                tempDy = data.dy;
+                break;
         case 'score_change':
-            paddle1.score = data.score1;
-            paddle2.score = data.score2;
-            break
+                paddle1.score = data.score1;
+                paddle2.score = data.score2;
+                break
     }
 }
 
@@ -151,9 +173,6 @@ var markPositions = function (n) {
     }
     return pos;
 };
-
-paddle1 = new Paddle(50, 200, "ai");
-paddle2 = new Paddle(700, 200, "player");
 
 /**
  * Set the paddle behaviour: parameters can be "ai", "player" or "remote"
@@ -192,7 +211,7 @@ var resetBall = function () {
 
     dx = dy = 0;
 
-    setTimeout(function () {
+    ballUpdateID = setTimeout(function () {
         dx = tempDx;
         dy = tempDy;
         paddle1.update();
@@ -216,6 +235,13 @@ var changeBallSpeed = function (ndx, ndy) {
     dx = ndx; dy = ndy;
 };
 
+var stopGame = function () {
+    clearInterval(intervalId);
+    intervalId = 0;
+
+    clearInterval(ballUpdateID);
+};
+
 //[TODO]
 /**
  * Handles game victory. Depending on the mode, functionality and scoring vary.
@@ -223,6 +249,7 @@ var changeBallSpeed = function (ndx, ndy) {
 var winGame = function () {
     'use strict';
 
+    stopGame();
     gameActive = false;
     switch (mode) {
         case 'campaign':
@@ -244,6 +271,7 @@ var winGame = function () {
 var loseGame = function () {
     'use strict';
 
+    stopGame();
     gameActive = false;
     switch (mode) {
         case 'challenge':

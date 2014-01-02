@@ -18,6 +18,11 @@ window.onkeyup = (function () {
             } else {
                 pauseGame();
             }
+        } else if (e.keyCode == 32 && !gameActive) {
+            gameActive = true;
+            resumeGame();
+            reset();
+            init();
         } else {
             typed = typeElem.val();
             typedLC = typed.toLowerCase();
@@ -44,17 +49,8 @@ window.onkeyup = (function () {
     };
 }());
 
-$(window).focus(function () {
-    'use strict';
-
-    if (mode === 'challenge' && !intervalId)
-        intervalId = setInterval(setTime, 1000);
-});
-
 $(window).blur(function () {
     'use strict';
 
     pauseGame();
-    clearInterval(intervalId);
-    intervalId = 0;
 });

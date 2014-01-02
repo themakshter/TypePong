@@ -170,11 +170,9 @@ var gameLoop = function () {
     'use strict';
 
     draw();
-
     if (!gamePaused) {
         update();
     }
-
     if (gameActive) {
         requestAnimFrame(gameLoop);
     }

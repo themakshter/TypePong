@@ -33,7 +33,7 @@ var setTime = function () {
     }
     if (totalSeconds % 60 == 0) {
         paddle1.changeSpeed(paddle1.dy * 1.25);
-        paddle2.changeSpeed(paddle1.dy * 1.25);
+        paddle2.changeSpeed(paddle2.dy * 1.25);
         changeBallSpeed(dx * 1.25, dy * 1.25);
     }
 
