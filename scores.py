@@ -1,22 +1,24 @@
 from google.appengine.ext import db
 from google.appengine.ext.db import polymodel
 from player import Player, RegularPlayer
+from statistics import ChallengeStats
 from utils import render_template, get_template
-from webapp2 import RequestHandler, WSGIApplication
+from webapp2 import RequestHandler
 
 import cgi
+import datetime
 import json
 
 
 def newRankings(myScore, theirScore, points):#points will be 1 or 0
     #eA = 1/1+10^(theirs-mine)/400
-    k=32
+    k = 32
 
     eAdenomiator = 1+10**((theirScore-myScore)/400)
-    eA = 1/eAdenomiator;
+    eA = 1/eAdenomiator
 
     eBdenomiator = 1+10**((myScore-theirScore)/400)
-    eB = 1/eBdenomiator;
+    eB = 1/eBdenomiator
 
     newMyScore = myScore + k*(points-eA)
     newTheirScore = theirScore+ k*(1-points-eB);
@@ -65,7 +67,7 @@ class UpdatePVPRating(RequestHandler):
     def post(self):
         username = cgi.escape(self.request.get("username"))
         score = cgi.escape(self.request.get("pvpRating"))
-        opponent= cgi.escape(self.request.get("oppositionUsername"))
+        opponent = cgi.escape(self.request.get("oppositionUsername"))
         winner = cgi.escape(self.request.get("winner"))
 
         winner = str(winner)
@@ -141,8 +143,8 @@ class HiscoresCampaignHandler(RequestHandler):
         start = page * score_per_page
         players_q = getHiscorePlayers(start, score_per_page, "-hiScore")
 
-        players_hi = [{'username': p.username, 'score': p.hiScore} for p in
-                players_q if p.hiScore is not None]
+        players_hi = [{'username': p.username, 'score': p.campaignLevel} for p in
+                players_q if p.campaignLevel is not None]
         values['players'] = players_hi
 
         content = table_template.render(values)

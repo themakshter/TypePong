@@ -1,27 +1,7 @@
 {% extends "default.html" %}
 {% import 'sidebar.html' as sidebar %}
+
 {% block content %}
-
-<div class="hiscore">
-
-    {% block up_box %}
-    {% endblock %}
-
-    <table class="hiscores">
-        <tr>
-            <th>Username</th>
-            <!-- <th>Name</th> -->
-            <th>Score</th>
-        </tr>
-        {% for player in players %}
-        <tr>
-            <td> {{ player.username }} </td>
-            <!-- <td> {{ player.name }} </td> -->
-            <td> {{ player.score }} </td>
-        </tr>
-        {% endfor %}
-    </table>
-</div>
 {% endblock %}
 
 {% block left_content %}
@@ -30,4 +10,3 @@
     $('#hiscores_link').addClass("youarehere");
 </script>
 {% endblock %}
-
