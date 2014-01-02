@@ -30,13 +30,13 @@ var init = function () {
         case 'campaign':
             //[TODO] : 1. Set length of words in sampler.py according to level.
             //[TODO] : 2. Set AI difficulty level accordingly. Make AI correspond to levels.
-            endingScore = 3;
+            endingScore = 1;
             fetchCampaignLevel();
             fetchWordsAsync(campaignLevel);
             aiLevel = 1;
 
             setPaddles("ai", "player");
-            gamePaused = false;
+            fadeMessage("Level " + campaignLevel);
 
             break;
 
