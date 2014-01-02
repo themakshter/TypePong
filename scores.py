@@ -1,6 +1,8 @@
-from webapp2 import RequestHandler, WSGIApplication
 from google.appengine.ext import db
 from google.appengine.ext.db import polymodel
+from player import Player, RegularPlayer
+from utils import render_template, get_template
+from webapp2 import RequestHandler, WSGIApplication
 
 import cgi
 import json
@@ -122,3 +124,47 @@ class LoadCampaignLevel(RequestHandler):
             level = users[0].campaignLevel
 
         self.response.out.write(json.dumps([level]))
+
+class HiscoresCampaignHandler(RequestHandler):
+    def get(self, request=None, response=None):
+        if "user" not in self.request.cookies.keys():
+            self.redirect("/login")
+        values = {'name': self.request.cookies.get('user')}
+
+        table_template = get_template("hiscores_campaign.html");
+
+        page = 0
+        score_per_page = 5
+
+        start = page * score_per_page
+        players_q = getHiscorePlayers(start, score_per_page, "-hiScore")
+
+        players_hi = [{'username': p.username, 'score': p.hiScore} for p in
+                players_q if p.hiScore is not None]
+        values['players'] = players_hi
+
+        content = table_template.render(values)
+        self.response.out.write(content)
+
+class HiscoresChallengeHandler(RequestHandler):
+    def get(self, request=None, response=None):
+        if "user" not in self.request.cookies.keys():
+            self.redirect("/login")
+        values = {'name': self.request.cookies.get('user')}
+
+        table_template = get_template("hiscores_challenge.html");
+
+        page = 0
+        score_per_page = 5
+        start = page * score_per_page
+        players_c = getHiscorePlayers(start, score_per_page, "-challengeScore")
+
+        players_challenge = [{'username': p.username, 'score': p.challengeScore}
+                for p in players_c if p.challengeScore is not None]
+        values['players'] = players_challenge
+
+        content = table_template.render(values)
+        self.response.out.write(content)
+
+def getHiscorePlayers(start, count, scoreType):
+    return Player.all().order(scoreType).run(offset=start, limit=count)

@@ -1,12 +1,10 @@
-from sampler import Sampler
-from webapp2 import RequestHandler, WSGIApplication
-from player import Player
-from player import RegularPlayer
 from google.appengine.ext.db import polymodel
+from player import Player, RegularPlayer
+from sampler import Sampler
+from utils import render_template, get_template
+from webapp2 import RequestHandler, WSGIApplication
 
 import json
-import os
-import jinja2
 
 class FBTest(RequestHandler):
     def get(self):
@@ -69,50 +67,6 @@ class PvpHandler(RequestHandler):
         page = render_template('pong_pvp.html', values)
         self.response.out.write(page)
 
-class HiscoresCampaignHandler(RequestHandler):
-    def get(self, request=None, response=None):
-        if "user" not in self.request.cookies.keys():
-            self.redirect("/login")
-        values = {'name': self.request.cookies.get('user')}
-
-        table_template = get_template("hiscores_campaign.html");
-
-        page = 0
-        score_per_page = 5
-
-        start = page * score_per_page
-        players_q = getHiscorePlayers(start, score_per_page, "-hiScore")
-
-        players_hi = [{'username': p.username, 'score': p.hiScore} for p in
-                players_q if p.hiScore is not None]
-        values['players'] = players_hi
-
-        content = table_template.render(values)
-        self.response.out.write(content)
-
-class HiscoresChallengeHandler(RequestHandler):
-    def get(self, request=None, response=None):
-        if "user" not in self.request.cookies.keys():
-            self.redirect("/login")
-        values = {'name': self.request.cookies.get('user')}
-
-        table_template = get_template("hiscores_challenge.html");
-
-        page = 0
-        score_per_page = 5
-        start = page * score_per_page
-        players_c = getHiscorePlayers(start, score_per_page, "-challengeScore")
-
-        players_challenge = [{'username': p.username, 'score': p.challengeScore}
-                for p in players_c if p.challengeScore is not None]
-        values['players'] = players_challenge
-
-        content = table_template.render(values)
-        self.response.out.write(content)
-
-def getHiscorePlayers(start, count, scoreType):
-    return Player.all().order(scoreType).run(offset=start, limit=count)
-
 class LoadWords(RequestHandler):
     WordSampler = Sampler(open('words.txt'))
 
@@ -124,12 +78,3 @@ class LoadWords(RequestHandler):
         self.response.headers['Content-Type'] = 'application/json'
         self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.out.write(json.dumps(words))
-
-def render_template(template_path, values={}):
-    template = get_template(template_path);
-    return template.render(values)
-
-def get_template(name):
-    jinja_environment = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')))
-    return jinja_environment.get_template(name);
