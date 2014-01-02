@@ -133,7 +133,9 @@ class HiscoresCampaignHandler(RequestHandler):
     def get(self, request=None, response=None):
         if "user" not in self.request.cookies.keys():
             self.redirect("/login")
-        values = {'name': self.request.cookies.get('user')}
+
+        username = self.request.cookies.get('user')
+        values = {'name': username}
 
         table_template = get_template("hiscores_campaign.html");
 
@@ -141,34 +143,86 @@ class HiscoresCampaignHandler(RequestHandler):
         score_per_page = 5
 
         start = page * score_per_page
-        players_q = getHiscorePlayers(start, score_per_page, "-campaignLevel")
+        players_q = get_hiscore_players(start, score_per_page, "-campaignLevel")
 
-        players_hi = [{'username': p.username, 'score': p.campaignLevel} for p in
-                players_q if p.campaignLevel is not None]
-        values['players'] = players_hi
+        players_campaign = [{'username': p.username, 'score': p.campaignLevel}
+                for p in players_q if p.campaignLevel]
+        for i, p in enumerate(players_campaign):
+            p['rank'] = i + 1
+
+        for p in players_campaign:
+            if p['username'] == username:
+                colour_player(p)
+                break
+        else:
+            player_one = next(get_player_one(username))
+            if player_one.campaignLevel:
+                p = {'username': player_one.username,
+                        'score': player_one.campaignLevel,
+                         'rank': get_player_rank(username, "-campaignLevel")}
+                colour_player(p)
+                players_campaign.append(p)
+
+        values['players'] = players_campaign
 
         content = table_template.render(values)
         self.response.out.write(content)
 
 class HiscoresChallengeHandler(RequestHandler):
     def get(self, request=None, response=None):
+
         if "user" not in self.request.cookies.keys():
             self.redirect("/login")
-        values = {'name': self.request.cookies.get('user')}
 
-        table_template = get_template("hiscores_challenge.html");
+        username = self.request.cookies.get('user')
+        values = {'name': username}
+
+        table_template = get_template("hiscores_challenge.html")
 
         page = 0
         score_per_page = 5
         start = page * score_per_page
-        players_c = getHiscorePlayers(start, score_per_page, "-challengeScore")
+        players_c = get_hiscore_players(start, score_per_page, "-challengeScore")
 
         players_challenge = [{'username': p.username, 'score': p.challengeScore}
                 for p in players_c if p.challengeScore is not None]
+        for i, p in enumerate(players_challenge):
+            p['rank'] = i + 1
+
+        for p in players_challenge:
+            if p['username'] == username:
+                colour_player(p)
+                break
+        else:
+            player_one = next(get_player_one(username))
+            if player_one.challengeScore:
+                p = {'username': player_one.username,
+                        'score': player_one.challengeScore,
+                         'rank': get_player_rank(username, "-challengeScore")}
+                colour_player(p)
+                players_challenge.append(p)
+
         values['players'] = players_challenge
 
         content = table_template.render(values)
         self.response.out.write(content)
 
-def getHiscorePlayers(start, count, scoreType):
+def get_player_rank(username, scoreType):
+    players = Player.all().order(scoreType).run()
+
+    for i, p in enumerate(players):
+        if p.username == username:
+            return i + 1
+
+def get_hiscore_players(start, count, scoreType):
     return Player.all().order(scoreType).run(offset=start, limit=count)
+
+def get_player_one(username):
+    return Player.all().filter('username =', username).run()
+
+def colour_player(player):
+    span_start = '<span class=highlight-word>'
+    span_end = '</span>'
+
+    for key in player:
+        player[key] = span_start + str(player[key]) + span_end

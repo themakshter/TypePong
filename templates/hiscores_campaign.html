@@ -18,12 +18,14 @@ $(".link").each(function() {
 
     <table class="hiscores">
         <tr>
+            <th>Rank</th>
             <th>Username</th>
             <!-- <th>Name</th> -->
             <th>Level</th>
         </tr>
         {% for player in players %}
         <tr>
+            <td> {{ player.rank }} </td>
             <td> {{ player.username }} </td>
             <!-- <td> {{ player.name }} </td> -->
             <td> {{ player.score }} </td>

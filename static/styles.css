@@ -252,6 +252,10 @@ th {
     color: #009C0D;
 }
 
+.highlight-word {
+    color: #B86827;
+}
+
 .wordspacer {
     height: 100px;
     width: 100%;
