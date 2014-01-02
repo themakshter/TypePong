@@ -119,6 +119,7 @@ var reset = function () {
     minutes = "00";
 
     $('#typing').val('');
+    $('#typing').prop('readonly', false);
 };
 
 /**
@@ -236,6 +237,7 @@ var changeBallSpeed = function (ndx, ndy) {
 };
 
 var stopGame = function () {
+    $('#typing').prop('readonly', true);
     clearInterval(intervalId);
     intervalId = 0;
 
