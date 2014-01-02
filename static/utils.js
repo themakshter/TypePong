@@ -49,7 +49,7 @@ var fadeMessage = function (message) {
 
     var layer2, ctx2, alpha, fadeID;
 
-    pauseGame();
+    pauseGame(false);
 
     $(canvas).addClass("pongblur");
     layer2 = document.getElementById("layer2");

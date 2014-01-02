@@ -15,12 +15,8 @@ window.onkeyup = (function () {
         if (e.keyCode == 27) {
             if (gamePaused) {
                 resumeGame();
-                hideMessage();
-                typeElem.prop('readonly', false);
             } else {
                 pauseGame();
-                displayMessage('Game Paused');
-                typeElem.prop('readonly', true);
             }
         } else {
             typed = typeElem.val();
@@ -47,3 +43,18 @@ window.onkeyup = (function () {
         }
     };
 }());
+
+$(window).focus(function () {
+    'use strict';
+
+    if (mode === 'challenge' && !intervalId)
+        intervalId = setInterval(setTime, 1000);
+});
+
+$(window).blur(function () {
+    'use strict';
+
+    pauseGame();
+    clearInterval(intervalId);
+    intervalId = 0;
+});

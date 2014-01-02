@@ -12,9 +12,15 @@ window.requestAnimFrame = (function (){
 var gameActive = true;
 var gamePaused = true;
 
-var pauseGame = function () {
+var pauseGame = function (show) {
+    if (!gameActive)
+        return;
+
     gamePaused = true;
 
+    if (show == null || show)
+        displayMessage('Game Paused');
+    $('#typing').prop('readonly', true);
     if (mode === 'challenge') {
         clearInterval(intervalId);
         intervalId = 0;
@@ -22,8 +28,13 @@ var pauseGame = function () {
 };
 
 var resumeGame = function () {
+    if (!gameActive)
+        return;
+
     gamePaused = false;
 
+    hideMessage();
+    $('#typing').prop('readonly', false);
     if (mode === 'challenge') {
         intervalId = setInterval(setTime, 1000);
     }
@@ -81,17 +92,17 @@ var update = function () {
     y += dy;
 
     if ((paddle1_bounce && paddle2.playerType === "remote") ||
-        (paddle2_bounce && paddle1.playerType === "remote")) {
-        // send message about ball bouncing
-        sendMessage(JSON.stringify({
-            "type": "ball_update",
-            "x": x,
-            "y": y,
-            "dx": dx,
-            "dy": dy,
-            "ticks": ticks
-        }));
-    }
+            (paddle2_bounce && paddle1.playerType === "remote")) {
+                // send message about ball bouncing
+                sendMessage(JSON.stringify({
+                    "type": "ball_update",
+                    "x": x,
+                    "y": y,
+                    "dx": dx,
+                    "dy": dy,
+                    "ticks": ticks
+                }));
+            }
     paddle1.updatePosition();
     paddle2.updatePosition();
 };

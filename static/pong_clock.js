@@ -40,17 +40,3 @@ var setTime = function () {
     seconds = totalSeconds % 60;
     minutes = Math.floor(totalSeconds / 60);
 };
-
-$(window).focus(function () {
-    'use strict';
-
-    if (mode === 'challenge' && !intervalId)
-        intervalId = setInterval(setTime, 1000);
-});
-
-$(window).blur(function () {
-    'use strict';
-
-    clearInterval(intervalId);
-    intervalId = 0;
-});
