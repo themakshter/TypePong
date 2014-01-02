@@ -14,3 +14,10 @@ indexes:
   properties:
   - name: username
   - name: ELO
+
+- kind: Statistics
+  properties:
+  - name: class
+  - name: username
+  - name: date
+    direction: desc

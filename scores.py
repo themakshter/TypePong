@@ -141,7 +141,7 @@ class HiscoresCampaignHandler(RequestHandler):
         score_per_page = 5
 
         start = page * score_per_page
-        players_q = getHiscorePlayers(start, score_per_page, "-hiScore")
+        players_q = getHiscorePlayers(start, score_per_page, "-campaignLevel")
 
         players_hi = [{'username': p.username, 'score': p.campaignLevel} for p in
                 players_q if p.campaignLevel is not None]
