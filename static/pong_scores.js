@@ -24,9 +24,15 @@ var updatePvPRating = function (otherUser, winner) {
 };
 
 var fetchCampaignLevel = function () {
-    $.getJSON('/_loadcampaignlevel', {
-        'username': $.cookie('user')
-    }, function (data) {
-        campaignLevel = data['level'];
+    $.ajax({
+        url: '/_loadcampaignlevel',
+        async: false,
+        data: {
+            "username": $.cookie('user')
+        },
+        dataType: 'json',
+        success: function (data) {
+            campaignLevel = data[0];
+        }
     });
 };

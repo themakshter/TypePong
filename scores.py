@@ -121,4 +121,4 @@ class LoadCampaignLevel(RequestHandler):
                     username)
             level = users[0].campaignLevel
 
-        self.response.out.write(json.dumps({'level': level}))
+        self.response.out.write(json.dumps([level]))
