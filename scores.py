@@ -44,15 +44,17 @@ class UpdateChallengeScore(RequestHandler):
 
         username = str(username)
         time_survived = self.parseTime(int(score))
-        print int(score)
-        print time_survived
 
         if username:
             users = db.GqlQuery("SELECT * FROM Player WHERE username = :1",
                 username)
             for u in users:
-                u.challengeScore = time_survived
-                u.put()
+                if u.challengeScore < time_survived:
+                    u.challengeScore = time_survived
+                    u.put()
+
+            ChallengeStats(username=username, date=datetime.datetime.now(),
+                    survived=time_survived).put()
 
     def parseTime(self, time):
         minute, second = str(time / 60), str(time % 60)

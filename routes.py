@@ -3,6 +3,7 @@ import main
 import scores
 import loginhandlers
 import game
+import player_stats
 
 app = WSGIApplication([
     ('/', main.MainHandler),
@@ -12,11 +13,13 @@ app = WSGIApplication([
     ('/challenge', main.ChallengeHandler),
     ('/pvp', main.PvpHandler),
     ('/sidebar', main.Sidebar),
+    ('/stats_challenge', player_stats.LoadChallengeStats),
+    ('/stats_pvp', player_stats.LoadPvPStats),
+    ('/hiscores_campaign', scores.HiscoresCampaignHandler),
+    ('/hiscores_challenge', scores.HiscoresChallengeHandler),
     # pages the user shouldn't be accessing
     ('/_loadwords', main.LoadWords),
     ('/_loadcampaignlevel', scores.LoadCampaignLevel),
-    ('/hiscores_campaign', scores.HiscoresCampaignHandler),
-    ('/hiscores_challenge', scores.HiscoresChallengeHandler),
     ('/_updatescore', scores.UpdateScore),
         ('/_updatepvprating', scores.UpdatePVPRating),
         ('/_updatecampaignlevel', scores.UpdateCampaignLevel),
