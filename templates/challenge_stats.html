@@ -1,0 +1,32 @@
+{% extends "stats.html" %}
+
+{% block content %}
+<div class="hiscore">
+
+    <div class="box">
+        <div class="link youarehere" href="/stats_challenge" style="display:inline-block;">Challenge</div>
+        <div class="link" href="/stats_pvp" style="display:inline-block;">PvP</div>
+    </div>
+    <script type="text/javascript">
+$(".link").each(function() {
+        var url = $(this).attr("href");
+        $(this).click(function() {
+            window.location.href = url;
+            });
+        });
+    </script>
+
+    <table class="stats">
+        <tr>
+            <th>Date</th>
+            <th>Survived</th>
+        </tr>
+        {% for d in data %}
+        <tr>
+            <td> {{ d.date }} </td>
+            <td> {{ d.survived }} </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

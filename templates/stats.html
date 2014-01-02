@@ -1,0 +1,12 @@
+{% extends "default.html" %}
+{% import 'sidebar.html' as sidebar %}
+
+{% block content %}
+{% endblock %}
+
+{% block left_content %}
+{{ sidebar.sidebar(name) }}
+<script type="text/javascript">
+    $('#stats_link').addClass("youarehere");
+</script>
+{% endblock %}
