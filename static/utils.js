@@ -105,28 +105,28 @@ var wrapText = function (context, text, x, y, maxWidth, lineHeight) {
 var fadeMessages = function (messages) {
     'use strict';
     var layer2, ctx2, alpha, fadeID;
- 
+
     pauseGame(false);
- 
+
     $(canvas).addClass("pongblur");
     layer2 = document.getElementById("layer2");
     ctx2 = layer2.getContext("2d");
- 
+
     ctx2.font = "50px Share Tech";
     ctx2.fillStyle = "#FFFFFF";
- 
+
     alpha = 1;
     fadeID = setInterval(function () {
         alpha -= .05;
+        if (messages.length === 0) {
+                hideMessage();
+                resumeGame();
+                clearInterval(fadeID);
+                return;
+        }
         if (alpha < 0) {
             messages.shift();
             alpha = 1;
-            ctx2.globalAlpha = 1;
-        }
-        if (messages.length == 0) {
-                //hideMessage();
-                //clearInterval($);
-                return;
         }
         ctx2.globalAlpha = alpha;
         ctx2.clearRect(0, 0, layer2.width, layer2.height);

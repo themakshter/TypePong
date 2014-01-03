@@ -14,7 +14,7 @@ var startBall = true;
 var hosting = true;
 var ticks = 0;
 
-var countdown = new Array();
+var countdown = [];
 var ballUpdateID = 0;
 
 /**
@@ -24,6 +24,8 @@ var init = function () {
     'use strict';
 
     var i, len;
+
+    fetchWordsSync(0);
     canvas = document.getElementById("layer1");
     ctx = canvas.getContext("2d");
     x = canvas.width / 2;
@@ -42,7 +44,13 @@ var init = function () {
             aiLevel = 1;
 
             setPaddles("ai", "player");
-            countdown[0] = "Camaign mode - Level " + campaignLevel;
+            countdown[0] = "Campaign mode - Level " + campaignLevel;
+            countdown[1] = "3";
+            countdown[2] = "2";
+            countdown[3] = "1";
+            countdown[4] = "GO!";
+            fadeMessages(countdown);
+
             break;
 
         case 'pvp':
@@ -197,7 +205,7 @@ var resetBall = function () {
     paddle2.update();
 
     // only choose velocity if singleplayer or hosting
-    if (hosting || mode !== "pvp") {    
+    if (hosting || mode !== "pvp") {
         // choose velocity here
         tempDx = -dx;
         tempDy = -dy;
@@ -212,12 +220,6 @@ var resetBall = function () {
     }
 
     dx = dy = 0;
-    
-    countdown[1] = "3";
-    countdown[2] = "2";
-    countdown[3] = "1";
-    countdown[4] = "GO!";
-    fadeMessages(countdown);
 
     ballUpdateID = setTimeout(function () {
         dx = tempDx;
@@ -246,7 +248,7 @@ var changeBallSpeed = function (ndx, ndy) {
 var stopGame = function () {
     $('#typing').prop('readonly', true);
     clearInterval(intervalId);
-    intervalId = 0; 
+    intervalId = 0;
 
     clearInterval(ballUpdateID);
 };
@@ -297,5 +299,4 @@ var loseGame = function () {
     }
 };
 
-fetchWordsSync(0);
 init();
