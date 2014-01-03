@@ -118,15 +118,16 @@ var fadeMessages = function (messages) {
     alpha = 1;
     fadeID = setInterval(function () {
         alpha -= .05;
+        if (alpha < 0) {
+            messages.shift();
+            alpha = 1;
+        }
         if (messages.length === 0) {
                 hideMessage();
                 resumeGame();
                 clearInterval(fadeID);
+                ctx2.globalAlpha = 1;
                 return;
-        }
-        if (alpha < 0) {
-            messages.shift();
-            alpha = 1;
         }
         ctx2.globalAlpha = alpha;
         ctx2.clearRect(0, 0, layer2.width, layer2.height);

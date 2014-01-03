@@ -13,7 +13,7 @@ var aiLevel;
 var startBall = true;
 var hosting = true;
 var ticks = 0;
-var countdown = ["","","GO!"];
+var countdown = [];
 var ballUpdateID = 0;
 
 /**
@@ -42,7 +42,7 @@ var init = function () {
             aiLevel = 1;
 
             setPaddles("ai", "player");
-            countdown[0] = "Campaign mode - Level " + campaignLevel;
+            countdown.push("Campaign mode - Level " + campaignLevel);
 
             break;
 
@@ -213,13 +213,14 @@ var resetBall = function () {
     }
 
     dx = dy = 0;
-    console.log(tempDx);
+    
     if(tempDx > 0){
-        countdown[1] = "--->";
+        countdown.push("--->");
     }
     else{
-        countdown[1] = "<---";
+        countdown.push("<---");
     }
+    countdown.push("GO!");
     ballUpdateID = setTimeout(function () {
          if(gameActive){
             fadeMessages(countdown);
@@ -248,7 +249,6 @@ var changeBallSpeed = function (ndx, ndy) {
 };
 
 var stopGame = function () {
-    console.log("game running is false");
     $('#typing').prop('readonly', true);
     clearInterval(intervalId);
     intervalId = 0;
@@ -268,7 +268,6 @@ var winGame = function () {
         case 'campaign':
             displayMessage("Good job! You've made it to the next level.");
             updateCampaignLevel(campaignLevel + 1);
-
             break;
 
         case 'pvp':
