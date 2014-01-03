@@ -15,15 +15,15 @@ def newRankings(myScore, theirScore, points):#points will be 1 or 0
     k = 32
 
     eAdenomiator = 1+10**((theirScore-myScore)/400)
-    eA = 1/eAdenomiator
+    eA = 1.0/eAdenomiator
 
     eBdenomiator = 1+10**((myScore-theirScore)/400)
-    eB = 1/eBdenomiator
+    eB = 1.0/eBdenomiator
 
     newMyScore = myScore + k*(points-eA)
     newTheirScore = theirScore+ k*(1-points-eB);
 
-    return newMyScore, newTheirScore
+    return int(newMyScore), int(newTheirScore)
 
 
 class UpdateScore(RequestHandler):
@@ -75,6 +75,8 @@ class UpdatePVPRating(RequestHandler):
         pvpRating = int(score)
         opponent = str(opponent)
 
+        opponentPVPRating= 0
+
         if winner == username:
             points = 1
         elif winner == opponent:
@@ -84,10 +86,25 @@ class UpdatePVPRating(RequestHandler):
 
         if opponent:
             users = db.GqlQuery("SELECT * FROM Player WHERE username = :1", opponent)
+            if users.count() == 0:
+                print "OOOOOOOOOOPSSS"
             for u in users:
                 opponentPVPRating = u.pvpRating;
 
-        newRankings(pvpRating, opponentPVPRating, points)
+        # print "USER" + str(username)
+        # print "opponent" + str(opponent)
+        # print "user ranking" + str(pvpRating)
+        # print "opp ranking" + str(opponentPVPRating)
+
+        # print "--------------GETTING NEW RANKINGS------------"
+        # (pvpRating, opponentPVPRating) =newRankings(pvpRating, opponentPVPRating, points)
+
+        # print "USER" + str(username)
+        # print "opponent" + str(opponent)
+        # print "user ranking" + str(pvpRating)
+        # print "opp ranking" + str(opponentPVPRating)
+
+
 
         if username:
             users = db.GqlQuery("SELECT * FROM Player WHERE username = :1", username)

@@ -16,6 +16,8 @@ var ticks = 0;
 
 var ballUpdateID = 0;
 
+var pvpOpponent =0;
+
 /**
  * Initializes the game in the appropriate mode.
  */
@@ -56,15 +58,20 @@ var init = function () {
                     displayMessage("Waiting.. No players online");
                     gamePaused = true;
                 } else {
-                    hideMessage();
-                    hosting = false;
-                    setPaddles("player", "remote");
-                    ticks = 0;
-                    gamePaused = false;
-                    resetBall();
+                    if (data.opponent){
+                        pvpOpponent = data.opponent;
+                        hideMessage();
+                        hosting = false;
+                        setPaddles("player", "remote");
+                        ticks = 0;
+                        gamePaused = false;
+                        resetBall();
+                    }else{
+                        alert("Error, missing opponent");
+                    }
                 }
             }
-
+            endingScore = 1;//TODO
             // try and join a random game
             displayMessage("Searching for a match");
             gamePaused = true;
@@ -257,11 +264,14 @@ var winGame = function () {
         case 'campaign':
             displayMessage("Good job! You've made it to the next level.");
             updateCampaignLevel(campaignLevel + 1);
-
             break;
 
         case 'pvp':
+            if (pvpOpponent != 0)
+                updatePvPRating(pvpOpponent, $.cookie('user'));
+
             //Update Win / Loss ratio
+
             break;
     }
 };
@@ -286,6 +296,8 @@ var loseGame = function () {
             //TODO: maybe write some useful stats (like how many words typed)
             break;
         case 'pvp':
+            if (pvpOpponent)
+                updatePvPRating(pvpOpponent, $.cookie('user'));
             //TODO: as with winGame()
     }
 };

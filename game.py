@@ -47,7 +47,8 @@ class Game(db.Model):
         message = {
             'game_found': True,
             'game_key': str(self.key()),
-            'token': token
+            'token': token,
+            'opponent': self.other_user(user)
         }
 
         return json.dumps(message)
@@ -113,10 +114,17 @@ class JoinGame(RequestHandler):
             print "IN Join Game"
             while (1):
                 games = db.GqlQuery("SELECT * FROM Game WHERE available = True")
+                print games.count()
+                # for g in games:
+                    # print "Game available?" + str(g.available)
+                    # print "game user 1: " + str(g.user_1)
+                    # print "game user 2: " + str(g.user_2)
+                # break
                 if games.count() == 0:
+                    print "no games"
                     break# if there's no games break, start your own one
 
-                game = self.tryToMatch(games, acceptableDifference, ELO)#try to find a match
+                game = self.tryToMatch(user, games, acceptableDifference, ELO)#try to find a match
                 if game != 0: # Game found
                     print "game found"
                     break
@@ -148,17 +156,23 @@ class JoinGame(RequestHandler):
             print "no game found"
             self.response.out.write(json.dumps({ 'game_found': False }))
 
-    def tryToMatch(self, games, acceptableDifference, playerELO):
+    def tryToMatch(self, user, games, acceptableDifference, playerELO):
         for g in games:
             # print "IN tryToMatch"
 
             # print "Acceptable difference: " + str(acceptableDifference)
-            # print "MY ELO:" + str(playerELO)
-            # print "GAME ELO" + str(g.ELO)
+            print "MY ELO:" + str(playerELO)
+            print "GAME ELO" + str(g.ELO)
+            print "ME" + str(user)
+            print "GAME OWNER" + str(g.user_1)
+            if g.user_1 == user:
+                g.delete()
+                return
+                
             if abs(playerELO - g.ELO) <= acceptableDifference:
-                print "acceptable match found"
-                game = g
-                return game
+                    print "acceptable match found"
+                    game = g
+                    return game
         return 0
         
 

@@ -29,7 +29,8 @@ var createGame = function (returnFunc, messageFunc) {
  * if game key is "", joins a random game!
  */
 var joinGame = function (game_key, returnFunc, messageFunc) {
-    msg = {user: $.cookie("user"),ELO: $.cookie("ELO"), game_key: game_key} //TODO fix hardocded elo
+    // alert($.cookie("ELO"));
+    msg = {user: $.cookie("user"),ELO: $.cookie("ELO"), game_key: game_key} 
     $.post('/_join', msg, function(data) {
         if (data.game_found) {
             setUpGame(data);

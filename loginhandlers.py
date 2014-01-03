@@ -89,6 +89,7 @@ class facebookRegister(RequestHandler):
             self.redirect("/_getUsername")
         else:
             self.response.set_cookie("user", value=username)
+            self.response.set_cookie("ELO", value="1500")#defauly ELO
             self.redirect("/game")
 
 class Register(RequestHandler):
@@ -107,7 +108,9 @@ class Register(RequestHandler):
             reply['password_error'] = e.msg
         else:
             reply['success'] = "true"
+            ELO = "1500"
             self.response.set_cookie("user", value=username)
+            self.response.set_cookie("ELO", value=ELO)
             # self.response.set_cookie("name", value=name)
 
         if debug != "" :
