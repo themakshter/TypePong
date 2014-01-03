@@ -14,6 +14,7 @@ var startBall = true;
 var hosting = true;
 var ticks = 0;
 
+var countdown = new Array();
 var ballUpdateID = 0;
 
 /**
@@ -41,8 +42,7 @@ var init = function () {
             aiLevel = 1;
 
             setPaddles("ai", "player");
-            fadeMessage("Level " + campaignLevel);
-
+            countdown[0] = "Camaign mode - Level " + campaignLevel;
             break;
 
         case 'pvp':
@@ -61,6 +61,7 @@ var init = function () {
                     setPaddles("player", "remote");
                     ticks = 0;
                     gamePaused = false;
+                    countdown[0] = "Pvp mode";
                     resetBall();
                 }
             }
@@ -77,13 +78,14 @@ var init = function () {
             aiLevel = 0; //Perfect mode. levels from 1 to 5
             setPaddles("ai", "player");
             gamePaused = false;
-
+            countdown[0] = "Challenge mode";
             break;
 
         case 'custom':
             //[TODO] Optional Mode
             setPaddles("ai", "player");
             gamePaused = false;
+            countdown[0] = "Custom mode";
 
             break;
 
@@ -101,7 +103,7 @@ var init = function () {
     }
 
     if (mode !== 'pvp') {
-        resetBall()
+        resetBall();
     }
 
     gameLoop();
@@ -188,7 +190,6 @@ var setPaddles = function (type1, type2) {
  */
 var resetBall = function () {
     'use strict';
-
     startBall = true;
     x = canvas.width / 2;
     y = canvas.height / 2;
@@ -196,7 +197,7 @@ var resetBall = function () {
     paddle2.update();
 
     // only choose velocity if singleplayer or hosting
-    if (hosting || mode !== "pvp") {
+    if (hosting || mode !== "pvp") {    
         // choose velocity here
         tempDx = -dx;
         tempDy = -dy;
@@ -211,6 +212,12 @@ var resetBall = function () {
     }
 
     dx = dy = 0;
+    
+    countdown[1] = "3";
+    countdown[2] = "2";
+    countdown[3] = "1";
+    countdown[4] = "GO!";
+    fadeMessages(countdown);
 
     ballUpdateID = setTimeout(function () {
         dx = tempDx;
@@ -229,7 +236,7 @@ var resetBall = function () {
                 "ticks": ticks
             }));
         }
-    }, 1000);
+    }, countdown.length * 1000);
 };
 
 var changeBallSpeed = function (ndx, ndy) {
@@ -239,7 +246,7 @@ var changeBallSpeed = function (ndx, ndy) {
 var stopGame = function () {
     $('#typing').prop('readonly', true);
     clearInterval(intervalId);
-    intervalId = 0;
+    intervalId = 0; 
 
     clearInterval(ballUpdateID);
 };

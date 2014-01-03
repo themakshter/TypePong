@@ -73,7 +73,7 @@ var fadeMessage = function (message) {
         ctx2.clearRect(0, 0, layer2.width, layer2.height);
         wrapText(ctx2, message, canvas.width / 2, canvas.height / 2 - 50,
             3 * canvas.width / 4, 50);
-    }, 20);
+    }, 50);
 };
 
 var wrapText = function (context, text, x, y, maxWidth, lineHeight) {
@@ -100,4 +100,37 @@ var wrapText = function (context, text, x, y, maxWidth, lineHeight) {
     metrics = context.measureText(line);
     width = metrics.width;
     context.fillText(line, x - width / 2, y);
+};
+
+var fadeMessages = function (messages) {
+    'use strict';
+    var layer2, ctx2, alpha, fadeID;
+ 
+    pauseGame(false);
+ 
+    $(canvas).addClass("pongblur");
+    layer2 = document.getElementById("layer2");
+    ctx2 = layer2.getContext("2d");
+ 
+    ctx2.font = "50px Share Tech";
+    ctx2.fillStyle = "#FFFFFF";
+ 
+    alpha = 1;
+    fadeID = setInterval(function () {
+        alpha -= .05;
+        if (alpha < 0) {
+            messages.shift();
+            alpha = 1;
+            ctx2.globalAlpha = 1;
+        }
+        if (messages.length == 0) {
+                //hideMessage();
+                //clearInterval($);
+                return;
+        }
+        ctx2.globalAlpha = alpha;
+        ctx2.clearRect(0, 0, layer2.width, layer2.height);
+        wrapText(ctx2, messages[0], canvas.width / 2, canvas.height / 2 - 50,
+            3 * canvas.width / 4, 50);
+    }, 50);
 };
