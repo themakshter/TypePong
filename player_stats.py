@@ -35,8 +35,11 @@ class LoadPvPStats(RequestHandler):
             scores = getPvPScores(username, 5)
             for s in scores:
                 time_since = parseDate(s.date)
+                strRatingChange = str(s.rating_change)
+                if s.rating_change > 0:
+                    strRatingChange = "+"+str(s.rating_change)# shows "+16" rather than just "16"
                 data.append({'date': time_since, 'opponent': s.opponent,
-                    'change': s.rating_change})
+                    'change': strRatingChange})
         values['data'] = data
 
         page = render_template("pvp_stats.html", values)

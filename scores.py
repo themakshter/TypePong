@@ -1,7 +1,7 @@
 from google.appengine.ext import db
 from google.appengine.ext.db import polymodel
 from player import Player, RegularPlayer
-from statistics import ChallengeStats
+from statistics import ChallengeStats, PvPStats
 from utils import render_template, get_template
 from webapp2 import RequestHandler
 
@@ -91,20 +91,25 @@ class UpdatePVPRating(RequestHandler):
             for u in users:
                 opponentPVPRating = u.pvpRating;
 
-        # print "USER" + str(username)
-        # print "opponent" + str(opponent)
-        # print "user ranking" + str(pvpRating)
-        # print "opp ranking" + str(opponentPVPRating)
+        oldRating = pvpRating
+        opponentOldRating = opponentPVPRating
+
+        print "USER" + str(username)
+        print "opponent" + str(opponent)
+        print "user ranking" + str(pvpRating)
+        print "opp ranking" + str(opponentPVPRating)
 
         # print "--------------GETTING NEW RANKINGS------------"
-        # (pvpRating, opponentPVPRating) =newRankings(pvpRating, opponentPVPRating, points)
+        (pvpRating, opponentPVPRating) =newRankings(pvpRating, opponentPVPRating, points)
 
-        # print "USER" + str(username)
-        # print "opponent" + str(opponent)
-        # print "user ranking" + str(pvpRating)
-        # print "opp ranking" + str(opponentPVPRating)
+        PvPStats(username=username, date=datetime.datetime.now(), opponent=opponent,rating_change= pvpRating-oldRating).put()
+        PvPStats(username=opponent, date=datetime.datetime.now(), opponent=username,rating_change= opponentPVPRating-opponentOldRating).put()
+        print "USER" + str(username)
+        print "opponent" + str(opponent)
+        print "user ranking" + str(pvpRating)
+        print "opp ranking" + str(opponentPVPRating)
 
-
+        self.response.headers['Content-Type'] = 'application/json'
 
         if username:
             users = db.GqlQuery("SELECT * FROM Player WHERE username = :1", username)
@@ -117,6 +122,9 @@ class UpdatePVPRating(RequestHandler):
             for u in users:
                 u.pvpRating = opponentPVPRating
                 u.put()
+
+        self.response.out.write(json.dumps({"ELO": pvpRating, "change": pvpRating-oldRating}))
+
 
 class UpdateCampaignLevel(RequestHandler):
     def post(self):

@@ -267,12 +267,16 @@ var winGame = function () {
             break;
 
         case 'pvp':
-            if (pvpOpponent != 0)
-                updatePvPRating(pvpOpponent, $.cookie('user'));
-
-            //Update Win / Loss ratio
-
-            break;
+            if (pvpOpponent){
+                var returnFunc = function(data) {
+                    var strChange = String(data.change);
+                    if (data.change>0)
+                        strChange = "+"+strChange;
+                    displayMessage("Victory! \nCurrent ELO: " + data.ELO + "("+strChange+")");
+                    // alert("woow");
+                };
+                updatePvPRating(pvpOpponent, $.cookie('user'), returnFunc);
+            }
     }
 };
 
@@ -296,8 +300,17 @@ var loseGame = function () {
             //TODO: maybe write some useful stats (like how many words typed)
             break;
         case 'pvp':
-            if (pvpOpponent)
-                updatePvPRating(pvpOpponent, $.cookie('user'));
+            if (pvpOpponent){
+                var returnFunc = function(data) {
+                    var strChange = String(data.change);
+                    if (data.change>0)
+                        strChange = "+"+strChange;
+                    displayMessage("Better luck next time! \nCurrent ELO: " + data.ELO + "("+strChange+")");
+                    // alert("woow");
+                };
+                updatePvPRating(pvpOpponent, pvpOpponent, returnFunc);
+            }
+            // displayMessage("Better luck next time");
             //TODO: as with winGame()
     }
 };
