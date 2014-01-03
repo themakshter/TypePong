@@ -13,8 +13,7 @@ var aiLevel;
 var startBall = true;
 var hosting = true;
 var ticks = 0;
-
-var countdown = [];
+var countdown = ["","","GO!"];
 var ballUpdateID = 0;
 
 /**
@@ -33,7 +32,6 @@ var init = function () {
 
     paddle1 = new Paddle(50, 200, "ai");
     paddle2 = new Paddle(700, 200, "player");
-
     switch (mode) {
         case 'campaign':
             //[TODO] : 1. Set length of words in sampler.py according to level.
@@ -45,11 +43,6 @@ var init = function () {
 
             setPaddles("ai", "player");
             countdown[0] = "Campaign mode - Level " + campaignLevel;
-            countdown[1] = "3";
-            countdown[2] = "2";
-            countdown[3] = "1";
-            countdown[4] = "GO!";
-            fadeMessages(countdown);
 
             break;
 
@@ -220,8 +213,17 @@ var resetBall = function () {
     }
 
     dx = dy = 0;
-
+    console.log(tempDx);
+    if(tempDx > 0){
+        countdown[1] = "--->";
+    }
+    else{
+        countdown[1] = "<---";
+    }
     ballUpdateID = setTimeout(function () {
+         if(gameActive){
+            fadeMessages(countdown);
+        }
         dx = tempDx;
         dy = tempDy;
         paddle1.update();
@@ -238,7 +240,7 @@ var resetBall = function () {
                 "ticks": ticks
             }));
         }
-    }, countdown.length * 1000);
+    },1000);
 };
 
 var changeBallSpeed = function (ndx, ndy) {
@@ -246,10 +248,10 @@ var changeBallSpeed = function (ndx, ndy) {
 };
 
 var stopGame = function () {
+    console.log("game running is false");
     $('#typing').prop('readonly', true);
     clearInterval(intervalId);
     intervalId = 0;
-
     clearInterval(ballUpdateID);
 };
 
