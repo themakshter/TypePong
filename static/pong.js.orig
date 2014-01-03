@@ -66,6 +66,7 @@ var init = function () {
                     displayMessage("Waiting.. No players online");
                     gamePaused = true;
                 } else {
+<<<<<<< HEAD
                     if (data.opponent){
                         pvpOpponent = data.opponent;
                         hideMessage();
@@ -73,11 +74,19 @@ var init = function () {
                         setPaddles("player", "remote");
                         ticks = 0;
                         gamePaused = false;
-						countdown[0] = "Pvp mode";
                         resetBall();
                     }else{
                         alert("Error, missing opponent");
                     }
+=======
+                    hideMessage();
+                    hosting = false;
+                    setPaddles("player", "remote");
+                    ticks = 0;
+                    gamePaused = false;
+                    countdown[0] = "Pvp mode";
+                    resetBall();
+>>>>>>> cda04e158e0e74bc0db99f219ac65dda41370ee8
                 }
             }
             endingScore = 1;//TODO
@@ -207,7 +216,6 @@ var setPaddles = function (type1, type2) {
  */
 var resetBall = function () {
     'use strict';
-
     startBall = true;
     x = canvas.width / 2;
     y = canvas.height / 2;
@@ -276,7 +284,6 @@ var winGame = function () {
         case 'campaign':
             displayMessage("Good job! You've made it to the next level.");
             updateCampaignLevel(campaignLevel + 1);
-
             break;
 
         case 'pvp':
@@ -297,7 +304,7 @@ var winGame = function () {
 
                     // alert("woow");
                 };
-                updatePvPRating(pvpOpponent, $.cookie('user'), returnFunc);
+                updatePvPRating(pvpOpponent, pvpOpponent, returnFunc);
 
             }
     }
@@ -323,7 +330,6 @@ var loseGame = function () {
             //TODO: maybe write some useful stats (like how many words typed)
             break;
         case 'pvp':
-            //TODO: as with winGame()
             if (pvpOpponent){
                 var returnFunc = function(data) {
                     var strMyChange = String(data.myChange);
@@ -344,8 +350,9 @@ var loseGame = function () {
                 updatePvPRating(pvpOpponent, pvpOpponent, returnFunc);
 
             }
+            // displayMessage("Better luck next time");
+            //TODO: as with winGame()
     }
 };
 
-fetchWordsSync(0);
 init();

@@ -66,14 +66,20 @@ class UpdateChallengeScore(RequestHandler):
 class UpdatePVPRating(RequestHandler):
     def post(self):
         username = cgi.escape(self.request.get("username"))
-        score = cgi.escape(self.request.get("pvpRating"))
+        # score = cgi.escape(self.request.get("pvpRating"))
         opponent = cgi.escape(self.request.get("oppositionUsername"))
         winner = cgi.escape(self.request.get("winner"))
 
+        player = db.GqlQuery("SELECT * FROM Player WHERE username =  :1", username)
+        pvpRating = player.get().pvpRating
+
+
         winner = str(winner)
         username = str(username)
-        pvpRating = int(score)
+        # pvpRating = int(score)
         opponent = str(opponent)
+
+
 
         opponentPVPRating= 0
 

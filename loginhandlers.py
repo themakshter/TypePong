@@ -126,7 +126,7 @@ class Register(RequestHandler):
 class Logout(RequestHandler):
     def get(self):
         self.response.delete_cookie("user")
-        self.response.delete_cookie("name")
+        self.response.delete_cookie("ELO")
         self.redirect("/")
 
 class Delete(RequestHandler):

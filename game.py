@@ -72,7 +72,9 @@ class CreateGame(RequestHandler):
 
     def post(self):
         user = cgi.escape(self.request.get('user'))
-        ELO =  cgi.escape(self.request.get('ELO'))
+
+        player = db.GqlQuery("SELECT * FROM Player WHERE username =  :1", user)
+        ELO = player.get().pvpRating
         if ELO == "":
             ELO = 0
         ranking = int(ELO)
@@ -94,7 +96,7 @@ class JoinGame(RequestHandler):
 
     def post(self):
         user = cgi.escape(self.request.get('user'))
-        ELO = cgi.escape(self.request.get('ELO'))
+        # ELO = cgi.escape(self.request.get('ELO'))
         game_key = cgi.escape(self.request.get('game_key'))
 
         MAX_WAIT_TIME = 20
@@ -102,6 +104,11 @@ class JoinGame(RequestHandler):
 
         self.response.out.headers['Content-Type'] = 'application/json'
         # self.response.out.write(json.dumps({ 'game_found': False }))
+
+        player = db.GqlQuery("SELECT * FROM Player WHERE username =  :1", user)
+        ELO = player.get().pvpRating
+
+        print "____________" + str(ELO)
 
         if ELO == "":
             ELO = 0
