@@ -14,6 +14,7 @@ var startBall = true;
 var hosting = true;
 var ticks = 0;
 
+var countdown = [];
 var ballUpdateID = 0;
 
 var pvpOpponent =0;
@@ -25,6 +26,8 @@ var init = function () {
     'use strict';
 
     var i, len;
+
+    fetchWordsSync(0);
     canvas = document.getElementById("layer1");
     ctx = canvas.getContext("2d");
     x = canvas.width / 2;
@@ -43,7 +46,12 @@ var init = function () {
             aiLevel = 1;
 
             setPaddles("ai", "player");
-            fadeMessage("Level " + campaignLevel);
+            countdown[0] = "Campaign mode - Level " + campaignLevel;
+            countdown[1] = "3";
+            countdown[2] = "2";
+            countdown[3] = "1";
+            countdown[4] = "GO!";
+            fadeMessages(countdown);
 
             break;
 
@@ -65,6 +73,7 @@ var init = function () {
                         setPaddles("player", "remote");
                         ticks = 0;
                         gamePaused = false;
+						countdown[0] = "Pvp mode";
                         resetBall();
                     }else{
                         alert("Error, missing opponent");
@@ -84,13 +93,14 @@ var init = function () {
             aiLevel = 0; //Perfect mode. levels from 1 to 5
             setPaddles("ai", "player");
             gamePaused = false;
-
+            countdown[0] = "Challenge mode";
             break;
 
         case 'custom':
             //[TODO] Optional Mode
             setPaddles("ai", "player");
             gamePaused = false;
+            countdown[0] = "Custom mode";
 
             break;
 
@@ -108,7 +118,7 @@ var init = function () {
     }
 
     if (mode !== 'pvp') {
-        resetBall()
+        resetBall();
     }
 
     gameLoop();
@@ -238,7 +248,7 @@ var resetBall = function () {
                 "ticks": ticks
             }));
         }
-    }, 1000);
+    }, countdown.length * 1000);
 };
 
 var changeBallSpeed = function (ndx, ndy) {
@@ -266,6 +276,7 @@ var winGame = function () {
         case 'campaign':
             displayMessage("Good job! You've made it to the next level.");
             updateCampaignLevel(campaignLevel + 1);
+
             break;
 
         case 'pvp':
@@ -312,27 +323,6 @@ var loseGame = function () {
             //TODO: maybe write some useful stats (like how many words typed)
             break;
         case 'pvp':
-            if (pvpOpponent){
-                var returnFunc = function(data) {
-                    var strMyChange = String(data.myChange);
-                    var strOppChange= String(data.oppChange);
-                    if (data.myChange>0)
-                        strMyChange = "+"+strMyChange;
-                    if (data.oppChange>0)
-                        strOppChange = "+"+strOppChange;
-                    displayMessage("Better luck next time! \nCurrent ELO: " + data.myELO + "("+strMyChange+")");
-                    var messageForOpp = "Victory! \nCurrent ELO: " + data.oppELO + "("+strOppChange+")";
-                    sendMessage(JSON.stringify({
-                                    "type": "display_message",
-                                    "message": messageForOpp
-                                }));
-
-                    // alert("woow");
-                };
-                updatePvPRating(pvpOpponent, pvpOpponent, returnFunc);
-
-            }
-            // displayMessage("Better luck next time");
             //TODO: as with winGame()
     }
 };
