@@ -1,6 +1,5 @@
 var wordList = [];
 var currentWords = [];
-var currLevel = 0;
 
 /**
  * Updates the word of the given position id.
@@ -10,7 +9,7 @@ var updateWords = function (id) {
 
     var i, pID, newWord;
     if (wordList.length <= 5) {
-        fetchWordsAsync(currLevel);
+        fetchWordsAsync(campaignLevel);
     }
 
     newWord = wordList.pop();
