@@ -166,6 +166,8 @@ var receiveMessage = function (message) {
                 paddle1.score = data.score1;
                 paddle2.score = data.score2;
                 break
+        case 'display_message'://Used to display score changes etc
+            displayMessage(data.message);
     }
 }
 
@@ -269,13 +271,23 @@ var winGame = function () {
         case 'pvp':
             if (pvpOpponent){
                 var returnFunc = function(data) {
-                    var strChange = String(data.change);
-                    if (data.change>0)
-                        strChange = "+"+strChange;
-                    displayMessage("Victory! \nCurrent ELO: " + data.ELO + "("+strChange+")");
+                    var strMyChange = String(data.myChange);
+                    var strOppChange= String(data.oppChange);
+                    if (data.myChange>0)
+                        strMyChange = "+"+strMyChange;
+                    if (data.oppChange>0)
+                        strOppChange = "+"+strOppChange;
+                    displayMessage("Better luck next time! \nCurrent ELO: " + data.myELO + "("+strMyChange+")");
+                    var messageForOpp = "Victory! \nCurrent ELO: " + data.oppELO + "("+strOppChange+")";
+                    sendMessage(JSON.stringify({
+                                    "type": "display_message",
+                                    "message": messageForOpp
+                                }));
+
                     // alert("woow");
                 };
-                updatePvPRating(pvpOpponent, $.cookie('user'), returnFunc);
+                updatePvPRating(pvpOpponent, pvpOpponent, returnFunc);
+
             }
     }
 };
@@ -302,13 +314,23 @@ var loseGame = function () {
         case 'pvp':
             if (pvpOpponent){
                 var returnFunc = function(data) {
-                    var strChange = String(data.change);
-                    if (data.change>0)
-                        strChange = "+"+strChange;
-                    displayMessage("Better luck next time! \nCurrent ELO: " + data.ELO + "("+strChange+")");
+                    var strMyChange = String(data.myChange);
+                    var strOppChange= String(data.oppChange);
+                    if (data.myChange>0)
+                        strMyChange = "+"+strMyChange;
+                    if (data.oppChange>0)
+                        strOppChange = "+"+strOppChange;
+                    displayMessage("Better luck next time! \nCurrent ELO: " + data.myELO + "("+strMyChange+")");
+                    var messageForOpp = "Victory! \nCurrent ELO: " + data.oppELO + "("+strOppChange+")";
+                    sendMessage(JSON.stringify({
+                                    "type": "display_message",
+                                    "message": messageForOpp
+                                }));
+
                     // alert("woow");
                 };
                 updatePvPRating(pvpOpponent, pvpOpponent, returnFunc);
+
             }
             // displayMessage("Better luck next time");
             //TODO: as with winGame()

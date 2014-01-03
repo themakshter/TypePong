@@ -14,10 +14,10 @@ def newRankings(myScore, theirScore, points):#points will be 1 or 0
     #eA = 1/1+10^(theirs-mine)/400
     k = 32
 
-    eAdenomiator = 1+10**((theirScore-myScore)/400)
+    eAdenomiator = 1+10**((theirScore-myScore)/400.0)
     eA = 1.0/eAdenomiator
 
-    eBdenomiator = 1+10**((myScore-theirScore)/400)
+    eBdenomiator = 1+10**((myScore-theirScore)/400.0)
     eB = 1.0/eBdenomiator
 
     newMyScore = myScore + k*(points-eA)
@@ -123,7 +123,7 @@ class UpdatePVPRating(RequestHandler):
                 u.pvpRating = opponentPVPRating
                 u.put()
 
-        self.response.out.write(json.dumps({"ELO": pvpRating, "change": pvpRating-oldRating}))
+        self.response.out.write(json.dumps({"myELO": pvpRating, "myChange": pvpRating-oldRating, "oppELO": opponentPVPRating, "oppChange":opponentPVPRating-opponentOldRating }))
 
 
 class UpdateCampaignLevel(RequestHandler):
