@@ -99,7 +99,7 @@ class JoinGame(RequestHandler):
         # ELO = cgi.escape(self.request.get('ELO'))
         game_key = cgi.escape(self.request.get('game_key'))
 
-        MAX_WAIT_TIME = 20
+        MAX_WAIT_TIME = 5
         acceptableDifference =10
 
         self.response.out.headers['Content-Type'] = 'application/json'
