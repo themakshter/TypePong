@@ -18,7 +18,7 @@ var updateCampaignLevel = function (level) {
 
 var updatePvPRating = function (otherUser, winner, returnFunc) {
     var data = {  "username" : $.cookie('user'),  "winner" : winner, "oppositionUsername": otherUser };
-        alert(otherUser);
+        // alert(otherUser);
 
     $.post('/_updatepvprating', data, returnFunc);
 
