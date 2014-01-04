@@ -73,23 +73,27 @@ var Paddle = function (xPos, yPos,playerType) {
     this.tryAndMove = function () {
         'use strict';
 
-        var number, sampleSize, destY, yPos;
-
+        var toCheck,number, sampleSize,step, destY, yPos;
+        sampleSize = 100;
+        number = 25;
+        step = 75/9;
         if(((x < this.xPos) && (dx > 0)) || (x > this.xPos) && (dx < 0)){
             yPos = calculateHitYPos(x,y,dx,dy,this.xPos);
         } else {
             return;
         }
 
-        sampleSize = aiLevel * 10;
+        var toAdd = (aiLevel - 1) * step;
+        number= Math.round(number + toAdd);
+
         if (startBall || aiLevel === 0) {
-            number = 6;
+            number = 100;
             startBall = false;
-        } else {
-            number = Math.round(Math.random() * sampleSize);
-        }
-        if (number <= 5 && this.playerType === "ai") {
-            yPos = canvas.height - yPos;
+        } 
+        
+        toCheck = Math.round(Math.random() * sampleSize);
+        if (toCheck >= number && this.playerType === "ai") {
+            yPos = canvas.height - yPos;    
         }
 
         destY = Math.round(yPos - (this.height / 2));

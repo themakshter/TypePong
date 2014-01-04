@@ -13,7 +13,6 @@ var aiLevel;
 var startBall = true;
 var hosting = true;
 var ticks = 0;
-
 var countdown = [];
 var ballUpdateID = 0;
 
@@ -35,7 +34,6 @@ var init = function () {
 
     paddle1 = new Paddle(50, 200, "ai");
     paddle2 = new Paddle(700, 200, "player");
-
     switch (mode) {
         case 'campaign':
             //[TODO] : 1. Set length of words in sampler.py according to level.
@@ -46,12 +44,7 @@ var init = function () {
             aiLevel = 1;
 
             setPaddles("ai", "player");
-            countdown[0] = "Campaign mode - Level " + campaignLevel;
-            countdown[1] = "3";
-            countdown[2] = "2";
-            countdown[3] = "1";
-            countdown[4] = "GO!";
-            fadeMessages(countdown);
+            countdown.push("Campaign mode - Level " + campaignLevel);
 
             break;
 
@@ -230,8 +223,27 @@ var resetBall = function () {
     }
 
     dx = dy = 0;
+    var direction = "";
+    if(tempDx > 0){
+        direction = direction.concat("right");
+    }
+    else{
+        direction = direction.concat("left");
+    }
 
+    if(tempDy > 0){
+        direction = direction.concat("down");
+    }else{
+        direction = direction.concat("up");
+    }
+
+    countdown.push(direction);
+
+    countdown.push("GO!");
     ballUpdateID = setTimeout(function () {
+         if(gameActive){
+            fadeMessages(countdown);
+        }
         dx = tempDx;
         dy = tempDy;
         paddle1.update();
@@ -248,7 +260,7 @@ var resetBall = function () {
                 "ticks": ticks
             }));
         }
-    }, countdown.length * 1000);
+    },1000);
 };
 
 var changeBallSpeed = function (ndx, ndy) {
@@ -259,7 +271,6 @@ var stopGame = function () {
     $('#typing').prop('readonly', true);
     clearInterval(intervalId);
     intervalId = 0;
-
     clearInterval(ballUpdateID);
 };
 
@@ -276,7 +287,6 @@ var winGame = function () {
         case 'campaign':
             displayMessage("Good job! You've made it to the next level.");
             updateCampaignLevel(campaignLevel + 1);
-
             break;
 
         case 'pvp':
