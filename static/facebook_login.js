@@ -7,8 +7,8 @@ window.fbAsyncInit = function() {
         oauth      : true
     });
     FB.Event.subscribe('auth.login', function(response) {
-        //handleResponse(response);
-        //window.location.reload(); // reload if not redirected
+        handleResponse(response);
+        window.location.reload(); // reload if not redirected
     });
 
     function handleResponse(response){
