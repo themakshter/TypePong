@@ -144,6 +144,10 @@ table {
     width: 100%;
 }
 
+th, td {
+    width: 33%;
+}
+
 th {
     padding: 5px;
 }
