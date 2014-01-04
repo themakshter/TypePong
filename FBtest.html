@@ -1,7 +1,10 @@
 <html>
 
-<div id="fb-root"></div>
+<head>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+<div id="fb-root"></div>
 <script type="text/javascript">
 
 window.fbAsyncInit = function() {
@@ -33,16 +36,13 @@ window.fbAsyncInit = function() {
     });
 
 function handleResponse(response){
+    'use strict'
 
     if (response.status ==='connected'){
         var id =response.authResponse.userID;
-        $('#facebookID').attr("value", id);//set the value of the inupt field FBID to id
-        $('#redirect').click();//click the redirect button
-
-
-        
-        // window.location.href = url;
-
+        //$('#facebookID').attr("value", id);//set the value of the inupt field FBID to id
+        //$('#redirect').click();//click the redirect button
+        window.location.href = "_facebookLogin?facebookID=" . id;
     }
 }
 
@@ -67,14 +67,12 @@ FB.getLoginStatus(handleResponse);
 </script>
 
 <div class="fb-login-button">Login</div>
+
 <form action="_facebookLogin" method="GET">
 <!-- TODO fix local host in the above -->
 <input id="facebookID" name="facebookID" type="text" hidden>
 <button id="redirect" type="submit" hidden>F</button>
-
-
 </form>
-
-
+</body>
 
 </html>
