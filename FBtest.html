@@ -8,7 +8,7 @@ window.fbAsyncInit = function() {
 
     FB.init({
 
-        appId      : '549578998463425',
+        appId      : '203715726482941',
 
         status     : true,
 
@@ -67,9 +67,9 @@ FB.getLoginStatus(handleResponse);
 </script>
 
 <div class="fb-login-button">Login</div>
-<form action="http://localhost:8080/_facebookLogin" method="GET">
+<form action="_facebookLogin" method="GET">
 <!-- TODO fix local host in the above -->
-<input id="facebookID" name="facebookID" =type="text" hidden>
+<input id="facebookID" name="facebookID" type="text" hidden>
 <button id="redirect" type="submit" hidden>F</button>
 
 
