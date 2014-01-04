@@ -97,7 +97,7 @@ def validate_name(name):
 
 def facebook_validate_username(username):
     if username == "":
-        raise InvalidLoginDetail(facebookID, "no facebook ID")
+        raise InvalidLoginDetail(username, "no username provided")
 
     for u in Player.all():
         print (u.username + "             " + username)
