@@ -7,19 +7,19 @@ window.fbAsyncInit = function() {
         oauth      : true
     });
     FB.Event.subscribe('auth.login', function(response) {
-	    handleResponse(response);
+        handleResponse(response);
         window.location.reload(); // reload if not redirected
     });
 
-function handleResponse(response){
-    'use strict'
-    if (response.status ==='connected'){
-        var id =response.authResponse.userID;
-        window.location.href = "_facebookLogin?facebookID=" + id;
+    function handleResponse(response){
+        'use strict'
+        if (response.status ==='connected'){
+            var id =response.authResponse.userID;
+            window.location.href = "_facebookLogin?facebookID=" + id;
+        }
     }
-}
 
-FB.getLoginStatus(handleResponse);
+    FB.getLoginStatus(handleResponse);
 };
 
 (function(d){
