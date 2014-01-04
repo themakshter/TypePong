@@ -1,8 +1,6 @@
 {% extends "default.html" %}
 {% block content %}
 <div style="width:40%;margin:0 auto;">
-    <div id="fb-root"></div>
-    <script src="static/facebook_login.js"></script>
     <form class="center" action="#">
         <input type="text" name="username" value placeholder="Username">
         <div class="error"><span id="username_error"></span></div>
@@ -11,7 +9,8 @@
         <div style="width:100%;">
                 <button style="float: left;" id="login_btn" class="button">Login</button>
                 <button style="float: right;" id="register_btn" class="button">Register</button>
-                <div style="padding-top:5px;color:black;"><div class="fb-login-button">Login / Register</div></div>
+                <button style="width: 100%;border-color: #2356C2;border-width: 2px;" id="fb_btn" class="button">Facebook Login</button>
+                <!-- <div style="padding-top:5px;color:black;"><div class="fb-login-button">Login / Register</div></div> -->
         </div>
     </form>
 <div>

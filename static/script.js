@@ -4,8 +4,12 @@ $(function() {
     var form = $('form');
     var loginButton = $('#login_btn');
     var registerButton = $('#register_btn');
+    var facebookButton = $('#fb_btn');
     addLoginOnClick(loginButton, "/_login");
     addLoginOnClick(registerButton, "/_register");
+    facebookButton.click(function() {
+        window.location.href = "/fblogin";
+    });
     form.submit(
         function(event) {
             event.preventDefault();

