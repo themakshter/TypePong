@@ -10,23 +10,15 @@
 window.fbAsyncInit = function() {
 
     FB.init({
-
         appId      : '203715726482941',
-
         status     : true,
-
         cookie     : true,
-
         xfbml      : true,
-
         oauth      : true
-
     });
 
     FB.Event.subscribe('auth.login', function(response) {
-
         window.location.reload();
-
     });
 
     FB.Event.subscribe('auth.logout', function(response) {
@@ -42,7 +34,7 @@ function handleResponse(response){
         var id =response.authResponse.userID;
         //$('#facebookID').attr("value", id);//set the value of the inupt field FBID to id
         //$('#redirect').click();//click the redirect button
-        window.location.href = "_facebookLogin?facebookID=" . id;
+        window.location.href = "_facebookLogin?facebookID=" + id;
     }
 }
 
