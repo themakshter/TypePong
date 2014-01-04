@@ -131,7 +131,61 @@ var fadeMessages = function (messages) {
         }
         ctx2.globalAlpha = alpha;
         ctx2.clearRect(0, 0, layer2.width, layer2.height);
+        if(messages[0] === "leftdown" || messages[0] === "leftup"|| messages[0] === "rightdown"|| messages[0] === "rightup"){
+            drawArrow(ctx2,messages[0]);
+        }else{
         wrapText(ctx2, messages[0], canvas.width / 2, canvas.height / 2 - 50,
             3 * canvas.width / 4, 50);
+        }
     }, 50);
+};
+
+var drawArrow = function(context, direction) {
+    context.beginPath();
+    switch (direction) {
+        case "rightup":
+            x = 300;y = 250;
+            context.moveTo(x, y);
+            context.lineTo(x + 50, y - 50);
+            context.lineTo(x + 50 - 25, y - 50 - 25);
+            context.lineTo(x + 50 - 25 + 95, y - 50 - 25 + 5);
+            context.lineTo(x + 50 + 60, y - 50 + 60);
+            context.lineTo(x + 50 + 35, y - 50 + 35);
+            context.lineTo(x + 35, y + 35);
+            break;
+        case "leftup":
+            x = 425;y = 250;
+            context.moveTo(x, y);
+            context.lineTo(x - 50, y - 50);
+            context.lineTo(x - 50 + 25, y - 50 - 25);
+            context.lineTo(x - 50 + 25 - 95, y - 50 - 25 + 5);
+            context.lineTo(x - 50 - 60, y - 50 + 60);
+            context.lineTo(x - 50 - 35, y - 50 + 35);
+            context.lineTo(x - 35, y + 35);
+            break;
+        case "rightdown":
+            x = 300;y = 200;
+            context.moveTo(x, y);
+            context.lineTo(x + 50, y + 50);
+            context.lineTo(x + 50 - 25, y + 50 + 25);
+            context.lineTo(x + 50 - 25 + 95, y + 50 + 25 - 5);
+            context.lineTo(x + 50 + 60, y + 50 - 60);
+            context.lineTo(x + 50 + 35, y + 50 - 35);
+            context.lineTo(x + 35, y - 35);
+            break;
+        case "leftdown":
+            x = 425;y = 200;
+            context.moveTo(x, y);
+            context.lineTo(x - 50, y + 50);
+            context.lineTo(x - 50 + 25, y + 50 + 25);
+            context.lineTo(x - 50 + 25 - 95, y + 50 + 25 - 5);
+            context.lineTo(x - 50 - 60, y + 50 - 60);
+            context.lineTo(x - 50 - 35, y + 50 - 35);
+            context.lineTo(x - 35, y - 35);
+            break;
+        default:
+            break;
+    }
+    context.closePath();
+    context.fill();
 };
