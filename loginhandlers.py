@@ -33,8 +33,6 @@ class FacebookLogin(RequestHandler):
             player = db.GqlQuery("SELECT * FROM Player WHERE username =  :1", username)
             ELO = player.get().pvpRating
             self.response.set_cookie("ELO", value=str(ELO))
-            # self.response.set_cookie("ELO", value=ELO)
-            # self.response.set_cookie("name", value=name)
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(reply))
@@ -64,16 +62,6 @@ class Login(RequestHandler):
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(reply))
-
-class addUsername(RequestHandler):
-    def get(self):
-        f = open("addUsername.html", "r")
-
-        facebookID = cgi.escape(self.request.get("facebookID"))
-
-        html = f.read()
-        html = html.replace("__PLACEHOLDER__", facebookID)
-        self.response.write(html);
 
 class facebookRegister(RequestHandler):
     def post (self):
