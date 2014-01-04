@@ -42,7 +42,11 @@ $(function() {
 
     // add tooltips
     $(document).tooltip({
-        track: true
+        track: true,
+        items: "[tooltip]",
+        content: function() {
+            return $(this).attr("tooltip");
+        }
     });
 
 });
