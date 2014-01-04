@@ -23,7 +23,7 @@ window.fbAsyncInit = function() {
 };
 
 function fbLogin(){
-    console.log("login");
+    console.log("func call");
     FB.login(function(response) {
             console.log(response);
         if (response.authResponse) {
@@ -58,5 +58,9 @@ function fbLogin(){
 (function addFacebookLoginOnClick() {
     'use strict';
     var button = $('#fb_btn');
-    button.click(fbLogin);
+    console.log("add click");
+    button.click(function(){
+        console.log("click");
+        fbLogin();
+    });
 }());
