@@ -216,19 +216,15 @@ var resetBall = function () {
     var direction = "";
     if(tempDx > 0){
         direction = direction.concat("right");
-        console.log("right - now " + direction)
     }
     else{
         direction = direction.concat("left");
-        console.log("left - now " + direction)
     }
 
     if(tempDy > 0){
         direction = direction.concat("down");
-        console.log("down - now " + direction)
     }else{
         direction = direction.concat("up");
-        console.log("up - now " + direction)
     }
 
     countdown.push(direction);
