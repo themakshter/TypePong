@@ -32,7 +32,7 @@ class FacebookLogin(RequestHandler):
             self.response.set_cookie("user", value=username)
             player = db.GqlQuery("SELECT * FROM Player WHERE username =  :1", username)
             ELO = player.get().pvpRating
-            self.response.set_cookie("ELO", value=ELO)
+            self.response.set_cookie("ELO", value=str(ELO))
             # self.response.set_cookie("ELO", value=ELO)
             # self.response.set_cookie("name", value=name)
 
