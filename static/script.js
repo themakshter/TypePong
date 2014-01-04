@@ -14,6 +14,7 @@ $(function() {
     );
 
     function addLoginOnClick(button, url) {
+        'use strict';
         button.click(function() {
             var values = {
                 username: form.find("input[name='username']").val(),
