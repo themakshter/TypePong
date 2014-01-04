@@ -9,7 +9,6 @@ app = WSGIApplication([
     ('/', main.MainHandler),
     ('/about', main.AboutHandler),
     ('/login', main.LoginHandler),
-    ('/fblogin', main.FBLoginHandler),
     ('/campaign', main.CampaignHandler),
     ('/challenge', main.ChallengeHandler),
     ('/pvp', main.PvpHandler),
@@ -35,6 +34,6 @@ app = WSGIApplication([
     ('/_leave', game.LeaveGame),
     ('/_message', game.Message),
     ('/FBtest', main.FBTest),
-    ('/_getUsername', main.FBLoginHandler),
+    ('/_getUsername', main.FBRegisterHandler),
     ('/_facebookRegister', loginhandlers.facebookRegister)
     ], debug=True)

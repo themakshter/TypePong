@@ -44,7 +44,7 @@ class LoginHandler(RequestHandler):
     def get_login_page(self, args={}):
         return render_template('login.html')
 
-class FBLoginHandler(LoginHandler):
+class FBRegisterHandler(LoginHandler):
     def get_login_page(self, args={}):
         facebookID = cgi.escape(self.request.get("facebookID"))
         values = {'fbid': facebookID}
