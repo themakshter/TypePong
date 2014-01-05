@@ -238,6 +238,44 @@ class HiscoresChallengeHandler(RequestHandler):
         content = table_template.render(values)
         self.response.out.write(content)
 
+class HiscoresPvPHandler(RequestHandler):
+    def get(self, request=None, response=None):
+        if "user" not in self.request.cookies.keys():
+            self.redirect("/login")
+
+        username = self.request.cookies.get('user')
+        values = {'name': username}
+
+        table_template = get_template("hiscores_pvp.html")
+
+        page = 0
+        score_per_page = 5
+        start = page * score_per_page
+        players_c = get_hiscore_players(start, score_per_page, "-pvpRating")
+
+        players_pvp = [{'username': p.username, 'score': p.pvpRating}
+                for p in players_c if p.challengeScore is not None]
+        for i, p in enumerate(players_pvp):
+            p['rank'] = i + 1
+
+        for p in players_pvp:
+            if p['username'] == username:
+                colour_player(p)
+                break
+        else:
+            player_one = next(get_player_one(username))
+            if player_one.pvpRating:
+                p = {'username': player_one.username,
+                        'score': player_one.pvpRating,
+                         'rank': get_player_rank(username, "-challengeScore")}
+                colour_player(p)
+                players_pvp.append(p)
+
+        values['players'] = players_pvp
+
+        content = table_template.render(values)
+        self.response.out.write(content)
+
 def get_player_rank(username, scoreType):
     players = Player.all().order(scoreType).run()
 

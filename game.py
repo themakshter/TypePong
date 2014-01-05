@@ -92,7 +92,7 @@ class CreateGame(RequestHandler):
 
 class JoinGame(RequestHandler):
     """Join a game by providing the game key."""
-    
+
 
     def post(self):
         user = cgi.escape(self.request.get('user'))
@@ -114,7 +114,7 @@ class JoinGame(RequestHandler):
             ELO = 0
         ELO = int(ELO)
 
-        if game_key == "":            
+        if game_key == "":
             game = 0
             startTime = time.time()
             timeSinceLastStep = startTime
@@ -141,18 +141,18 @@ class JoinGame(RequestHandler):
                     timeSinceLastStep = time.time();
                 if time.time() - timeSinceLastStep > (MAX_WAIT_TIME * 0.9):
                     acceptableDifference = 2000#match with anyone if we're near the end
-                
+
                 if time.time() - startTime > MAX_WAIT_TIME:
                     print "TOO LONG"
-                    # self.response.out.write(json.dumps({ 'game_found': False })) 
+                    # self.response.out.write(json.dumps({ 'game_found': False }))
                     break
         else:
             # else join the specified game
             game = db.get(game_key)
 
         # send information about game back to client
-        
-        
+
+
         if game:
             # a game was found, return game data
             print "Game Joined"
@@ -175,13 +175,13 @@ class JoinGame(RequestHandler):
             if g.user_1 == user:
                 g.delete()
                 return
-                
+
             if abs(playerELO - g.ELO) <= acceptableDifference:
                     print "acceptable match found"
                     game = g
                     return game
         return 0
-        
+
 
 class LeaveGame(RequestHandler):
     """Leave a game by providing the game key."""
