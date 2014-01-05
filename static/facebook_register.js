@@ -2,7 +2,7 @@ $(function() {
     'use strict';
     // Login form
     var form = $('form');
-    var registerButton = $('#fb_btn');
+    var registerButton = $('#register_btn');
     addLoginOnClick(registerButton, "/_facebookRegister");
     form.submit(
         function(event) {
