@@ -16,7 +16,7 @@ $(function() {
         button.click(function() {
             var values = {
                 username: form.find("input[name='username']").val(),
-                pass: form.find("input[name='pass']").val(),
+                facebookID: form.find("input[name='facebookID']").val(),
             };
 
             var completeFunc = function(data) {
