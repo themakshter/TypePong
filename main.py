@@ -48,7 +48,7 @@ class FBRegisterHandler(LoginHandler):
     def get_login_page(self, args={}):
         facebookID = cgi.escape(self.request.get("facebookID"))
         values = {'fbid': facebookID}
-        return render_template('facebook_login.html', values)
+        return render_template('facebook_register.html', values)
 
 class CampaignHandler(RequestHandler):
     def get(self, request=None, response=None):
