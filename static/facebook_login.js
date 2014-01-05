@@ -14,7 +14,7 @@ window.fbAsyncInit = function() {
         'use strict'
         if (response.status === 'connected'){
             var id =response.authResponse.userID;
-            url = "_facebookLogin?facebookID=" + id;
+            var url = "_facebookLogin?facebookID=" + id;
 
             var completeFunc = function(data) {
                 if (data.success === "true") {
