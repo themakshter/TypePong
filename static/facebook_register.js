@@ -29,8 +29,7 @@ $(function() {
                     else
                         div.text(text);
                 }
-                setText($("#error"), data.username_error);
-                setText($("#password_error"), data.password_error);
+                setText($("#error"), data.error);
             };
 
             $.post(url, values, completeFunc).fail(function(xhr, ajaxOptions, thrownError){console.log(thrownError)});
