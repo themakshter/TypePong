@@ -14,7 +14,17 @@ window.fbAsyncInit = function() {
         'use strict'
         if (response.status === 'connected'){
             var id =response.authResponse.userID;
-            window.location.href = "_facebookLogin?facebookID=" + id;
+            url = "_facebookLogin?facebookID=" + id;
+
+            var completeFunc = function(data) {
+                if (data.success === "true") {
+                    window.location.href = "/campaign";
+                } else {
+                    window.location.href = "_getUsername?facebookID=" + id;
+                }
+            };
+
+            $.get(url, completeFunc).fail(function(xhr, ajaxOptions, thrownError){console.log(thrownError)});
         }
     }
 
