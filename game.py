@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 """Game and messaging module that handles messages that should be sent between users in-game."""
 
 from google.appengine.api import channel
@@ -128,8 +127,11 @@ class JoinGame(RequestHandler):
             game = db.get(game_key)
 
         if game:
-            game.join(user)
-            self.response.out.write(game.json_data(user))
+            if game.user_1 != user:
+                game.join(user)
+                self.response.out.write(game.json_data(user))
+            else:
+                self.response.out.write(json.dumps({ 'game_found': False }))
         else:
             self.response.out.write(json.dumps({ 'game_found': False }))
 
