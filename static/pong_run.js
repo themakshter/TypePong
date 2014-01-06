@@ -62,9 +62,7 @@ var update = function () {
     } else if (y + dy + circleRadius > canvas.height && dy > 0) {
         bounce(false);
     } else if (x + dx > canvas.width + circleRadius) {
-        if (mode !== "pvp" || paddle2.playerType === "player") {
-            paddle1.score += 1;
-        }
+        paddle1.score += 1;
 
         if (mode === "pvp") {
             sendMessage(JSON.stringify({
@@ -75,9 +73,7 @@ var update = function () {
         }
         resetBall();
     } else if (x + dx < -circleRadius) {
-        if (mode !== "pvp" || paddle1.playerType === "player") {
-            paddle2.score += 1;
-        }
+        paddle2.score += 1;
 
         if (mode === "pvp") {
             sendMessage(JSON.stringify({
