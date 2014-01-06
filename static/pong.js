@@ -196,7 +196,6 @@ var displayCountdown = function () {
     }
 
     countdown.push(direction);
-
     countdown.push("GO!");
 
     if(gameActive){

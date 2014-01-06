@@ -11,7 +11,7 @@ var setUpGame = function (data) {
     // open a channel with other player
     channel = new goog.appengine.Channel(data.token);
     socket = channel.open();
-}
+};
 
 /**
  * message function is a callback function when messages are received
@@ -24,7 +24,7 @@ var createGame = function (returnFunc, messageFunc) {
         socket.onmessage = messageFunc;
         returnFunc(data);
     });
-}
+};
 
 /**
  * messageFunc is a callback function when messages are received
@@ -41,13 +41,13 @@ var joinGame = function (game_key, returnFunc, messageFunc) {
         }
         returnFunc(data);
     });
-}
+};
 
 var leaveGame = function () {
     msg = {user: $.cookie("user"), game_key: current_game}
     $.post('/_leave', msg);
     socket.close();
-}
+};
 
 var sendMessage = function (message) {
     msg = {user: $.cookie("user"), game_key: current_game, message: message}
@@ -80,7 +80,11 @@ var returnFunc = function(data) {
             countdown[0] = "Pvp mode";
             resetBall();
         } else {
-            alert("Error, missing opponent");
+            hosting = true;
+            setPaddles("remote", "player");
+            hideMessage();
+            displayMessage("Waiting... No players online");
+            gamePaused = true;
         }
     }
 };
@@ -123,6 +127,6 @@ var receiveMessage = function (message) {
                 paddle2.score = data.score2;
                 break
         case 'display_message'://Used to display score changes etc
-            displayMessage(data.message);
+                    displayMessage(data.message);
     }
 };
