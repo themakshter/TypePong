@@ -8,6 +8,7 @@ from webapp2 import RequestHandler
 import cgi
 import json
 import time
+import itertools
 
 class Game(db.Model):
     """Stores current games available to join."""
@@ -139,7 +140,7 @@ class JoinGame(RequestHandler):
         for g in games:
             if g.user_1 == user:
                 g.delete()
-                return
+                return False
 
             if abs(playerELO - g.ELO) <= acceptableDifference:
                 game = g
@@ -177,3 +178,29 @@ class Message(RequestHandler):
 
         # send message to the other user in the game
         send(game.other_user(user), message)
+
+class Disconnected(RequestHandler):
+    """Player has disconnected."""
+
+    def post(self):
+        user = cgi.escape(self.request.get('from'))
+
+        # find any games this user is in
+        games1 = db.GqlQuery(
+            "SELECT * FROM Game WHERE user_1 = :1", user)
+        games2 = db.GqlQuery(
+            "SELECT * FROM Game WHERE user_2 = :1", user)
+
+        for game in itertools.chain(games1, games2):
+
+            # send leave message to other player
+            if not game.available:
+                message = {
+                    'type': 'leave',
+                    'user': user
+                }
+
+                send(game.other_user(user), json.dumps(message))
+
+            # delete game
+            game.delete()

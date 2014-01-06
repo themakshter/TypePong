@@ -37,6 +37,7 @@ app = WSGIApplication([
     ('/_join', game.JoinGame),
     ('/_leave', game.LeaveGame),
     ('/_message', game.Message),
+    ('/_ah/channel/disconnected/', game.Disconnected),
     ('/FBtest', main.FBTest),
     ('/_getUsername', main.FBRegisterHandler),
     ('/_facebookRegister', loginhandlers.facebookRegister)
