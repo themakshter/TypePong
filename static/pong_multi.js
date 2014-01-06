@@ -19,7 +19,7 @@ var setUpGame = function (data) {
  * returnFunc is a callback function when createGame returns response
  */
 var createGame = function (returnFunc, messageFunc) {
-    msg = {user: $.cookie("user")}// TODO fix hardcoded elo
+    msg = {user: $.cookie("user")}
     $.post('/_create', msg, function(data) {
         setUpGame(data);
         socket.onmessage = messageFunc;

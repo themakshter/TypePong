@@ -34,8 +34,6 @@ var init = function () {
     paddle2 = new Paddle(700, 200, "player");
     switch (mode) {
         case 'campaign':
-            //[TODO] : 1. Set length of words in sampler.py according to level.
-            //[TODO] : 2. Set AI difficulty level accordingly. Make AI correspond to levels.
             endingScore = 3;
             fetchCampaignLevel();
             fetchWordsAsync(campaignLevel);
@@ -47,7 +45,7 @@ var init = function () {
             break;
 
         case 'pvp':
-            endingScore = 3;//TODO
+            endingScore = 3;
             // try and join a random game
             displayMessage("Searching for a match");
             gamePaused = true;
@@ -67,14 +65,6 @@ var init = function () {
             setPaddles("ai", "player");
             gamePaused = false;
             countdown[0] = "Challenge mode";
-            break;
-
-        case 'custom':
-            //[TODO] Optional Mode
-            setPaddles("ai", "player");
-            gamePaused = false;
-            countdown[0] = "Custom mode";
-
             break;
 
         default:
@@ -217,7 +207,6 @@ var stopGame = function () {
     clearInterval(ballUpdateID);
 };
 
-//[TODO]
 /**
  * Handles game victory. Depending on the mode, functionality and scoring vary.
  */
@@ -256,7 +245,6 @@ var winGame = function () {
     }
 };
 
-//[TODO]
 /**
  * Handles game loss. Depending on the mode, functionality and scoring vary.
  */
@@ -273,10 +261,8 @@ var loseGame = function () {
             break;
         case 'campaign':
             displayMessage("Too bad. Better luck next time!");
-            //TODO: maybe write some useful stats (like how many words typed)
             break;
         case 'pvp':
-            //TODO: as with winGame()
             if (pvpOpponent){
                 var returnFunc = function(data) {
                     var strMyChange = String(data.myChange);
@@ -291,8 +277,6 @@ var loseGame = function () {
                         "type": "display_message",
                         "message": messageForOpp
                     }));
-
-                    // alert("woow");
                 };
                 updatePvPRating(pvpOpponent, pvpOpponent, returnFunc);
 
