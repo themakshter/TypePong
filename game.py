@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 """Game and messaging module that handles messages that should be sent between users in-game."""
 
 from google.appengine.api import channel

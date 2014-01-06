@@ -16,8 +16,6 @@ var ticks = 0;
 var countdown = [];
 var ballUpdateID = 0;
 
-var pvpOpponent =0;
-
 /**
  * Initializes the game in the appropriate mode.
  */
@@ -49,34 +47,13 @@ var init = function () {
             break;
 
         case 'pvp':
-            var returnFunc = function(data) {
-                if (!data.game_found) {
-                    // if no game found, create a game instead
-                    createGame(function() {}, receiveMessage);
-                    hosting = true;
-                    setPaddles("remote", "player");
-                    hideMessage();
-                    displayMessage("Waiting.. No players online");
-                    gamePaused = true;
-                } else {
-                    if (data.opponent){
-                        pvpOpponent = data.opponent;
-                        hideMessage();
-                        hosting = false;
-                        setPaddles("player", "remote");
-                        ticks = 0;
-						countdown[0] = "Pvp mode";
-                        resetBall();
-                    }else{
-                        alert("Error, missing opponent");
-                    }
-                }
-            }
-            endingScore = 1;//TODO
+            endingScore = 3;//TODO
             // try and join a random game
             displayMessage("Searching for a match");
             gamePaused = true;
-            joinGame("", returnFunc, receiveMessage);
+
+            gameKey = $.cookie('gameKey');
+            joinGame(gameKey, returnFunc, receiveMessage);
 
             break;
 
@@ -130,48 +107,6 @@ var reset = function () {
     $('#typing').val('');
     $('#typing').prop('readonly', false);
 };
-
-/**
- * Receive a message from another player
- */
-var receiveMessage = function (message) {
-    console.log("receive " + message.data);
-
-    var data = JSON.parse(message.data);
-
-    switch(data.type) {
-        case 'join':
-            // hide waiting message and resume game
-            hideMessage();
-            ticks = 0;
-            countdown[0] = "Pvp mode";
-            resetBall();
-            break;
-        case 'paddle_move':
-            if (paddle1.playerType === "remote") {
-                paddle1.moveTo(data.destY);
-            } else {
-                paddle2.moveTo(data.destY);
-            }
-            break;
-        case 'ball_update':
-            dx = data.dx;
-            dy = data.dy;
-            x = data.x + dx * (ticks - data.ticks);
-            y = data.y + dy * (ticks - data.ticks);
-            break
-        case 'ball_reset':
-            tempDx = data.dx;
-            tempDy = data.dy;
-            break;
-        case 'score_change':
-                paddle1.score = data.score1;
-                paddle2.score = data.score2;
-                break
-        case 'display_message'://Used to display score changes etc
-            displayMessage(data.message);
-    }
-}
 
 /**
  * Calculates positions where the paddles can move.
@@ -240,7 +175,7 @@ var resetBall = function () {
 
     countdown.push("GO!");
     ballUpdateID = setTimeout(function () {
-         if(gameActive){
+        if (gameActive && mode !== "pvp") {
             fadeMessages(countdown);
         }
         dx = tempDx;
@@ -300,9 +235,9 @@ var winGame = function () {
                     displayMessage("Better luck next time! \nCurrent ELO: " + data.myELO + "("+strMyChange+")");
                     var messageForOpp = "Victory! \nCurrent ELO: " + data.oppELO + "("+strOppChange+")";
                     sendMessage(JSON.stringify({
-                                    "type": "display_message",
-                                    "message": messageForOpp
-                                }));
+                        "type": "display_message",
+                        "message": messageForOpp
+                    }));
 
                     // alert("woow");
                 };
@@ -344,9 +279,9 @@ var loseGame = function () {
                     displayMessage("Better luck next time! \nCurrent ELO: " + data.myELO + "("+strMyChange+")");
                     var messageForOpp = "Victory! \nCurrent ELO: " + data.oppELO + "("+strOppChange+")";
                     sendMessage(JSON.stringify({
-                                    "type": "display_message",
-                                    "message": messageForOpp
-                                }));
+                        "type": "display_message",
+                        "message": messageForOpp
+                    }));
 
                     // alert("woow");
                 };

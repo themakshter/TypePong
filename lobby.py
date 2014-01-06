@@ -13,7 +13,7 @@ class LobbyHandler(RequestHandler):
         lobby_template = get_template("lobby.html")
         username = str(self.request.cookies.get('user'))
 
-        games = Game.all().run()
+        games = Game.all().filter("available =", True).run()
         values = {'games': games, 'name': username}
 
         content = lobby_template.render(values)

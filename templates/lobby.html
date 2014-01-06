@@ -9,7 +9,7 @@
             <th>ELO</th>
         </tr>
         {% for game in games %}
-        <tr class="game" id={{ game.user_1 }}>
+        <tr class="game" id="{{ game.key() }}">
             <td>{{ game.user_1 }}</td>
             <td>{{ game.ELO }}</td>
         </tr>
@@ -23,17 +23,22 @@
     </form>
 </div>
 
+<script src="static/pong_multi.js" type="text/javascript"></script>
+
 <script>
-var game_name = '';
+var game_key = '';
 
 $('#create').click(function () {
-    msg = {user: $.cookie("user")}// TODO fix hardcoded elo
-    $.post('/_create', msg);
-    window.location.href = "/pvp";
+    msg = {user: $.cookie("user")};
+    $.post('/_create', msg, function (data) {
+        document.cookie = 'gameKey=' + data['game_key'];
+        window.location.href = "/pvp";
+    });
 });
 
 $('#join').click(function () {
-    alert("Joining " + game_name);
+    document.cookie = 'gameKey=' + game_key;
+    window.location.href = "/pvp";
 });
 
 $("tr").click(function () {
@@ -41,7 +46,7 @@ $("tr").click(function () {
         $(this).css("background-color", "");
     });
 
-    game_name = $(this).attr("id");
+    game_key = $(this).attr("id");
     $(this).css("background-color", "#22BB22");
 });
 </script>
