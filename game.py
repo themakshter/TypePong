@@ -111,7 +111,8 @@ class JoinGame(RequestHandler):
                     break
 
                 game = self.tryToMatch(user, games, acceptableDifference, ELO)#try to find a match
-                if game != 0: # Game found
+
+                if game: # Game found
                     break
 
                 if time.time() - timeSinceLastStep > (MAX_WAIT_TIME / 10):#over time increase acceptable difference
@@ -140,8 +141,7 @@ class JoinGame(RequestHandler):
             if abs(playerELO - g.ELO) <= acceptableDifference:
                 game = g
                 return game
-        return 0
-
+        return False
 
 class LeaveGame(RequestHandler):
     """Leave a game by providing the game key."""

@@ -65,7 +65,6 @@ var init = function () {
                         hosting = false;
                         setPaddles("player", "remote");
                         ticks = 0;
-                        gamePaused = false;
 						countdown[0] = "Pvp mode";
                         resetBall();
                     }else{
@@ -145,7 +144,7 @@ var receiveMessage = function (message) {
             // hide waiting message and resume game
             hideMessage();
             ticks = 0;
-            gamePaused = false;
+            countdown[0] = "Pvp mode";
             resetBall();
             break;
         case 'paddle_move':
@@ -162,9 +161,9 @@ var receiveMessage = function (message) {
             y = data.y + dy * (ticks - data.ticks);
             break
         case 'ball_reset':
-                tempDx = data.dx;
-                tempDy = data.dy;
-                break;
+            tempDx = data.dx;
+            tempDy = data.dy;
+            break;
         case 'score_change':
                 paddle1.score = data.score1;
                 paddle2.score = data.score2;
