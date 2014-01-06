@@ -12,6 +12,10 @@ window.onkeyup = (function () {
     return function (e) {
         var i, typed, typedLC, currentWordLC;
 
+        if (!keyboardActive) {
+            return;
+        }
+
         if (e.keyCode == 27 && mode !== 'pvp') {
             if (gamePaused) {
                 resumeGame();
@@ -23,7 +27,8 @@ window.onkeyup = (function () {
             resumeGame();
             reset();
             init();
-        } else {
+        } else if ((e.keyCode >= 48 && e.keyCode <= 57) ||
+                (e.keyCode >= 65 && e.keyCode <= 90)) {
             typed = typeElem.val();
             typedLC = typed.toLowerCase();
 

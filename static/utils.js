@@ -106,6 +106,7 @@ var fadeMessages = function (messages) {
     'use strict';
     var layer2, ctx2, alpha, fadeID;
 
+    keyboardActive = false;
     pauseGame(false);
 
     $(canvas).addClass("pongblur");
@@ -123,19 +124,21 @@ var fadeMessages = function (messages) {
             alpha = 1;
         }
         if (messages.length === 0) {
-                hideMessage();
-                resumeGame();
-                clearInterval(fadeID);
-                ctx2.globalAlpha = 1;
-                return;
+            keyboardActive = true;
+            hideMessage();
+            resumeGame();
+            clearInterval(fadeID);
+            ctx2.globalAlpha = 1;
+            return;
         }
         ctx2.globalAlpha = alpha;
         ctx2.clearRect(0, 0, layer2.width, layer2.height);
-        if(messages[0] === "leftdown" || messages[0] === "leftup"|| messages[0] === "rightdown"|| messages[0] === "rightup"){
+        if (messages[0] === "leftdown" || messages[0] === "leftup"||
+            messages[0] === "rightdown"|| messages[0] === "rightup") {
             drawArrow(ctx2,messages[0]);
-        }else{
-        wrapText(ctx2, messages[0], canvas.width / 2, canvas.height / 2 - 50,
-            3 * canvas.width / 4, 50);
+        } else {
+            wrapText(ctx2, messages[0], canvas.width / 2, canvas.height / 2 - 50,
+                3 * canvas.width / 4, 50);
         }
     }, 50);
 };
