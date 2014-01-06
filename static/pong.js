@@ -52,8 +52,11 @@ var init = function () {
             displayMessage("Searching for a match");
             gamePaused = true;
 
-            if (typeof $.cookie('gameKey') != 'undefined')
+            if (typeof $.cookie('gameKey') != 'undefined') {
                 gameKey = $.cookie('gameKey');
+                alert(gameKey);
+                deleteCookie('gameKey');
+            }
             joinGame(gameKey, returnFunc, receiveMessage);
 
             break;
@@ -231,7 +234,7 @@ var winGame = function () {
             break;
 
         case 'pvp':
-            if (pvpOpponent){
+            if (pvpOpponent) {
                 var returnFunc = function(data) {
                     var strMyChange = String(data.myChange);
                     var strOppChange= String(data.oppChange);

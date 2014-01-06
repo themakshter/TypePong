@@ -140,6 +140,11 @@ var fadeMessages = function (messages) {
     }, 50);
 };
 
+var deleteCookie = function(cookie_name) {
+    document.cookie = encodeURIComponent(cookie_name) +
+        "=deleted; expires=" + new Date(0).toUTCString();
+};
+
 var drawArrow = function(context, direction) {
     context.beginPath();
     switch (direction) {
