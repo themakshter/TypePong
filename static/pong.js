@@ -157,9 +157,6 @@ var resetBall = function () {
     dx = dy = 0;
 
     ballUpdateID = setTimeout(function () {
-        if (gameActive) {
-            fadeMessages(countdown);
-        }
         displayCountdown();
 
         dx = tempDx;

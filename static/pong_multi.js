@@ -77,7 +77,6 @@ var returnFunc = function(data) {
             hosting = false;
             setPaddles("player", "remote");
             ticks = 0;
-            gamePaused = false;
             countdown[0] = "Pvp mode";
             resetBall();
         } else {
@@ -99,7 +98,6 @@ var receiveMessage = function (message) {
             // hide waiting message and resume game
             hideMessage();
             ticks = 0;
-            gamePaused = false;
             countdown[0] = "Pvp mode";
             resetBall();
             break;
