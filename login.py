@@ -132,14 +132,11 @@ def user_exists(detail):
 
 def facebookRegister(facebookID, username):
     # self.response.write(facebookID)
-    print("+++++++++++++++++++++++++++++++++++++++++++++++++++")
     print (username)
-    print("+++++++++++++++++++++++++++++++++++++++++++++++++++")
 
     facebook_validate_username(username)
-    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
 
-    FacebookPlayer(facebookID=facebookID, username=username, hiScore=0, campaignLevel=0, pvpRating=0).put()
+    FacebookPlayer(facebookID=facebookID, username=username, hiScore=0, campaignLevel=0, pvpRating=1500).put()
 
 
 def register(username, password):
