@@ -47,8 +47,6 @@ var init = function () {
             break;
 
         case 'pvp':
-<<<<<<< HEAD
-=======
             var returnFunc = function(data) {
                 if (!data.game_found) {
                     // if no game found, create a game instead
@@ -72,7 +70,6 @@ var init = function () {
                     }
                 }
             }
->>>>>>> ebbc1838fbc12c79dfc4d2a85d273376b39e90db
             endingScore = 3;//TODO
             // try and join a random game
             displayMessage("Searching for a match");
