@@ -52,5 +52,5 @@ window.onkeyup = (function () {
 $(window).blur(function () {
     'use strict';
 
-    pauseGame();
+    if (mode !== 'pvp') pauseGame();
 });
