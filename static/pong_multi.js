@@ -100,6 +100,7 @@ var receiveMessage = function (message) {
             hideMessage();
             ticks = 0;
             gamePaused = false;
+            countdown[0] = "Pvp mode";
             resetBall();
             break;
         case 'paddle_move':
