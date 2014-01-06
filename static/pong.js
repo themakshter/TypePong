@@ -131,7 +131,7 @@ var markPositions = function (n) {
 var setPaddles = function (type1, type2) {
     paddle1.playerType = type1;
     paddle2.playerType = type2;
-}
+};
 
 /**
  * Resets the ball to the central position. Adds a one second timeout.
@@ -188,24 +188,23 @@ var displayCountdown = function () {
     var direction = "";
     if(tempDx > 0){
         direction = direction.concat("right");
-    }
-    else{
+    } else {
         direction = direction.concat("left");
     }
 
-    if(tempDy > 0){
+    if (tempDy > 0){
         direction = direction.concat("down");
-    }else{
+    } else {
         direction = direction.concat("up");
     }
 
     countdown.push(direction);
     countdown.push("GO!");
 
-    if(gameActive){
+    if (gameActive) {
         fadeMessages(countdown);
     }
-}
+};
 
 var changeBallSpeed = function (ndx, ndy) {
     dx = ndx; dy = ndy;
