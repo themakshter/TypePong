@@ -254,7 +254,7 @@ class HiscoresPvPHandler(RequestHandler):
         players_c = get_hiscore_players(start, score_per_page, "-pvpRating")
 
         players_pvp = [{'username': p.username, 'score': p.pvpRating}
-                for p in players_c if p.challengeScore is not None]
+                for p in players_c if p.pvpRating is not None]
         for i, p in enumerate(players_pvp):
             p['rank'] = i + 1
 
@@ -267,7 +267,7 @@ class HiscoresPvPHandler(RequestHandler):
             if player_one.pvpRating:
                 p = {'username': player_one.username,
                         'score': player_one.pvpRating,
-                         'rank': get_player_rank(username, "-challengeScore")}
+                         'rank': get_player_rank(username, "-pvpRating")}
                 colour_player(p)
                 players_pvp.append(p)
 
