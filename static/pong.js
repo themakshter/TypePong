@@ -206,19 +206,17 @@ var resetBall = function () {
     paddle1.update();
     paddle2.update();
 
-    // only choose velocity if singleplayer or hosting
-    if (hosting || mode !== "pvp") {
-        // choose velocity here
-        tempDx = -dx;
-        tempDy = -dy;
+    // set velocity (but if not host, may be overwritten)
+    tempDx = -dx;
+    tempDy = -dy;
 
-        if (mode === "pvp") {
-            sendMessage(JSON.stringify({
-                "type": "ball_reset",
-                "dx": tempDx,
-                "dy": tempDy
-            }));
-        }
+    // only send velocity if hosting game
+    if (hosting && mode === "pvp") {
+        sendMessage(JSON.stringify({
+            "type": "ball_reset",
+            "dx": tempDx,
+            "dy": tempDy
+        }));
     }
 
     dx = dy = 0;
