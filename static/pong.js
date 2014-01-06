@@ -72,7 +72,7 @@ var init = function () {
                     }
                 }
             }
-            endingScore = 1;//TODO
+            endingScore = 3;//TODO
             // try and join a random game
             displayMessage("Searching for a match");
             gamePaused = true;
@@ -165,9 +165,9 @@ var receiveMessage = function (message) {
             tempDy = data.dy;
             break;
         case 'score_change':
-                paddle1.score = data.score1;
-                paddle2.score = data.score2;
-                break
+            paddle1.score = data.score1;
+            paddle2.score = data.score2;
+            break
         case 'display_message'://Used to display score changes etc
             displayMessage(data.message);
     }
@@ -222,6 +222,32 @@ var resetBall = function () {
     }
 
     dx = dy = 0;
+
+    ballUpdateID = setTimeout(function () {
+        displayCountdown();
+
+        dx = tempDx;
+        dy = tempDy;
+
+        // send message if player 1
+        if (hosting && mode === "pvp") {
+            sendMessage(JSON.stringify({
+                "type": "ball_update",
+                "x": x,
+                "y": y,
+                "dx": dx,
+                "dy": dy,
+                "ticks": ticks
+            }));
+        }
+
+        paddle1.update();
+        paddle2.update();
+
+    },1000);
+};
+
+var displayCountdown = function () {
     var direction = "";
     if(tempDx > 0){
         direction = direction.concat("right");
@@ -239,28 +265,11 @@ var resetBall = function () {
     countdown.push(direction);
 
     countdown.push("GO!");
-    ballUpdateID = setTimeout(function () {
-         if(gameActive){
-            fadeMessages(countdown);
-        }
-        dx = tempDx;
-        dy = tempDy;
-        paddle1.update();
-        paddle2.update();
 
-        // send message if player 1
-        if (hosting && mode === "pvp") {
-            sendMessage(JSON.stringify({
-                "type": "ball_update",
-                "x": x,
-                "y": y,
-                "dx": dx,
-                "dy": dy,
-                "ticks": ticks
-            }));
-        }
-    },1000);
-};
+    if(gameActive){
+        fadeMessages(countdown);
+    }
+}
 
 var changeBallSpeed = function (ndx, ndy) {
     dx = ndx; dy = ndy;
