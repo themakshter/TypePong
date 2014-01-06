@@ -144,7 +144,7 @@ var drawArrow = function(context, direction) {
     context.beginPath();
     switch (direction) {
         case "rightup":
-            x = 300;y = 250;
+            var x = 300;var y = 250;
             context.moveTo(x, y);
             context.lineTo(x + 50, y - 50);
             context.lineTo(x + 50 - 25, y - 50 - 25);
@@ -154,7 +154,7 @@ var drawArrow = function(context, direction) {
             context.lineTo(x + 35, y + 35);
             break;
         case "leftup":
-            x = 425;y = 250;
+            var x = 425;var y = 250;
             context.moveTo(x, y);
             context.lineTo(x - 50, y - 50);
             context.lineTo(x - 50 + 25, y - 50 - 25);
@@ -164,7 +164,7 @@ var drawArrow = function(context, direction) {
             context.lineTo(x - 35, y + 35);
             break;
         case "rightdown":
-            x = 300;y = 200;
+            var x = 300;var y = 200;
             context.moveTo(x, y);
             context.lineTo(x + 50, y + 50);
             context.lineTo(x + 50 - 25, y + 50 + 25);
@@ -174,7 +174,7 @@ var drawArrow = function(context, direction) {
             context.lineTo(x + 35, y - 35);
             break;
         case "leftdown":
-            x = 425;y = 200;
+            var x = 425;var y = 200;
             context.moveTo(x, y);
             context.lineTo(x - 50, y + 50);
             context.lineTo(x - 50 + 25, y + 50 + 25);
