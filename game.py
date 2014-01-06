@@ -131,7 +131,7 @@ class JoinGame(RequestHandler):
                 game.join(user)
                 self.response.out.write(game.json_data(user))
             else:
-                self.response.out.write(json.dumps({ 'game_found': False }))
+                self.response.out.write(game.json_data(user))
         else:
             self.response.out.write(json.dumps({ 'game_found': False }))
 
