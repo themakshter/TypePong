@@ -15,8 +15,6 @@ var gamePaused = true;
 var pauseGame = function (show) {
     if (!gameActive)
         return;
-    if (mode == 'pvp')
-        return;
 
     gamePaused = true;
 

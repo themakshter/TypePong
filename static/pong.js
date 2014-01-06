@@ -47,6 +47,32 @@ var init = function () {
             break;
 
         case 'pvp':
+<<<<<<< HEAD
+=======
+            var returnFunc = function(data) {
+                if (!data.game_found) {
+                    // if no game found, create a game instead
+                    createGame(function() {}, receiveMessage);
+                    hosting = true;
+                    setPaddles("remote", "player");
+                    hideMessage();
+                    displayMessage("Waiting.. No players online");
+                    gamePaused = true;
+                } else {
+                    if (data.opponent){
+                        pvpOpponent = data.opponent;
+                        hideMessage();
+                        hosting = false;
+                        setPaddles("player", "remote");
+                        ticks = 0;
+						countdown[0] = "Pvp mode";
+                        resetBall();
+                    }else{
+                        alert("Error, missing opponent");
+                    }
+                }
+            }
+>>>>>>> ebbc1838fbc12c79dfc4d2a85d273376b39e90db
             endingScore = 3;//TODO
             // try and join a random game
             displayMessage("Searching for a match");
@@ -157,6 +183,35 @@ var resetBall = function () {
     }
 
     dx = dy = 0;
+
+    ballUpdateID = setTimeout(function () {
+        if (gameActive) {
+            fadeMessages(countdown);
+        }
+        displayCountdown();
+
+        dx = tempDx;
+        dy = tempDy;
+
+        // send message if player 1
+        if (hosting && mode === "pvp") {
+            sendMessage(JSON.stringify({
+                "type": "ball_update",
+                "x": x,
+                "y": y,
+                "dx": dx,
+                "dy": dy,
+                "ticks": ticks
+            }));
+        }
+
+        paddle1.update();
+        paddle2.update();
+
+    },1000);
+};
+
+var displayCountdown = function () {
     var direction = "";
     if(tempDx > 0){
         direction = direction.concat("right");
@@ -174,28 +229,11 @@ var resetBall = function () {
     countdown.push(direction);
 
     countdown.push("GO!");
-    ballUpdateID = setTimeout(function () {
-        if (gameActive && mode !== "pvp") {
-            fadeMessages(countdown);
-        }
-        dx = tempDx;
-        dy = tempDy;
-        paddle1.update();
-        paddle2.update();
 
-        // send message if player 1
-        if (hosting && mode === "pvp") {
-            sendMessage(JSON.stringify({
-                "type": "ball_update",
-                "x": x,
-                "y": y,
-                "dx": dx,
-                "dy": dy,
-                "ticks": ticks
-            }));
-        }
-    },1000);
-};
+    if(gameActive){
+        fadeMessages(countdown);
+    }
+}
 
 var changeBallSpeed = function (ndx, ndy) {
     dx = ndx; dy = ndy;

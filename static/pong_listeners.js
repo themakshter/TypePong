@@ -12,7 +12,7 @@ window.onkeyup = (function () {
     return function (e) {
         var i, typed, typedLC, currentWordLC;
 
-        if (e.keyCode == 27) {
+        if (e.keyCode == 27 && mode !== 'pvp') {
             if (gamePaused) {
                 resumeGame();
             } else {
