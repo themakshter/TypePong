@@ -1,0 +1,52 @@
+{% extends "default.html" %}
+{% import 'sidebar.html' as sidebar %}
+
+{% block content %}
+<div class="hiscore">
+    <table id="lobby" class="hiscores">
+        <tr>
+            <th>Player</th>
+            <th>ELO</th>
+        </tr>
+        {% for game in games %}
+        <tr class="game" id={{ game.user_1 }}>
+            <td>{{ game.user_1 }}</td>
+            <td>{{ game.ELO }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div>
+    <form>
+        <input class="lobby-btn" id="create" type="button" value="Create Game">
+        <input class="lobby-btn" id="join" type="button" value="Join Game">
+    </form>
+</div>
+
+<script>
+var game_name = '';
+
+$('#create').click(function () {
+    msg = {user: $.cookie("user")}// TODO fix hardcoded elo
+    $.post('/_create', msg);
+    window.location.href = "/pvp";
+});
+
+$('#join').click(function () {
+    alert("Joining " + game_name);
+});
+
+$("tr").click(function () {
+    $("#lobby tr").each(function () {
+        $(this).css("background-color", "");
+    });
+
+    game_name = $(this).attr("id");
+    $(this).css("background-color", "#22BB22");
+});
+</script>
+{% endblock %}
+
+{% block left_content %}
+{{ sidebar.sidebar(name) }}
+{% endblock %}
