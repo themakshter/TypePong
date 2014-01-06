@@ -1,9 +1,11 @@
 from webapp2 import WSGIApplication
-import main
-import scores
-import loginhandlers
+
 import game
+import lobby
+import loginhandlers
+import main
 import player_stats
+import scores
 
 app = WSGIApplication([
     ('/', main.MainHandler),
@@ -17,6 +19,8 @@ app = WSGIApplication([
     ('/stats_pvp', player_stats.LoadPvPStats),
     ('/hiscores_campaign', scores.HiscoresCampaignHandler),
     ('/hiscores_challenge', scores.HiscoresChallengeHandler),
+    ('/hiscores_pvp', scores.HiscoresPvPHandler),
+    ('/lobby', lobby.LobbyHandler),
     # pages the user shouldn't be accessing
     ('/_loadwords', main.LoadWords),
     ('/_loadcampaignlevel', scores.LoadCampaignLevel),

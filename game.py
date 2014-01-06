@@ -55,7 +55,6 @@ class Game(db.Model):
 
     def other_user(self, user):
         """Return user id of the other user in the game."""
-        print user, self.user_1, self.user_2
         if user == self.user_1:
             return self.user_2
         else:
@@ -78,10 +77,6 @@ class CreateGame(RequestHandler):
         if ELO == "":
             ELO = 0
         ranking = int(ELO)
-        print "__________________"
-        print ranking   #works to here.
-        print "__________________"
-
 
         game = Game(key_name=user, user_1=user, ELO=ranking)
         game.put()
@@ -93,26 +88,17 @@ class CreateGame(RequestHandler):
 class JoinGame(RequestHandler):
     """Join a game by providing the game key."""
 
-
     def post(self):
         user = cgi.escape(self.request.get('user'))
-        # ELO = cgi.escape(self.request.get('ELO'))
         game_key = cgi.escape(self.request.get('game_key'))
 
         MAX_WAIT_TIME = 5
-        acceptableDifference =10
+        acceptableDifference = 10
 
         self.response.out.headers['Content-Type'] = 'application/json'
-        # self.response.out.write(json.dumps({ 'game_found': False }))
 
         player = db.GqlQuery("SELECT * FROM Player WHERE username =  :1", user)
-        ELO = player.get().pvpRating
-
-        print "____________" + str(ELO)
-
-        if ELO == "":
-            ELO = 0
-        ELO = int(ELO)
+        ELO = int(player.get().pvpRating)
 
         if game_key == "":
             game = 0
@@ -121,19 +107,12 @@ class JoinGame(RequestHandler):
             print "IN Join Game"
             while (1):
                 games = db.GqlQuery("SELECT * FROM Game WHERE available = True")
-                print games.count()
-                # for g in games:
-                    # print "Game available?" + str(g.available)
-                    # print "game user 1: " + str(g.user_1)
-                    # print "game user 2: " + str(g.user_2)
-                # break
                 if games.count() == 0:
-                    print "no games"
-                    break# if there's no games break, start your own one
+                    break
 
                 game = self.tryToMatch(user, games, acceptableDifference, ELO)#try to find a match
+
                 if game: # Game found
-                    print "game found"
                     break
 
                 if time.time() - timeSinceLastStep > (MAX_WAIT_TIME / 10):#over time increase acceptable difference
@@ -143,45 +122,29 @@ class JoinGame(RequestHandler):
                     acceptableDifference = 2000#match with anyone if we're near the end
 
                 if time.time() - startTime > MAX_WAIT_TIME:
-                    print "TOO LONG"
-                    # self.response.out.write(json.dumps({ 'game_found': False }))
                     break
         else:
-            # else join the specified game
             game = db.get(game_key)
 
-        # send information about game back to client
-
-
         if game:
-            # a game was found, return game data
-            print "Game Joined"
-            game.join(user)
-            self.response.out.write(game.json_data(user))
+            if game.user_1 != user:
+                game.join(user)
+                self.response.out.write(game.json_data(user))
+            else:
+                self.response.out.write(json.dumps({ 'game_found': False }))
         else:
-            # no game was found, return appropriate message
-            print "no game found"
             self.response.out.write(json.dumps({ 'game_found': False }))
 
     def tryToMatch(self, user, games, acceptableDifference, playerELO):
         for g in games:
-            # print "IN tryToMatch"
-
-            # print "Acceptable difference: " + str(acceptableDifference)
-            print "MY ELO:" + str(playerELO)
-            print "GAME ELO" + str(g.ELO)
-            print "ME" + str(user)
-            print "GAME OWNER" + str(g.user_1)
             if g.user_1 == user:
                 g.delete()
                 return
 
             if abs(playerELO - g.ELO) <= acceptableDifference:
-                    print "acceptable match found"
-                    game = g
-                    return game
+                game = g
+                return game
         return False
-
 
 class LeaveGame(RequestHandler):
     """Leave a game by providing the game key."""

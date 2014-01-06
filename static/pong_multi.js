@@ -1,3 +1,6 @@
+var gameKey = '';
+var pvpOpponent = 0;
+
 /**
  * this is called automatically when a game is created or joined
  */
@@ -30,7 +33,7 @@ var createGame = function (returnFunc, messageFunc) {
  */
 var joinGame = function (game_key, returnFunc, messageFunc) {
     // alert($.cookie("ELO"));
-    msg = {user: $.cookie("user"), game_key: game_key} 
+    msg = {user: $.cookie("user"), game_key: game_key}
     $.post('/_join', msg, function(data) {
         if (data.game_found) {
             setUpGame(data);
@@ -50,4 +53,77 @@ var sendMessage = function (message) {
     msg = {user: $.cookie("user"), game_key: current_game, message: message}
     console.log("send " + message);
     $.post('/_message', msg);
+};
+
+var returnFunc = function(data) {
+    if (!data.game_found) {
+        // if no game found, create a game instead
+        createGame(function() {}, receiveMessage);
+        hosting = true;
+        setPaddles("remote", "player");
+        hideMessage();
+        displayMessage("Waiting... No players online");
+        gamePaused = true;
+    } else if (data.opponent === $.cookie('user')) {
+        hosting = true;
+        setPaddles("remote", "player");
+        hideMessage();
+        displayMessage("Waiting... No players online");
+        gamePaused = true;
+    } else {
+        if (data.opponent) {
+            pvpOpponent = data.opponent;
+            hideMessage();
+            hosting = false;
+            setPaddles("player", "remote");
+            ticks = 0;
+            gamePaused = false;
+            countdown[0] = "Pvp mode";
+            resetBall();
+        } else {
+            alert("Error, missing opponent");
+        }
+    }
+};
+
+/**
+ * Receive a message from another player
+ */
+var receiveMessage = function (message) {
+    console.log("receive " + message.data);
+
+    var data = JSON.parse(message.data);
+
+    switch(data.type) {
+        case 'join':
+            // hide waiting message and resume game
+            hideMessage();
+            ticks = 0;
+            gamePaused = false;
+            resetBall();
+            break;
+        case 'paddle_move':
+            if (paddle1.playerType === "remote") {
+                paddle1.moveTo(data.destY);
+            } else {
+                paddle2.moveTo(data.destY);
+            }
+            break;
+        case 'ball_update':
+            dx = data.dx;
+            dy = data.dy;
+            x = data.x + dx * (ticks - data.ticks);
+            y = data.y + dy * (ticks - data.ticks);
+            break
+        case 'ball_reset':
+                tempDx = data.dx;
+                tempDy = data.dy;
+                break;
+        case 'score_change':
+                paddle1.score = data.score1;
+                paddle2.score = data.score2;
+                break
+        case 'display_message'://Used to display score changes etc
+            displayMessage(data.message);
+    }
 };
