@@ -15,8 +15,6 @@ var gamePaused = true;
 var pauseGame = function (show) {
     if (!gameActive)
         return;
-    if (mode == 'pvp')
-        return;
 
     gamePaused = true;
 
@@ -64,11 +62,11 @@ var update = function () {
     } else if (y + dy + circleRadius > canvas.height && dy > 0) {
         bounce(false);
     } else if (x + dx > canvas.width + circleRadius) {
-        if (mode !== "pvp" || paddle2.playerType === "player") {
+        if (hosting || mode !== 'pvp') {
             paddle1.score += 1;
         }
 
-        if (mode === "pvp") {
+        if (hosting && mode === 'pvp') {
             sendMessage(JSON.stringify({
                 "type": "score_change",
                 "score1": paddle1.score,
@@ -77,11 +75,11 @@ var update = function () {
         }
         resetBall();
     } else if (x + dx < -circleRadius) {
-        if (mode !== "pvp" || paddle1.playerType === "player") {
+        if (hosting || mode !== 'pvp') {
             paddle2.score += 1;
         }
 
-        if (mode === "pvp") {
+        if (hosting && mode === 'pvp') {
             sendMessage(JSON.stringify({
                 "type": "score_change",
                 "score1": paddle1.score,

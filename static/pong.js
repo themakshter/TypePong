@@ -16,8 +16,6 @@ var ticks = 0;
 var countdown = [];
 var ballUpdateID = 0;
 
-var pvpOpponent =0;
-
 /**
  * Initializes the game in the appropriate mode.
  */
@@ -65,7 +63,6 @@ var init = function () {
                         hosting = false;
                         setPaddles("player", "remote");
                         ticks = 0;
-                        gamePaused = false;
 						countdown[0] = "Pvp mode";
                         resetBall();
                     }else{
@@ -73,11 +70,13 @@ var init = function () {
                     }
                 }
             }
-            endingScore = 1;//TODO
+            endingScore = 3;//TODO
             // try and join a random game
             displayMessage("Searching for a match");
             gamePaused = true;
-            joinGame("", returnFunc, receiveMessage);
+
+            gameKey = $.cookie('gameKey');
+            joinGame(gameKey, returnFunc, receiveMessage);
 
             break;
 
@@ -133,48 +132,6 @@ var reset = function () {
 };
 
 /**
- * Receive a message from another player
- */
-var receiveMessage = function (message) {
-    console.log("receive " + message.data);
-
-    var data = JSON.parse(message.data);
-
-    switch(data.type) {
-        case 'join':
-            // hide waiting message and resume game
-            hideMessage();
-            ticks = 0;
-            gamePaused = false;
-            resetBall();
-            break;
-        case 'paddle_move':
-            if (paddle1.playerType === "remote") {
-                paddle1.moveTo(data.destY);
-            } else {
-                paddle2.moveTo(data.destY);
-            }
-            break;
-        case 'ball_update':
-            dx = data.dx;
-            dy = data.dy;
-            x = data.x + dx * (ticks - data.ticks);
-            y = data.y + dy * (ticks - data.ticks);
-            break
-        case 'ball_reset':
-                tempDx = data.dx;
-                tempDy = data.dy;
-                break;
-        case 'score_change':
-                paddle1.score = data.score1;
-                paddle2.score = data.score2;
-                break
-        case 'display_message'://Used to display score changes etc
-            displayMessage(data.message);
-    }
-}
-
-/**
  * Calculates positions where the paddles can move.
  */
 var markPositions = function (n) {
@@ -207,22 +164,49 @@ var resetBall = function () {
     paddle1.update();
     paddle2.update();
 
-    // only choose velocity if singleplayer or hosting
-    if (hosting || mode !== "pvp") {
-        // choose velocity here
-        tempDx = -dx;
-        tempDy = -dy;
+    // set velocity (but if not host, may be overwritten)
+    tempDx = -dx;
+    tempDy = -dy;
 
-        if (mode === "pvp") {
-            sendMessage(JSON.stringify({
-                "type": "ball_reset",
-                "dx": tempDx,
-                "dy": tempDy
-            }));
-        }
+    // only send velocity if hosting game
+    if (hosting && mode === "pvp") {
+        sendMessage(JSON.stringify({
+            "type": "ball_reset",
+            "dx": tempDx,
+            "dy": tempDy
+        }));
     }
 
     dx = dy = 0;
+
+    ballUpdateID = setTimeout(function () {
+        if (gameActive) {
+            fadeMessages(countdown);
+        }
+        displayCountdown();
+
+        dx = tempDx;
+        dy = tempDy;
+
+        // send message if player 1
+        if (hosting && mode === "pvp") {
+            sendMessage(JSON.stringify({
+                "type": "ball_update",
+                "x": x,
+                "y": y,
+                "dx": dx,
+                "dy": dy,
+                "ticks": ticks
+            }));
+        }
+
+        paddle1.update();
+        paddle2.update();
+
+    },1000);
+};
+
+var displayCountdown = function () {
     var direction = "";
     if(tempDx > 0){
         direction = direction.concat("right");
@@ -240,28 +224,11 @@ var resetBall = function () {
     countdown.push(direction);
 
     countdown.push("GO!");
-    ballUpdateID = setTimeout(function () {
-         if(gameActive){
-            fadeMessages(countdown);
-        }
-        dx = tempDx;
-        dy = tempDy;
-        paddle1.update();
-        paddle2.update();
 
-        // send message if player 1
-        if (hosting && mode === "pvp") {
-            sendMessage(JSON.stringify({
-                "type": "ball_update",
-                "x": x,
-                "y": y,
-                "dx": dx,
-                "dy": dy,
-                "ticks": ticks
-            }));
-        }
-    },1000);
-};
+    if(gameActive){
+        fadeMessages(countdown);
+    }
+}
 
 var changeBallSpeed = function (ndx, ndy) {
     dx = ndx; dy = ndy;
@@ -301,9 +268,9 @@ var winGame = function () {
                     displayMessage("Better luck next time! \nCurrent ELO: " + data.myELO + "("+strMyChange+")");
                     var messageForOpp = "Victory! \nCurrent ELO: " + data.oppELO + "("+strOppChange+")";
                     sendMessage(JSON.stringify({
-                                    "type": "display_message",
-                                    "message": messageForOpp
-                                }));
+                        "type": "display_message",
+                        "message": messageForOpp
+                    }));
 
                     // alert("woow");
                 };
@@ -345,9 +312,9 @@ var loseGame = function () {
                     displayMessage("Better luck next time! \nCurrent ELO: " + data.myELO + "("+strMyChange+")");
                     var messageForOpp = "Victory! \nCurrent ELO: " + data.oppELO + "("+strOppChange+")";
                     sendMessage(JSON.stringify({
-                                    "type": "display_message",
-                                    "message": messageForOpp
-                                }));
+                        "type": "display_message",
+                        "message": messageForOpp
+                    }));
 
                     // alert("woow");
                 };

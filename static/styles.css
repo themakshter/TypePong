@@ -293,3 +293,13 @@ th {
     text-align: center;
     vertical-align: middle;
 }
+
+.game:hover {
+    background-color: #222222;
+}
+
+.lobby-btn {
+  float: left;
+  width: 200px;
+  margin: 0 20px 0 0;
+}
