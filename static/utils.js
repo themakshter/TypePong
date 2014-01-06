@@ -106,6 +106,7 @@ var fadeMessages = function (messages) {
     'use strict';
     var layer2, ctx2, alpha, fadeID;
 
+    keyboardActive = false;
     pauseGame(false);
 
     $(canvas).addClass("pongblur");
@@ -122,22 +123,32 @@ var fadeMessages = function (messages) {
             messages.shift();
             alpha = 1;
         }
-        if (messages.length === 0) {
+        if (messages.length === 0 || lost_connection) {
+            keyboardActive = true;
+
+            if (!lost_connection) {
                 hideMessage();
                 resumeGame();
-                clearInterval(fadeID);
-                ctx2.globalAlpha = 1;
-                return;
+            }
+            clearInterval(fadeID);
+            ctx2.globalAlpha = 1;
+            return;
         }
         ctx2.globalAlpha = alpha;
         ctx2.clearRect(0, 0, layer2.width, layer2.height);
-        if(messages[0] === "leftdown" || messages[0] === "leftup"|| messages[0] === "rightdown"|| messages[0] === "rightup"){
+        if (messages[0] === "leftdown" || messages[0] === "leftup"||
+            messages[0] === "rightdown"|| messages[0] === "rightup") {
             drawArrow(ctx2,messages[0]);
-        }else{
-        wrapText(ctx2, messages[0], canvas.width / 2, canvas.height / 2 - 50,
-            3 * canvas.width / 4, 50);
+        } else {
+            wrapText(ctx2, messages[0], canvas.width / 2, canvas.height / 2 - 50,
+                3 * canvas.width / 4, 50);
         }
     }, 50);
+};
+
+var deleteCookie = function(cookie_name) {
+    document.cookie = encodeURIComponent(cookie_name) +
+        "=deleted; expires=" + new Date(0).toUTCString();
 };
 
 var drawArrow = function(context, direction) {

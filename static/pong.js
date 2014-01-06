@@ -34,8 +34,6 @@ var init = function () {
     paddle2 = new Paddle(700, 200, "player");
     switch (mode) {
         case 'campaign':
-            //[TODO] : 1. Set length of words in sampler.py according to level.
-            //[TODO] : 2. Set AI difficulty level accordingly. Make AI correspond to levels.
             endingScore = 3;
             fetchCampaignLevel();
             fetchWordsAsync(campaignLevel);
@@ -47,35 +45,16 @@ var init = function () {
             break;
 
         case 'pvp':
-            var returnFunc = function(data) {
-                if (!data.game_found) {
-                    // if no game found, create a game instead
-                    createGame(function() {}, receiveMessage);
-                    hosting = true;
-                    setPaddles("remote", "player");
-                    hideMessage();
-                    displayMessage("Waiting.. No players online");
-                    gamePaused = true;
-                } else {
-                    if (data.opponent){
-                        pvpOpponent = data.opponent;
-                        hideMessage();
-                        hosting = false;
-                        setPaddles("player", "remote");
-                        ticks = 0;
-						countdown[0] = "Pvp mode";
-                        resetBall();
-                    }else{
-                        alert("Error, missing opponent");
-                    }
-                }
-            }
-            endingScore = 3;//TODO
+            endingScore = 3;
             // try and join a random game
             displayMessage("Searching for a match");
             gamePaused = true;
 
-            gameKey = $.cookie('gameKey');
+            if (typeof $.cookie('gameKey') != 'undefined') {
+                gameKey = $.cookie('gameKey');
+                alert(gameKey);
+                deleteCookie('gameKey');
+            }
             joinGame(gameKey, returnFunc, receiveMessage);
 
             break;
@@ -86,14 +65,6 @@ var init = function () {
             setPaddles("ai", "player");
             gamePaused = false;
             countdown[0] = "Challenge mode";
-            break;
-
-        case 'custom':
-            //[TODO] Optional Mode
-            setPaddles("ai", "player");
-            gamePaused = false;
-            countdown[0] = "Custom mode";
-
             break;
 
         default:
@@ -150,7 +121,7 @@ var markPositions = function (n) {
 var setPaddles = function (type1, type2) {
     paddle1.playerType = type1;
     paddle2.playerType = type2;
-}
+};
 
 /**
  * Resets the ball to the central position. Adds a one second timeout.
@@ -180,9 +151,6 @@ var resetBall = function () {
     dx = dy = 0;
 
     ballUpdateID = setTimeout(function () {
-        if (gameActive) {
-            fadeMessages(countdown);
-        }
         displayCountdown();
 
         dx = tempDx;
@@ -210,25 +178,23 @@ var displayCountdown = function () {
     var direction = "";
     if(tempDx > 0){
         direction = direction.concat("right");
-    }
-    else{
+    } else {
         direction = direction.concat("left");
     }
 
-    if(tempDy > 0){
+    if (tempDy > 0){
         direction = direction.concat("down");
-    }else{
+    } else {
         direction = direction.concat("up");
     }
 
     countdown.push(direction);
-
     countdown.push("GO!");
 
-    if(gameActive){
+    if (gameActive) {
         fadeMessages(countdown);
     }
-}
+};
 
 var changeBallSpeed = function (ndx, ndy) {
     dx = ndx; dy = ndy;
@@ -241,7 +207,6 @@ var stopGame = function () {
     clearInterval(ballUpdateID);
 };
 
-//[TODO]
 /**
  * Handles game victory. Depending on the mode, functionality and scoring vary.
  */
@@ -257,7 +222,7 @@ var winGame = function () {
             break;
 
         case 'pvp':
-            if (pvpOpponent){
+            if (pvpOpponent) {
                 var returnFunc = function(data) {
                     var strMyChange = String(data.myChange);
                     var strOppChange= String(data.oppChange);
@@ -280,7 +245,6 @@ var winGame = function () {
     }
 };
 
-//[TODO]
 /**
  * Handles game loss. Depending on the mode, functionality and scoring vary.
  */
@@ -297,10 +261,8 @@ var loseGame = function () {
             break;
         case 'campaign':
             displayMessage("Too bad. Better luck next time!");
-            //TODO: maybe write some useful stats (like how many words typed)
             break;
         case 'pvp':
-            //TODO: as with winGame()
             if (pvpOpponent){
                 var returnFunc = function(data) {
                     var strMyChange = String(data.myChange);
@@ -315,8 +277,6 @@ var loseGame = function () {
                         "type": "display_message",
                         "message": messageForOpp
                     }));
-
-                    // alert("woow");
                 };
                 updatePvPRating(pvpOpponent, pvpOpponent, returnFunc);
 

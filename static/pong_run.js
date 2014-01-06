@@ -11,6 +11,7 @@ window.requestAnimFrame = (function (){
 
 var gameActive = true;
 var gamePaused = true;
+var keyboardActive = true;
 
 var pauseGame = function (show) {
     if (!gameActive)

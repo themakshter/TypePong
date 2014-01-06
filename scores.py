@@ -79,21 +79,15 @@ class UpdatePVPRating(RequestHandler):
         # pvpRating = int(score)
         opponent = str(opponent)
 
-
-
         opponentPVPRating= 0
 
         if winner == username:
             points = 1
         elif winner == opponent:
             points = 0
-        else:
-            print "SHITFUCKSHIT"#TODO die here.
 
         if opponent:
             users = db.GqlQuery("SELECT * FROM Player WHERE username = :1", opponent)
-            if users.count() == 0:
-                print "OOOOOOOOOOPSSS"
             for u in users:
                 opponentPVPRating = u.pvpRating;
 

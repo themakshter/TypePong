@@ -299,7 +299,13 @@ th {
 }
 
 .lobby-btn {
-  float: left;
-  width: 200px;
-  margin: 0 20px 0 0;
+    position: relative;
+    margin-top: 100%;
+    float: left;
+    width: 200px;
+    margin: 0 20px 0 0;
+}
+
+.lobby-btn:hover {
+    background-color: #222222;
 }

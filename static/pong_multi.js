@@ -1,5 +1,6 @@
 var gameKey = '';
 var pvpOpponent = 0;
+var lost_connection = false;
 
 /**
  * this is called automatically when a game is created or joined
@@ -11,20 +12,20 @@ var setUpGame = function (data) {
     // open a channel with other player
     channel = new goog.appengine.Channel(data.token);
     socket = channel.open();
-}
+};
 
 /**
  * message function is a callback function when messages are received
  * returnFunc is a callback function when createGame returns response
  */
 var createGame = function (returnFunc, messageFunc) {
-    msg = {user: $.cookie("user")}// TODO fix hardcoded elo
+    msg = {user: $.cookie("user")}
     $.post('/_create', msg, function(data) {
         setUpGame(data);
         socket.onmessage = messageFunc;
         returnFunc(data);
     });
-}
+};
 
 /**
  * messageFunc is a callback function when messages are received
@@ -41,13 +42,13 @@ var joinGame = function (game_key, returnFunc, messageFunc) {
         }
         returnFunc(data);
     });
-}
+};
 
 var leaveGame = function () {
     msg = {user: $.cookie("user"), game_key: current_game}
     $.post('/_leave', msg);
     socket.close();
-}
+};
 
 var sendMessage = function (message) {
     msg = {user: $.cookie("user"), game_key: current_game, message: message}
@@ -77,11 +78,14 @@ var returnFunc = function(data) {
             hosting = false;
             setPaddles("player", "remote");
             ticks = 0;
-            gamePaused = false;
             countdown[0] = "Pvp mode";
             resetBall();
         } else {
-            alert("Error, missing opponent");
+            hosting = true;
+            setPaddles("remote", "player");
+            hideMessage();
+            displayMessage("Waiting... No players online");
+            gamePaused = true;
         }
     }
 };
@@ -99,9 +103,18 @@ var receiveMessage = function (message) {
             // hide waiting message and resume game
             hideMessage();
             ticks = 0;
-            gamePaused = false;
+            countdown[0] = "Pvp mode";
             resetBall();
             break;
+        case 'leave':
+            // deal with player leaving
+            lost_connection = true;
+            // wait for any countdowns to finish...
+            setTimeout(function() {
+                gameActive = false;
+                pauseGame(false);
+                displayMessage("Lost connection. \nRefresh page to restart");
+            }, 100)
         case 'paddle_move':
             if (paddle1.playerType === "remote") {
                 paddle1.moveTo(data.destY);
@@ -124,6 +137,6 @@ var receiveMessage = function (message) {
                 paddle2.score = data.score2;
                 break
         case 'display_message'://Used to display score changes etc
-            displayMessage(data.message);
+                    displayMessage(data.message);
     }
 };
