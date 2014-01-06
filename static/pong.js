@@ -47,29 +47,6 @@ var init = function () {
             break;
 
         case 'pvp':
-            var returnFunc = function(data) {
-                if (!data.game_found) {
-                    // if no game found, create a game instead
-                    createGame(function() {}, receiveMessage);
-                    hosting = true;
-                    setPaddles("remote", "player");
-                    hideMessage();
-                    displayMessage("Waiting.. No players online");
-                    gamePaused = true;
-                } else {
-                    if (data.opponent){
-                        pvpOpponent = data.opponent;
-                        hideMessage();
-                        hosting = false;
-                        setPaddles("player", "remote");
-                        ticks = 0;
-						countdown[0] = "Pvp mode";
-                        resetBall();
-                    }else{
-                        alert("Error, missing opponent");
-                    }
-                }
-            }
             endingScore = 3;//TODO
             // try and join a random game
             displayMessage("Searching for a match");
