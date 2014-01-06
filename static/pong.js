@@ -52,7 +52,8 @@ var init = function () {
             displayMessage("Searching for a match");
             gamePaused = true;
 
-            gameKey = $.cookie('gameKey');
+            if (typeof $.cookie('gameKey') != 'undefined')
+                gameKey = $.cookie('gameKey');
             joinGame(gameKey, returnFunc, receiveMessage);
 
             break;
