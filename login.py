@@ -131,8 +131,7 @@ def user_exists(detail):
         return True
 
 def facebookRegister(facebookID, username):
-    # self.response.write(facebookID)
-    print (username)
+    '''registers a facebook user. May raise InvalidLoginDetail'''
 
     facebook_validate_username(username)
 
