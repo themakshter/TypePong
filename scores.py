@@ -11,7 +11,7 @@ import json
 
 
 def newRankings(myScore, theirScore, points):#points will be 1 or 0
-    #eA = 1/1+10^(theirs-mine)/400
+    #updates both player's ELO
     k = 32
 
     eAdenomiator = 1+10**((theirScore-myScore)/400.0)
@@ -40,6 +40,7 @@ class UpdateScore(RequestHandler):
                 u.put()
 
 class UpdateChallengeScore(RequestHandler):
+    '''Updates user's best challenge score if they surpass thier previous score'''
     def post(self):
         username = cgi.escape(self.request.get("username"))
         score = cgi.escape(self.request.get("timeSurvived"))
@@ -64,6 +65,7 @@ class UpdateChallengeScore(RequestHandler):
         return minute.zfill(2) + ':' + second.zfill(2)
 
 class UpdatePVPRating(RequestHandler):
+    '''updates both players PvPRating (ELO) '''
     def post(self):
         username = cgi.escape(self.request.get("username"))
         # score = cgi.escape(self.request.get("pvpRating"))
@@ -94,20 +96,11 @@ class UpdatePVPRating(RequestHandler):
         oldRating = pvpRating
         opponentOldRating = opponentPVPRating
 
-        print "USER" + str(username)
-        print "opponent" + str(opponent)
-        print "user ranking" + str(pvpRating)
-        print "opp ranking" + str(opponentPVPRating)
-
         # print "--------------GETTING NEW RANKINGS------------"
         (pvpRating, opponentPVPRating) =newRankings(pvpRating, opponentPVPRating, points)
 
         PvPStats(username=username, date=datetime.datetime.now(), opponent=opponent,rating_change= pvpRating-oldRating).put()
         PvPStats(username=opponent, date=datetime.datetime.now(), opponent=username,rating_change= opponentPVPRating-opponentOldRating).put()
-        print "USER" + str(username)
-        print "opponent" + str(opponent)
-        print "user ranking" + str(pvpRating)
-        print "opp ranking" + str(opponentPVPRating)
 
         self.response.headers['Content-Type'] = 'application/json'
 
@@ -124,9 +117,10 @@ class UpdatePVPRating(RequestHandler):
                 u.put()
 
         self.response.out.write(json.dumps({"myELO": pvpRating, "myChange": pvpRating-oldRating, "oppELO": opponentPVPRating, "oppChange":opponentPVPRating-opponentOldRating }))
-
+        #Writes message back so updates to player's ELO can be displayed to them in their browser
 
 class UpdateCampaignLevel(RequestHandler):
+    '''Stores user's campaign progress'''
     def post(self):
         username = cgi.escape(self.request.get("username"))
         campaignLevel = cgi.escape(self.request.get("campaignLevel"))
