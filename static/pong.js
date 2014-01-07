@@ -52,7 +52,6 @@ var init = function () {
 
             if (typeof $.cookie('gameKey') != 'undefined') {
                 gameKey = $.cookie('gameKey');
-                alert(gameKey);
                 deleteCookie('gameKey');
             }
             joinGame(gameKey, returnFunc, receiveMessage);
