@@ -123,13 +123,11 @@ var fadeMessages = function (messages) {
             messages.shift();
             alpha = 1;
         }
-        if (messages.length === 0 || lost_connection) {
+        if (messages.length === 0) {
             keyboardActive = true;
 
-            if (!lost_connection) {
-                hideMessage();
-                resumeGame();
-            }
+            hideMessage();
+            resumeGame();
             clearInterval(fadeID);
             ctx2.globalAlpha = 1;
             return;

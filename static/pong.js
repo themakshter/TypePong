@@ -128,14 +128,6 @@ var setPaddles = function (type1, type2) {
  */
 var resetBall = function () {
     'use strict';
-
-    startBall = true;
-    x = canvas.width / 2;
-    y = canvas.height / 2;
-    paddle1.update();
-    paddle2.update();
-
-    // set velocity (but if not host, may be overwritten)
     tempDx = -dx;
     tempDy = -dy;
 
@@ -148,9 +140,18 @@ var resetBall = function () {
         }));
     }
 
+    startBall = true;
+    x = canvas.width / 2;
+    y = canvas.height / 2;
+    paddle1.update();
+    paddle2.update();
+
     dx = dy = 0;
 
+    var timeout = 1000;
+    if (mode === 'pvp') timeout = 1500;
     ballUpdateID = setTimeout(function () {
+        console.log("GO");
         displayCountdown();
 
         dx = tempDx;
@@ -171,10 +172,15 @@ var resetBall = function () {
         paddle1.update();
         paddle2.update();
 
-    },1000);
+    },timeout);
 };
 
 var displayCountdown = function () {
+    if (mode === 'pvp') {
+        resumeGame();
+        return;
+    }
+
     var direction = "";
     if(tempDx > 0){
         direction = direction.concat("right");

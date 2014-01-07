@@ -1,6 +1,5 @@
 var gameKey = '';
 var pvpOpponent = 0;
-var lost_connection = false;
 
 /**
  * this is called automatically when a game is created or joined
@@ -108,13 +107,9 @@ var receiveMessage = function (message) {
             break;
         case 'leave':
             // deal with player leaving
-            lost_connection = true;
-            // wait for any countdowns to finish...
-            setTimeout(function() {
-                gameActive = false;
-                pauseGame(false);
-                displayMessage("Lost connection. \nRefresh page to restart");
-            }, 100)
+            gameActive = false;
+            pauseGame(false);
+            displayMessage("Lost connection. \nRefresh page to restart");
         case 'paddle_move':
             if (paddle1.playerType === "remote") {
                 paddle1.moveTo(data.destY);
@@ -129,14 +124,15 @@ var receiveMessage = function (message) {
             y = data.y + dy * (ticks - data.ticks);
             break
         case 'ball_reset':
-                tempDx = data.dx;
-                tempDy = data.dy;
-                break;
+            tempDx = data.dx;
+            tempDy = data.dy;
+            break;
         case 'score_change':
-                paddle1.score = data.score1;
-                paddle2.score = data.score2;
-                break
+            paddle1.score = data.score1;
+            paddle2.score = data.score2;
+            break;
         case 'display_message'://Used to display score changes etc
-                    displayMessage(data.message);
+            displayMessage(data.message);
+            break;
     }
 };
