@@ -41,7 +41,7 @@ $('#join').click(function () {
     window.location.href = "/pvp";
 });
 
-$("tr").click(function () {
+$("tr:not(:first)").click(function () {
     $("#lobby tr").each(function () {
         $(this).css("background-color", "");
     });
