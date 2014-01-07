@@ -173,14 +173,14 @@ class HiscoresCampaignHandler(RequestHandler):
             if p['username'] == username:
                 colour_player(p)
                 break
-        else:
-            player_one = next(get_player_one(username))
-            if player_one.campaignLevel:
-                p = {'username': player_one.username,
-                        'score': player_one.campaignLevel,
-                         'rank': get_player_rank(username, "-campaignLevel")}
-                colour_player(p)
-                players_campaign.append(p)
+            else:
+                player_one = next(get_player_one(username))
+                if player_one.campaignLevel:
+                    p = {'username': player_one.username,
+                            'score': player_one.campaignLevel,
+                             'rank': get_player_rank(username, "-campaignLevel")}
+                    colour_player(p)
+                    players_campaign.append(p)
 
         values['players'] = players_campaign
 
