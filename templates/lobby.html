@@ -20,6 +20,7 @@
     <form style="display: inline-block; text-align: center;">
         <input class="lobby-btn" id="create" type="button" value="Create Game">
         <input class="lobby-btn" id="join" type="button" value="Join Game">
+        <input class="lobby-btn" id="refresh" type="button" value="Refresh">
     </form>
 </div>
 
@@ -39,6 +40,10 @@ $('#create').click(function () {
 $('#join').click(function () {
     document.cookie = 'gameKey=' + game_key;
     window.location.href = "/pvp";
+});
+
+$('#refresh').click(function () {
+    location.reload(true);
 });
 
 $("tr:not(:first)").click(function () {
