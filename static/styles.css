@@ -301,7 +301,7 @@ th {
 .lobby-btn {
     position: relative;
     margin-top: 100%;
-    float: left;
+    float: center;
     width: 200px;
     margin: 0 20px 0 0;
 }
