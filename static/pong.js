@@ -37,7 +37,7 @@ var init = function () {
             endingScore = 3;
             fetchCampaignLevel();
             fetchWordsAsync(campaignLevel);
-            aiLevel = 1;
+            aiLevel = Math.ceil((campaignLevel + 1) / 10);
 
             setPaddles("ai", "player");
             countdown.push("Campaign mode - Level " + campaignLevel);
