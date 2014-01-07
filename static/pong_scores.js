@@ -16,9 +16,12 @@ var updateCampaignLevel = function (level) {
     $.post('/_updatecampaignlevel', data);
 };
 
-var updatePvPRating = function (otherUser, winner, returnFunc) {
-    var data = {  "username" : $.cookie('user'),  "winner" : winner, "oppositionUsername": otherUser };
-        // alert(otherUser);
+var updatePvPRating = function (winner, returnFunc) {
+    var data = {
+        "username" : $.cookie('user'),
+        "winner" : winner,
+        "oppositionUsername": pvpOpponent
+    };
 
     $.post('/_updatepvprating', data, returnFunc);
 

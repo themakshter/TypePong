@@ -228,7 +228,7 @@ var winGame = function () {
             break;
 
         case 'pvp':
-            if (pvpOpponent) {
+            if (hosting) {
                 var returnFunc = function(data) {
                     var strMyChange = String(data.myChange);
                     var strOppChange= String(data.oppChange);
@@ -236,17 +236,14 @@ var winGame = function () {
                         strMyChange = "+"+strMyChange;
                     if (data.oppChange>0)
                         strOppChange = "+"+strOppChange;
-                    displayMessage("Better luck next time! \nCurrent ELO: " + data.myELO + "("+strMyChange+")");
-                    var messageForOpp = "Victory! \nCurrent ELO: " + data.oppELO + "("+strOppChange+")";
+                    displayMessage("Victory! \nCurrent ELO: " + data.myELO + "("+strMyChange+")");
+                    var messageForOpp = "Better luck next time! \nCurrent ELO: " + data.oppELO + "("+strOppChange+")";
                     sendMessage(JSON.stringify({
                         "type": "display_message",
                         "message": messageForOpp
                     }));
-
-                    // alert("woow");
                 };
-                updatePvPRating(pvpOpponent, $.cookie('user'), returnFunc);
-
+                updatePvPRating($.cookie('user'), returnFunc);
             }
     }
 };
@@ -269,7 +266,7 @@ var loseGame = function () {
             displayMessage("Too bad. Better luck next time!");
             break;
         case 'pvp':
-            if (pvpOpponent){
+            if (hosting) {
                 var returnFunc = function(data) {
                     var strMyChange = String(data.myChange);
                     var strOppChange= String(data.oppChange);
@@ -284,8 +281,7 @@ var loseGame = function () {
                         "message": messageForOpp
                     }));
                 };
-                updatePvPRating(pvpOpponent, pvpOpponent, returnFunc);
-
+                updatePvPRating(pvpOpponent, returnFunc);
             }
     }
 };

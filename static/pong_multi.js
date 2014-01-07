@@ -100,6 +100,7 @@ var receiveMessage = function (message) {
     switch(data.type) {
         case 'join':
             // hide waiting message and resume game
+            pvpOpponent = data.user;
             hideMessage();
             ticks = 0;
             countdown[0] = "Pvp mode";
