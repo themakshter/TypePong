@@ -63,7 +63,7 @@ class Login(RequestHandler):
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(reply))
 
-class facebookRegister(RequestHandler):
+class FacebookRegister(RequestHandler):
     def post (self):
         facebookID = cgi.escape(self.request.get("facebookID"))
         username = cgi.escape(self.request.get("username"))
