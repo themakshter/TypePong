@@ -108,9 +108,12 @@ var receiveMessage = function (message) {
             break;
         case 'leave':
             // deal with player leaving
-            gameActive = false;
-            pauseGame(false);
-            displayMessage("Lost connection. \nRefresh page to restart");
+            if (gameActive) {
+                gameActive = false;
+                hideMessage();
+                pauseGame(false);
+                displayMessage("Lost connection. \nRefresh page to restart");
+            }
         case 'paddle_move':
             if (paddle1.playerType === "remote") {
                 paddle1.moveTo(data.destY);
