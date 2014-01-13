@@ -75,7 +75,7 @@ class PvpHandler(RequestHandler):
         self.response.out.write(page)
 
 class LoadWords(RequestHandler):
-    WordSampler = Sampler(open('words.txt'))
+    WordSampler = Sampler(open('words.txt'), 100)
 
     def get(self):
         level = int(self.request.get('level'))
