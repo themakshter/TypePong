@@ -4,7 +4,7 @@ import random
 class Sampler(object):
     def __init__(self, wordfile, levels=50):
         self.words = [l.strip().lower() for l in wordfile.readlines()]
-        self.words = [w for w in self.words if len(w) >= 3]
+        self.words = [w for w in self.words if len(w) >= 3 and len(w) <= 12]
 
         random.shuffle(self.words)
         self.words = sorted(self.words, key=len)
