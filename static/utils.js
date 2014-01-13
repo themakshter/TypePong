@@ -150,10 +150,11 @@ var deleteCookie = function(cookie_name) {
 };
 
 var drawArrow = function(context, direction) {
+    var x,y;
     context.beginPath();
     switch (direction) {
         case "rightup":
-            var x = 300;var y = 250;
+            x = 300;y = 250;
             context.moveTo(x, y);
             context.lineTo(x + 50, y - 50);
             context.lineTo(x + 50 - 25, y - 50 - 25);
@@ -163,7 +164,7 @@ var drawArrow = function(context, direction) {
             context.lineTo(x + 35, y + 35);
             break;
         case "leftup":
-            var x = 425;var y = 250;
+            x = 425;y = 250;
             context.moveTo(x, y);
             context.lineTo(x - 50, y - 50);
             context.lineTo(x - 50 + 25, y - 50 - 25);
@@ -173,7 +174,7 @@ var drawArrow = function(context, direction) {
             context.lineTo(x - 35, y + 35);
             break;
         case "rightdown":
-            var x = 300;var y = 200;
+            x = 300;y = 200;
             context.moveTo(x, y);
             context.lineTo(x + 50, y + 50);
             context.lineTo(x + 50 - 25, y + 50 + 25);
@@ -183,7 +184,7 @@ var drawArrow = function(context, direction) {
             context.lineTo(x + 35, y - 35);
             break;
         case "leftdown":
-            var x = 425;var y = 200;
+            x = 425;y = 200;
             context.moveTo(x, y);
             context.lineTo(x - 50, y + 50);
             context.lineTo(x - 50 + 25, y + 50 + 25);

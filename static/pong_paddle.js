@@ -3,7 +3,8 @@
  */
 var Paddle = function (xPos, yPos,playerType) {
     'use strict';
-
+    this.origX = xPos;
+    this.origY = yPos;
     this.xPos = xPos;
     this.yPos = yPos;
     this.reqyPos = yPos;
@@ -43,6 +44,11 @@ var Paddle = function (xPos, yPos,playerType) {
             this.tryAndMove();
         }
     };
+
+    this.reset = function(){
+        this.xPos = this.origX;
+        this.yPos = this.origY;
+    }
 
     this.updatePosition = function () {
         if ((this.dy * (this.yPos - this.reqyPos) < 0)) {

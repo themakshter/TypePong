@@ -129,7 +129,7 @@ var resetBall = function () {
     'use strict';
     tempDx = -dx;
     tempDy = -dy;
-
+    
     // only send velocity if hosting game
     if (hosting && mode === "pvp") {
         sendMessage(JSON.stringify({
@@ -150,7 +150,6 @@ var resetBall = function () {
     var timeout = 1000;
     if (mode === 'pvp') timeout = 1500;
     ballUpdateID = setTimeout(function () {
-        console.log("GO");
         displayCountdown();
 
         dx = tempDx;
