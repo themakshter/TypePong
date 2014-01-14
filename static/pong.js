@@ -142,14 +142,17 @@ var resetBall = function () {
     startBall = true;
     x = canvas.width / 2;
     y = canvas.height / 2;
-    paddle1.update();
-    paddle2.update();
 
     dx = dy = 0;
 
     var timeout = 1000;
     if (mode === 'pvp') timeout = 1500;
     ballUpdateID = setTimeout(function () {
+
+        //reset the paddles
+        paddle1.resetPosition();
+        paddle2.resetPosition();
+        
         displayCountdown();
 
         dx = tempDx;
@@ -169,7 +172,7 @@ var resetBall = function () {
 
         paddle1.update();
         paddle2.update();
-
+    
     },timeout);
 };
 

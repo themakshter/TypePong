@@ -3,7 +3,6 @@
  */
 var Paddle = function (xPos, yPos,playerType) {
     'use strict';
-    this.origX = xPos;
     this.origY = yPos;
     this.xPos = xPos;
     this.yPos = yPos;
@@ -45,9 +44,9 @@ var Paddle = function (xPos, yPos,playerType) {
         }
     };
 
-    this.reset = function(){
-        this.xPos = this.origX;
+    this.resetPosition = function(){
         this.yPos = this.origY;
+        this.reqyPos = this.origY;
     }
 
     this.updatePosition = function () {
@@ -73,7 +72,7 @@ var Paddle = function (xPos, yPos,playerType) {
     };
 
     this.inPortion = function (){
-       return ((x < this.xPos) && (dx > 0)) || ((x > this.xPos) && (dx < 0))
+       return ((x < this.xPos) && (dx > 0)) || ((x > this.xPos) && (dx < 0));
     }
 
     this.tryAndMove = function () {
@@ -83,7 +82,7 @@ var Paddle = function (xPos, yPos,playerType) {
         sampleSize = 100;
         minAccuracy = 25;
         step = 75/9;
-        if(((x < this.xPos) && (dx > 0)) || (x > this.xPos) && (dx < 0)){
+        if(this.inPortion()){
             yPos = calculateHitYPos(x,y,dx,dy,this.xPos);
         } else {
             return;
