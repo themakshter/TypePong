@@ -60,7 +60,7 @@ var init = function () {
 
         case 'challenge':
             initClockDraw();
-            aiLevel = 0; //Perfect mode. levels from 1 to 5
+            aiLevel = 0; //Perfect mode. levels from 1 to 10
             setPaddles("ai", "player");
             gamePaused = false;
             countdown[0] = "Challenge mode";

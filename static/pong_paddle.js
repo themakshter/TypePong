@@ -58,12 +58,11 @@ var Paddle = function (xPos, yPos,playerType) {
     this.wordTyped = function (pos, i) {
         if (this.playerType === "player") {
             var ballYPos = calculateHitYPos(x,y,dx,dy,this.xPos);
-            var speed = Math.abs(this.dy);
             var startSeg = canvas.height * (i/pos.length);
             var endSeg   = canvas.height * ((i+1)/pos.length);
 
             var newyPos = pos[i] - this.height / 2;
-            if (ballYPos > startSeg && ballYPos < endSeg && this.inPortion()) {
+            if (ballYPos >= startSeg && ballYPos <= endSeg && this.inPortion()) {
                 this.tryAndMove();
             } else {
                 this.moveTo(Math.round(newyPos));
@@ -92,7 +91,7 @@ var Paddle = function (xPos, yPos,playerType) {
         var number = Math.round(minAccuracy + toAdd);
 
         if (startBall || aiLevel === 0) {
-            number = 100;
+            number = 101;
             startBall = false;
         } 
         
